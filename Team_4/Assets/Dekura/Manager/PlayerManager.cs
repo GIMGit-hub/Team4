@@ -159,14 +159,14 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.Attack:
                 //今は攻撃処理のみ
                 //漢字に合わせた挙動は未実装
-                _enemyManager.TakeDamageRequest(10);
+                _enemyManager.TakeDamageRequest(20);
 
                 break;
 
             case PlayerState.Support:
                 //今はHP回復処理のみ
                 //漢字に合わせた挙動は未実装
-                SupportEffect(10);
+                SupportEffect(20);
                 break;
 
             default:
