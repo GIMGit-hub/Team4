@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Stage_1-2
   m_EditorClassIdentifier: Assembly-CSharp::StageEnemyData
   stage: 1
-  floor: 1
+  floor: 2
   enemy:
+  - enemyPrefab: {fileID: 4345741965343118371, guid: 3ccf2790ee9fbb54a84856db25a5fb6f, type: 3}
+    multiplier: 100
   - enemyPrefab: {fileID: 4345741965343118371, guid: 3ccf2790ee9fbb54a84856db25a5fb6f, type: 3}
     multiplier: 100

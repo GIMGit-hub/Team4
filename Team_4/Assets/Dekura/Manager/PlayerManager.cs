@@ -1,9 +1,6 @@
-using NUnit.Framework;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public enum PlayerState
@@ -23,8 +20,8 @@ public class PlayerManager : MonoBehaviour
     [Header("HP")]
     [SerializeField] private GameObject playerHP;
     [SerializeField] private TextMeshProUGUI playerHpText;
-    [SerializeField] private int  playerMaxHP;
-    [SerializeField] private int  playerNowHP;
+    [SerializeField] private float playerMaxHP;
+    [SerializeField] private float playerNowHP;
 
     [Header("Diyalog")]
     [SerializeField] private GameObject diyalog;
@@ -88,29 +85,55 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// Uiの更新
     /// </summary>
-    void UpdateUi()
+    public void UpdateUi()
     {
         Debug.Log($"STATE;;{playerState}");
+
+        bool isMyturn = false;
+
+        if (StageManager.Instance.turnState != TurnState.PlayerTurn) 
+        {
+            attack.interactable = false;
+            support.interactable = false;
+            isMyturn = false;
+        }
+        else
+        {
+            attack.interactable = true;
+            support.interactable = true;
+            isMyturn = true;
+        }
+
         switch (playerState)
         {
             case PlayerState.Idle:
                 attackCommond.SetActive(false);
                 supportCommond.SetActive(false);
+
+                if(isMyturn) UiManager_MainGame.Instance.SetDiyalog("あなたのターン");
                 break;
 
             case PlayerState.Attack:
                 attackCommond.SetActive(true);
                 supportCommond.SetActive(false);
+
+                if (isMyturn) UiManager_MainGame.Instance.SetDiyalog("");
                 break;
 
             case PlayerState.Support:
                 attackCommond.SetActive(false);
                 supportCommond.SetActive(true);
+
+                if (isMyturn) UiManager_MainGame.Instance.SetDiyalog("");
                 break;
 
             case PlayerState.Dead:
+                attack.interactable = false;
+                support.interactable = false;
                 attackCommond.SetActive(false);
-                supportCommond.SetActive(false); 
+                supportCommond.SetActive(false);
+
+                if (isMyturn) UiManager_MainGame.Instance.SetDiyalog("あなたのまけ");
                 break;
 
             default:
@@ -159,14 +182,15 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.Attack:
                 //今は攻撃処理のみ
                 //漢字に合わせた挙動は未実装
-                _enemyManager.TakeDamageRequest(20);
-
+                _enemyManager.TakeDamageRequest(30);
+                UiManager_MainGame.Instance.SetDiyalog("こうげき！");
                 break;
 
             case PlayerState.Support:
                 //今はHP回復処理のみ
                 //漢字に合わせた挙動は未実装
-                SupportEffect(20);
+                SupportEffect(30);
+                UiManager_MainGame.Instance.SetDiyalog($"HP{30}回復！");
                 break;
 
             default:
@@ -197,7 +221,7 @@ public class PlayerManager : MonoBehaviour
     /// 被弾時の処理
     /// </summary>
     /// <param name="damage">被ダメージ</param>
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         playerNowHP = Mathf.Max(playerNowHP - damage, 0);
 
