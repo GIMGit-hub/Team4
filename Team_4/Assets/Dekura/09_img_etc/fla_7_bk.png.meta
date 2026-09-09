@@ -1,0 +1,871 @@
+fileFormatVersion: 2
+guid: 58f12f754d222c8488b94873704021fd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4513532716212104550
+    second: fla_7_bk_0
+  - first:
+      213: -1214170476938695391
+    second: fla_7_bk_1
+  - first:
+      213: -2301052837369625784
+    second: fla_7_bk_2
+  - first:
+      213: 2415075321514016495
+    second: fla_7_bk_3
+  - first:
+      213: -3485026610815045496
+    second: fla_7_bk_4
+  - first:
+      213: 1914033249969661864
+    second: fla_7_bk_5
+  - first:
+      213: 7532138148873329382
+    second: fla_7_bk_6
+  - first:
+      213: 541361321545113586
+    second: fla_7_bk_7
+  - first:
+      213: 3286339407401148552
+    second: fla_7_bk_8
+  - first:
+      213: -383477524719145701
+    second: fla_7_bk_9
+  - first:
+      213: -8590598801388904969
+    second: fla_7_bk_10
+  - first:
+      213: 3227831626886301350
+    second: fla_7_bk_11
+  - first:
+      213: 6041629063235985834
+    second: fla_7_bk_12
+  - first:
+      213: -5541488294813122755
+    second: fla_7_bk_13
+  - first:
+      213: 1243199228945439848
+    second: fla_7_bk_14
+  - first:
+      213: -8300287493757678612
+    second: fla_7_bk_15
+  - first:
+      213: -1511490098434266626
+    second: fla_7_bk_16
+  - first:
+      213: -2832969202141536428
+    second: fla_7_bk_17
+  - first:
+      213: 7990945509277368637
+    second: fla_7_bk_18
+  - first:
+      213: -3023365896543023644
+    second: fla_7_bk_19
+  - first:
+      213: 1203790354200895588
+    second: fla_7_bk_20
+  - first:
+      213: -7584820644324480486
+    second: fla_7_bk_21
+  - first:
+      213: 6665651882088039612
+    second: fla_7_bk_22
+  - first:
+      213: 3861191114896219714
+    second: fla_7_bk_23
+  - first:
+      213: 5352665815608485062
+    second: fla_7_bk_24
+  - first:
+      213: 3559318482102644607
+    second: fla_7_bk_25
+  - first:
+      213: 430681040335357403
+    second: fla_7_bk_26
+  - first:
+      213: 3311606036292961674
+    second: fla_7_bk_27
+  - first:
+      213: 4804575934298815805
+    second: fla_7_bk_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fla_7_bk_0
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 600
+        width: 38
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a92d21888e5bc51c0800000000000000
+      internalID: -4513532716212104550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_1
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 607
+        width: 14
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12d6d495266662fe0800000000000000
+      internalID: -1214170476938695391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_2
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 601
+        width: 38
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 843cd2bc2a40110e0800000000000000
+      internalID: -2301052837369625784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_3
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 518
+        width: 63
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feeb7a49532148120800000000000000
+      internalID: 2415075321514016495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_4
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 596
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 880f59d03c2b2afc0800000000000000
+      internalID: -3485026610815045496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_5
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 537
+        width: 73
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a76ab09913009a10800000000000000
+      internalID: 1914033249969661864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_6
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 518
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ea53ca4db7878860800000000000000
+      internalID: 7532138148873329382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_7
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 479
+        width: 11
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ff15d1f04d438700800000000000000
+      internalID: 541361321545113586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_8
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 479
+        width: 11
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 880638d774c6b9d20800000000000000
+      internalID: 3286339407401148552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_9
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 467
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1de4c7193d9daaf0800000000000000
+      internalID: -383477524719145701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_10
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 379
+        width: 6
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fd5153b7ef08c880800000000000000
+      internalID: -8590598801388904969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_11
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 359
+        width: 6
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a6445b43cf8bcc20800000000000000
+      internalID: 3227831626886301350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_12
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 359
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa16bd28f9d28d350800000000000000
+      internalID: 6041629063235985834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_13
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 319
+        width: 6
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3fbda481cda813b0800000000000000
+      internalID: -5541488294813122755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_14
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 319
+        width: 6
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86c155aac1bb04110800000000000000
+      internalID: 1243199228945439848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_15
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 307
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cebc4f050847fcc80800000000000000
+      internalID: -8300287493757678612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_16
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 219
+        width: 6
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef92e4183cb160be0800000000000000
+      internalID: -1511490098434266626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_17
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 199
+        width: 6
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45f5bb635854fa8d0800000000000000
+      internalID: -2832969202141536428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_18
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 199
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d310bf35a9a85ee60800000000000000
+      internalID: 7990945509277368637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_19
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 159
+        width: 6
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4edc58e4cb8da06d0800000000000000
+      internalID: -3023365896543023644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_20
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 159
+        width: 6
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 460af2ef2f8b4b010800000000000000
+      internalID: 1203790354200895588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_21
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 147
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1a6df16fcd4db690800000000000000
+      internalID: -7584820644324480486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_22
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 64
+        width: 31
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb485441217218c50800000000000000
+      internalID: 6665651882088039612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_23
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 49
+        width: 44
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24e984d8cd4b59530800000000000000
+      internalID: 3861191114896219714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_24
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 25
+        width: 34
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c468bc133d784a40800000000000000
+      internalID: 5352665815608485062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_25
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 25
+        width: 33
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7fe5382d4d356130800000000000000
+      internalID: 3559318482102644607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_26
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 49
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd54fa4df161af500800000000000000
+      internalID: 430681040335357403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_27
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 20
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a850845f42035fd20800000000000000
+      internalID: 3311606036292961674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fla_7_bk_28
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 10
+        width: 96
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3d75444b584da240800000000000000
+      internalID: 4804575934298815805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fla_7_bk_0: -4513532716212104550
+      fla_7_bk_1: -1214170476938695391
+      fla_7_bk_10: -8590598801388904969
+      fla_7_bk_11: 3227831626886301350
+      fla_7_bk_12: 6041629063235985834
+      fla_7_bk_13: -5541488294813122755
+      fla_7_bk_14: 1243199228945439848
+      fla_7_bk_15: -8300287493757678612
+      fla_7_bk_16: -1511490098434266626
+      fla_7_bk_17: -2832969202141536428
+      fla_7_bk_18: 7990945509277368637
+      fla_7_bk_19: -3023365896543023644
+      fla_7_bk_2: -2301052837369625784
+      fla_7_bk_20: 1203790354200895588
+      fla_7_bk_21: -7584820644324480486
+      fla_7_bk_22: 6665651882088039612
+      fla_7_bk_23: 3861191114896219714
+      fla_7_bk_24: 5352665815608485062
+      fla_7_bk_25: 3559318482102644607
+      fla_7_bk_26: 430681040335357403
+      fla_7_bk_27: 3311606036292961674
+      fla_7_bk_28: 4804575934298815805
+      fla_7_bk_3: 2415075321514016495
+      fla_7_bk_4: -3485026610815045496
+      fla_7_bk_5: 1914033249969661864
+      fla_7_bk_6: 7532138148873329382
+      fla_7_bk_7: 541361321545113586
+      fla_7_bk_8: 3286339407401148552
+      fla_7_bk_9: -383477524719145701
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
