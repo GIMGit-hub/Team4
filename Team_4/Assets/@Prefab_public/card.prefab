@@ -133,3 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cbee3c0623545641b9e1c1b741a8056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Card
+  canvas: {fileID: 0}
+  rect: {fileID: 5125815311868308563}
