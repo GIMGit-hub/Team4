@@ -47,6 +47,8 @@ public class HandLayout : MonoBehaviour
 
     private void Update()
     {
+        UpdateLayout();
+
         if (Input.GetKeyDown(KeyCode.UpArrow)) AddCard();
         if (Input.GetKeyDown(KeyCode.DownArrow) && cards.Count > 0) RemoveCard(cards[cards.Count - 1]);
 
@@ -91,6 +93,8 @@ public class HandLayout : MonoBehaviour
         {
             RectTransform rect = cards[i].GetComponent<RectTransform>();
             Card card = cards[i].GetComponentInChildren<Card>();
+
+            if(card.isDraging) continue;
 
             float t = count == 1 ? 0.5f : (float)i / (count - 1);
             float centeredT = t - 0.5f;
