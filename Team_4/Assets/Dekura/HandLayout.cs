@@ -4,28 +4,28 @@ using DG.Tweening;
 
 public class HandLayout : MonoBehaviour
 {
-    [Header("カード生成")]
-    [SerializeField] private GameObject cardPrefab;
+    [Header("手札スペース")]
     [SerializeField] private Transform handArea;
 
     [Header("デバッグ用")]
+    [SerializeField] private GameObject debugCardPrefab;
     [SerializeField] private int debugCardCount = 5;      // 生成する枚数
 
-    [Header("配置設定")]
+    [Header("カード配置設定")]
     [SerializeField] private float maxCardWidth = 120f;   // 少枚数の時の間隔(最大)
     [SerializeField] private float minCardWidth = 40f;    // 重なりが最も強い時の間隔(最小)
     [SerializeField] private float maxTotalWidth = 900f;  // 手札全体が許容する最大横幅
     [SerializeField] private float maxRotation = 8f;
     [SerializeField] private float arcHeight = 30f;
-    [SerializeField] private Vector2 sponePoint = new Vector2(2000f,-100f);         // カード生成時の位置
-    [SerializeField] private Vector2 handAreaPosition;
+    [SerializeField] private Vector2 sponePoint = new Vector2(2000f, -100f);         // カード生成時の位置
 
-    [Header("ホバー設定")]
+    [Header("カードホバー設定")]
     [SerializeField] private float hoverHandAreaY = 100f;
     [SerializeField] private float hoverCardY = 60f;
     [SerializeField] private float hoverExpand = 2f;
     [SerializeField] private float tweenDuration = 0.15f;
 
+    private Vector2 handAreaPosition;
     private List<GameObject> cards = new List<GameObject>();
 
     private void Start()
@@ -36,13 +36,7 @@ public class HandLayout : MonoBehaviour
 
     private void SpawnDebugCards()
     {
-        foreach (var c in cards) Destroy(c.gameObject);
-        cards.Clear();
-
-        for (int i = 0; i < debugCardCount; i++)
-        {
-            AddCard();
-        }
+        for (int i = 0; i < debugCardCount; i++) AddCard();
     }
 
     private void Update()
@@ -51,14 +45,17 @@ public class HandLayout : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow)) AddCard();
         if (Input.GetKeyDown(KeyCode.DownArrow) && cards.Count > 0) RemoveCard(cards[cards.Count - 1]);
-
-        if (Input.GetKeyDown(KeyCode.Space)) UpdateLayout();
     }
 
-    public void AddCard(GameObject card = null)
+    public void AddCard(GameObject card = null, Vector2 sponePosition = default)
     {
-        GameObject go = Instantiate(cardPrefab, handArea != null ? handArea : transform);
-        go.transform.position = sponePoint;
+        if (card == null) card = debugCardPrefab;
+        if (sponePosition == default) sponePosition = sponePoint;
+
+        Debug.Log($"AddCard: {card.name} at {sponePosition}");
+
+        GameObject go = Instantiate(card, handArea);
+        go.transform.position = sponePosition;
 
         cards.Add(go);
         UpdateLayout();
@@ -73,15 +70,11 @@ public class HandLayout : MonoBehaviour
 
     public void UpdateLayout()
     {
-        Debug.Log("UpdateLayout");
-
         int count = cards.Count;
         if (count == 0) return;
 
         float idealWidth = maxCardWidth * (count - 1);
-        float cardWidth = idealWidth > maxTotalWidth
-        ? maxTotalWidth / (count - 1)
-        : maxCardWidth;
+        float cardWidth = idealWidth > maxTotalWidth ? maxTotalWidth / (count - 1) : maxCardWidth;
         cardWidth = Mathf.Max(cardWidth, minCardWidth);
 
         float totalWidth = cardWidth * (count - 1);
@@ -92,9 +85,9 @@ public class HandLayout : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             RectTransform rect = cards[i].GetComponent<RectTransform>();
-            Card card = cards[i].GetComponentInChildren<Card>();
+            CardVisual card = cards[i].GetComponentInChildren<CardVisual>();
 
-            if(card.isDraging) continue;
+            if (card.isDraging || card.m_currentSlot != null)  continue;
 
             float t = count == 1 ? 0.5f : (float)i / (count - 1);
             float centeredT = t - 0.5f;

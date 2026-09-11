@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
@@ -18,7 +17,7 @@ public class TurnManager : MonoBehaviour
     public event Action<TurnState> OnTurnChanged;          //ターン切り替わり時に通知
 
     [SerializeField]private Button pturnEndButton;         //Pターン切り替えボタン
-    [SerializeField]private float turnChangeDiray = 2f;    //ターン切り替わりディレイ
+    [SerializeField]private float turnChangeDiray = 0.5f;    //ターン切り替わりディレイ
 
     private bool isTurnChanging = false;
 
@@ -57,6 +56,7 @@ public class TurnManager : MonoBehaviour
 
         yield return new WaitForSeconds(turnChangeDiray);
 
+        Debug.Log("Complete");
         NowTurn = nextTurn;
         OnTurnChanged?.Invoke(NowTurn);
         isTurnChanging = false;
@@ -68,10 +68,12 @@ public class TurnManager : MonoBehaviour
         {
             case TurnState.PlayerTurn:
                 Debug.Log("PlayerTurn");
+                EffectManager.Instance.Playfade("heal", turnChangeDiray);
                 break;
 
             case TurnState.EnemyTurn:
                 Debug.Log("EnemyTurn");
+                EffectManager.Instance.Playfade("damage", turnChangeDiray);
                 break;
         }
     }

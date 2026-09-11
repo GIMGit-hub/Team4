@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class EffectManager : MonoBehaviour
@@ -17,10 +19,12 @@ public class EffectManager : MonoBehaviour
         public float loopDuration = 0f;
     }
 
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Image fade;
     [SerializeField] private EffectData[] effects;
 
-    private int fxLayer;
-
+    [SerializeField] private Color healColor;
+    [SerializeField] private Color damageColor;
 
     void Awake()
     {
@@ -31,9 +35,25 @@ public class EffectManager : MonoBehaviour
         }
 
         Instance = this;
+    }
 
-        fxLayer = LayerMask.NameToLayer("NoBloom");
-        if (fxLayer == -1) Debug.LogError($"Layer not Found：'NoBloom'");
+    public void Playfade(string name, float delay = 0f)
+    {
+        fade.DOKill();
+
+        switch (name)
+        {
+            case "heal":
+                fade.DOColor(healColor, 0.1f);
+                break;
+            case "damage":
+                fade.DOColor(damageColor, 0.1f);
+                break;
+
+            default: return;
+        }
+
+        fade.DOFade(0f,0.5f).SetDelay(delay);
     }
 
     public void PlayEffect(string name, Vector3 position)
@@ -48,8 +68,7 @@ public class EffectManager : MonoBehaviour
 
         // ここで生成
         ParticleSystem effectInstance = Instantiate(effectData.particle, position, Quaternion.identity);
-        // レイヤーの変更
-        SetLayerRecursively(effectInstance.gameObject, fxLayer);
+        //effectInstance.transform.position
 
         if (!effectData.loop)
             Destroy(effectInstance.gameObject, effectInstance.main.duration + effectInstance.main.startLifetime.constantMax);
