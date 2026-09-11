@@ -86,8 +86,9 @@ GameObject:
   - component: {fileID: 5125815311868308563}
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
+  - component: {fileID: 8195112710207023301}
   m_Layer: 5
-  m_Name: card
+  m_Name: pre_Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,5 +134,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cbee3c0623545641b9e1c1b741a8056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  canvas: {fileID: 0}
-  rect: {fileID: 5125815311868308563}
+--- !u!114 &8195112710207023301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  cardName: promo
+  cost: 0
+  effects: []
