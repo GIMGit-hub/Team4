@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
   m_Layer: 5
-  m_Name: pre_Card
+  m_Name: pre_DrawCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,6 +149,6 @@ MonoBehaviour:
   cardName: promo
   cost: 0
   effects:
-  - type: 0
-    value: 0
-    valueCount: 0
+  - type: 7
+    value: 2
+    valueCount: 1

@@ -31,13 +31,12 @@ public class HandLayout : MonoBehaviour
     private void Start()
     {
         handAreaPosition = handArea.localPosition;
-        SpawnDebugCards();
+        //CardManager.Instance.StartCoroutine(CardManager.Instance.Call(5));
+        //SpawnDebugCards();
     }
 
-    private void SpawnDebugCards()
-    {
-        for (int i = 0; i < debugCardCount; i++) AddCard();
-    }
+    private void OnEnable() => CardManager.Instance.OnCardMoved += HandCardMoved;
+    private void OnDisable() => CardManager.Instance.OnCardMoved -= HandCardMoved;
 
     private void Update()
     {
@@ -45,6 +44,19 @@ public class HandLayout : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow)) AddCard();
         if (Input.GetKeyDown(KeyCode.DownArrow) && cards.Count > 0) RemoveCard(cards[cards.Count - 1]);
+    }
+
+
+
+    private void SpawnDebugCards()
+    {
+        for (int i = 0; i < debugCardCount; i++) AddCard();
+    }
+
+    private void HandCardMoved(GameObject cardObj, CardData.CardZone zone)
+    {
+        if (zone == CardData.CardZone.Hand) AddCard(cardObj);
+        else RemoveCard(cardObj);
     }
 
     public void AddCard(GameObject card = null, Vector2 sponePosition = default)
@@ -63,9 +75,12 @@ public class HandLayout : MonoBehaviour
 
     public void RemoveCard(GameObject card)
     {
-        cards.Remove(card);
-        Destroy(card);
-        UpdateLayout();
+        if (cards.Contains(card))
+        {
+            cards.Remove(card);
+            Destroy(card);
+            UpdateLayout();
+        }
     }
 
     public void UpdateLayout()
