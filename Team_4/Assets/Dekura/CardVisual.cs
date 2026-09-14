@@ -41,8 +41,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         isDraging = true;
 
         rect.DOKill();                          //dotween動作中止
-        canvas.overrideSorting = true;          //表示順変更可能に
-        canvas.sortingOrder = 999;              //最前表示
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -55,7 +53,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
     public void OnEndDrag(PointerEventData eventData)
     {
         isDraging = false;
-        canvas.overrideSorting = false;         //表示順変更不可能に
 
         SynthesisSlot slot = SynthesisSlot.FindSlot(rect.position);
         if (slot != null) SnapToSlot(slot);
@@ -69,7 +66,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         Debug.Log($"SnapToSlot：{slot}");
         m_currentSlot = slot;
 
-        canvas.overrideSorting = false;
         transform.SetParent(slot.transform, worldPositionStays: true);
         rect.localScale = Vector3.one;
 
@@ -86,8 +82,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         Debug.Log("ReturnToHand");
         m_currentSlot?.RemoveCard();
         m_currentSlot = null;
-
-        canvas.overrideSorting = false;
 
         transform.DOKill();
         transform.SetParent(parent, worldPositionStays: false);
