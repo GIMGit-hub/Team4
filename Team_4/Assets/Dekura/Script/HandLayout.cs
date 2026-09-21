@@ -27,12 +27,13 @@ public class HandLayout : MonoBehaviour
 
     private Vector2 handAreaPosition;
     private List<GameObject> cards = new List<GameObject>();
+    private Dictionary<CardInstance, GameObject> activeCards = new();
+
+    public bool isSelected { get; private set; }
 
     private void Start()
     {
         handAreaPosition = handArea.localPosition;
-        //CardManager.Instance.StartCoroutine(CardManager.Instance.Call(5));
-        //SpawnDebugCards();
     }
 
     private void OnEnable() => CardManager.Instance.OnCardMoved += HandCardMoved;
@@ -41,45 +42,34 @@ public class HandLayout : MonoBehaviour
     private void Update()
     {
         UpdateLayout();
-
-        if (Input.GetKeyDown(KeyCode.UpArrow)) AddCard();
-        if (Input.GetKeyDown(KeyCode.DownArrow) && cards.Count > 0) RemoveCard(cards[cards.Count - 1]);
     }
 
-
-
-    private void SpawnDebugCards()
+    private void HandCardMoved(CardInstance cardObj, CardZone zone)
     {
-        for (int i = 0; i < debugCardCount; i++) AddCard();
-    }
-
-    private void HandCardMoved(GameObject cardObj, CardData.CardZone zone)
-    {
-        if (zone == CardData.CardZone.Hand) AddCard(cardObj);
+        if (zone == CardZone.Hand) AddCard(cardObj);
         else RemoveCard(cardObj);
     }
 
-    public void AddCard(GameObject card = null, Vector2 sponePosition = default)
+    public void AddCard(CardInstance instance)
     {
-        if (card == null) card = debugCardPrefab;
-        if (sponePosition == default) sponePosition = sponePoint;
+        Debug.Log($"AddCard: {instance.CardName}");
 
-        Debug.Log($"AddCard: {card.name} at {sponePosition}");
+        GameObject go = Instantiate(instance.template, handArea, false);
+        go.GetComponent<CardController>().Bind(instance);
+        go.transform.position = instance.sponePosition ?? sponePoint;
+        go.transform.SetAsFirstSibling();
 
-        GameObject go = Instantiate(card, handArea);
-        go.transform.position = sponePosition;
-
+        activeCards[instance] = go;
         cards.Add(go);
-        UpdateLayout();
     }
 
-    public void RemoveCard(GameObject card)
+    public void RemoveCard(CardInstance instance)
     {
-        if (cards.Contains(card))
+        if (activeCards.TryGetValue(instance, out var go))
         {
-            cards.Remove(card);
-            Destroy(card);
-            UpdateLayout();
+            activeCards.Remove(instance);
+            cards.Remove(go);
+            Destroy(go); 
         }
     }
 
@@ -100,7 +90,7 @@ public class HandLayout : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             RectTransform rect = cards[i].GetComponent<RectTransform>();
-            CardVisual card = cards[i].GetComponentInChildren<CardVisual>();
+            CardController card = cards[i].GetComponentInChildren<CardController>();
 
             if (card.isDraging || card.m_currentSlot != null)  continue;
 
@@ -111,7 +101,7 @@ public class HandLayout : MonoBehaviour
             float y = -arcHeight * (centeredT * centeredT) * 4f + arcHeight;
             float angle = Mathf.Lerp(maxRotation, -maxRotation, t);
 
-            bool isSelected = card != null && card.isSelected;
+            isSelected = card != null && card.isSelected;
 
             Vector2 targetPos;
             Quaternion targetRot;

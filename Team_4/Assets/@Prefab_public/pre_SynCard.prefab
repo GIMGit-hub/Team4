@@ -148,4 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: promo_Syn
   cost: 0
-  effects: []
+  effects:
+  - target: 0
+    type: 3
+    value: 2
+    valueCount: 0
