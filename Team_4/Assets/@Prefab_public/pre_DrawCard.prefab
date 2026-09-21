@@ -146,9 +146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: promo
-  cost: 0
+  cardName: promo_call
+  cost: 1
   effects:
-  - type: 7
+  - target: 0
+    type: 7
     value: 2
     valueCount: 1

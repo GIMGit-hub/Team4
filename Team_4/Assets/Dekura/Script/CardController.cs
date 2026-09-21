@@ -1,10 +1,13 @@
 using DG.Tweening;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler
+public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler
 {
+    public CardInstance BoundInstance { get; private set; }
     public bool isSelected { get; private set; } = false;
     public bool isDraging { get; private set; } = false;
     public SynthesisSlot m_currentSlot { get; private set; } = null;
@@ -14,12 +17,14 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
     private Transform parent;
     private int siblingIndex;
     private Vector2 size;
+    private CardData thisCardData;
 
     private HandLayout m_handLayout;
+    private CardManager m_cardManager;
 
     private float tweenDuration = 0.15f;
 
-    public event System.Action<CardVisual> OnDragEnded;
+    public event System.Action<CardController> OnDragEnded;
 
     void Awake()
     {
@@ -27,7 +32,10 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         canvas = GetComponentInParent<Canvas>();
         size = rect.sizeDelta;
 
+        thisCardData = GetComponent<CardData>();
+
         m_handLayout = FindAnyObjectByType<HandLayout>();
+        m_cardManager = FindAnyObjectByType<CardManager>();
 
         parent = transform.parent;
         siblingIndex=transform.GetSiblingIndex();
@@ -40,30 +48,40 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         m_currentSlot = null;
         isDraging = true;
 
-        rect.DOKill();                          //dotween“®ì’†Ž~
+        rect.DOKill();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
 
-        rect.anchoredPosition += eventData.delta/canvas.scaleFactor;   //ƒ}ƒEƒXˆÚ“®—Ê/canvas‚Ì‘å‚«‚³
+        rect.anchoredPosition += eventData.delta/canvas.scaleFactor; 
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         isDraging = false;
 
+        bool isUseCard = RectTransformUtility.RectangleContainsScreenPoint(m_cardManager.hitColision, rect.position);
         SynthesisSlot slot = SynthesisSlot.FindSlot(rect.position);
-        if (slot != null) SnapToSlot(slot);
-        else ReturnToHand();
+
+
+        if      (slot != null)  SnapToSlot(slot);
+        else if (isUseCard)     UsingCard();
+        else                    ReturnToHand();
 
         OnDragEnded?.Invoke(this);
     }
 
+    private void UsingCard()
+    {
+        Debug.Log($"TryUse_Wating::{BoundInstance}");
+        if (!m_cardManager.UseCard(BoundInstance)) ReturnToHand();
+    }
+
     public void SnapToSlot(SynthesisSlot slot)
     {
-        Debug.Log($"SnapToSlotF{slot}");
+        Debug.Log($"SnapToSlotï¿½F{slot}");
         m_currentSlot = slot;
 
         transform.SetParent(slot.transform, worldPositionStays: true);
@@ -91,9 +109,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
         rect.DOSizeDelta(size, tweenDuration);
     }
 
-
-
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
@@ -107,4 +122,6 @@ public class CardVisual : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragH
 
         isSelected = false;
     }
+
+    public void Bind(CardInstance instance) => BoundInstance = instance;
 }

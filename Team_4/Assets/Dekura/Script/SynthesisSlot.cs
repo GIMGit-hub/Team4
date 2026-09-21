@@ -44,24 +44,23 @@ public class SynthesisSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHan
     public void TrySynthesis()
     {
         HandLayout handLayout = FindAnyObjectByType<HandLayout>();
-        GameObject[] card = allSlots.Select(slot => slot.havingCard).ToArray(); //"Linq"ほぼforeachのような動きで、一行でまとめられる
+        CardInstance[] card = allSlots.Select(slot => slot.havingCard.GetComponentInChildren<CardController>().BoundInstance).ToArray(); //"Linq"ほぼforeachのような動きで、一行でまとめられる
 
-        GameObject result = CardManager.Instance.Synthesis(card[0], card[1]);
+        CardInstance result = CardManager.Instance.Synthesis(card[0], card[1], new Vector2(800, 800));
         if (result == null)
         {
             foreach (var slot in allSlots)
             {
-                slot.havingCard.GetComponentInChildren<CardVisual>().ReturnToHand();
+                slot.havingCard.GetComponentInChildren<CardController>().ReturnToHand();
             }
-            return;
         }
-
-        foreach (var slot in allSlots)
+        else
         {
-            handLayout.RemoveCard(slot.havingCard);
-            slot.RemoveCard();
+            foreach (var slot in allSlots)
+            {
+                slot.RemoveCard();
+            }
         }
-        handLayout.AddCard(debugSynCard, new Vector2(800, 800));
     }
 
     public static SynthesisSlot FindSlot(Vector2 cardPosition)
