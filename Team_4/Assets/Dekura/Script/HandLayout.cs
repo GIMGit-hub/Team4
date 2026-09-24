@@ -34,10 +34,12 @@ public class HandLayout : MonoBehaviour
     private void Start()
     {
         handAreaPosition = handArea.localPosition;
+        CardManager.Instance.OnCardMoved -= HandCardMoved;
+        CardManager.Instance.OnCardMoved += HandCardMoved;
     }
 
-    private void OnEnable() => CardManager.Instance.OnCardMoved += HandCardMoved;
-    private void OnDisable() => CardManager.Instance.OnCardMoved -= HandCardMoved;
+    private void OnEnable()  { if (CardManager.Instance != null) CardManager.Instance.OnCardMoved += HandCardMoved; }
+    private void OnDisable() { if (CardManager.Instance != null) CardManager.Instance.OnCardMoved -= HandCardMoved; }
 
     private void Update()
     {

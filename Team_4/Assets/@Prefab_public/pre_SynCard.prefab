@@ -146,10 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  cardType: 1
   cardName: promo_Syn
   cost: 0
   effects:
   - target: 0
     type: 3
     value: 2
-    valueCount: 0
+    valueCount: 1
+  Ace: 0

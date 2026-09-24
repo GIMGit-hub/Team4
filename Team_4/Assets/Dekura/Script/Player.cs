@@ -1,5 +1,7 @@
 using NUnit.Framework.Internal;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +10,9 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
     private EffectManager effect;
 
-    public float nowHp { get; private set; }
-    public int nowCost { get; private set; }
+    private float nowHp = 0;
+    private float nowDp = 0;
+    private int nowCost = 0;
 
     [Header("最大/開始時ステータス")]
     [SerializeField] private float maxHp = 100f;
@@ -27,8 +30,24 @@ public class Player : MonoBehaviour
     [Header("debug用ウィンドウ")]
     [SerializeField] private TextMeshProUGUI debugWindow;
 
-    // private List<ここにバフobj> buffList = new ();
+    [System.Serializable]
+    private class Buff
+    {
+        public CardEffect.EffectType type;
+        public float value;
+        public int enableTurn;
+    }
+
+    private List<Buff> buffList = new();
     // private List<ここにバフobj> debuffList = new ();
+
+    //debug
+    private float attackResult = 0;
+    private int countResult = 1;
+    private string atTarget = null;
+
+    private void OnEnable()  { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed += UpdateUi; }
+    private void OnDisable() { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed -= UpdateUi; }
 
     private void Awake()
     {
@@ -49,34 +68,103 @@ public class Player : MonoBehaviour
         UpdateUi();
     }
 
+    private void Start()
+    {
+        CardManager.Instance.OnCardUsed -= UpdateUi;
+        CardManager.Instance.OnCardUsed += UpdateUi;
+    }
+
     private void UpdateUi()
     {
         debugWindow.text =
             $"HP  :: {nowHp} / {maxHp}\n" +
-            $"COST:: {nowCost} / {maxCost}";
+            $"DP  :: {nowDp}\n" +
+            $"COST:: {nowCost} / {maxCost}\n" +
+            $"\n" +
+            $"BUFF_ATTACK:: +{GetEffect(CardEffect.EffectType.AttackBuff)}%\n" +
+            $"BUFF_COUNT :: +{GetEffect(CardEffect.EffectType.CountBuff)}\n" +
+            $"BUFF_COST  :: +{GetEffect(CardEffect.EffectType.CostBuff)}\n" +
+            $"\n" +
+            $"ATTACKED:: To {atTarget} , {attackResult} × {countResult}\n" +
+            $"";
     }
 
+    //------------------------------playerのaction----------------------------//
 
-    //被弾処理
+    public void Attack(CardEffect.EffectTarget target, float value, int count)
+    {
+        switch (target)
+        {
+            case CardEffect.EffectTarget.Enemy:
+                atTarget = "Enemy";
+                break;
+            case CardEffect.EffectTarget.AllEnemy:
+                atTarget = "AllEnemy";
+                break;
+            default:
+                break;
+        }
+        attackResult = value + GetEffect(CardEffect.EffectType.AttackBuff);
+        countResult = count;
+    }
 
+    
+
+    public void DpHeal(float value)
+    {
+        nowDp += value;
+        effect.Playfade("heal");
+    }
     public void HpHeal(float value)
     {
         nowHp = Mathf.Min(nowHp + value, maxHp);
-        UpdateUi();
         effect.Playfade("heal");
     }
     public void CostHeal(int value)
     {
         nowCost = Mathf.Min(nowCost + value, maxCost);
-        UpdateUi();
     }
 
-    public bool CanUseCost(int cost) => nowCost >= cost;
+    public bool CanUseCost(int cost)
+    {
+        int useCost = cost - (int)GetEffect(CardEffect.EffectType.CostBuff);
+
+        Debug.Log($"CanUseCost...{useCost}");
+        return nowCost >= useCost;
+    }
     public void UseCost(int cost)
     {
-        nowCost -= cost;
-        UpdateUi();
+        nowCost -= cost - (int)GetEffect(CardEffect.EffectType.CostBuff);
     }
 
+    //--------------------------------------------n----------------------------//
+
+
+
+    //被弾処理
+
+    //バフの新規獲得
+    public void AddEffect(CardEffect.EffectType m_type, float m_value, int m_enableTurn)
+    {
+        buffList.Add(new Buff
+        {
+            type = m_type,
+            value = m_value,
+            enableTurn = m_enableTurn,
+        });
+    }
+    public float GetEffect(CardEffect.EffectType m_type)
+    {
+        float resultValue = 0;
+
+        foreach(var buff in buffList)
+        {
+            if (buff.type != m_type) continue;
+
+            resultValue += buff.value;
+        }
+
+        return resultValue;
+    }
     //所持バフのターン減少(turnMGからevent発火)
 }
