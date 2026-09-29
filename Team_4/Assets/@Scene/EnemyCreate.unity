@@ -431,7 +431,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   enemyDataList:
   - {fileID: 11400000, guid: f829260daf753324886dde3163f89314, type: 2}
-  spawnPoint: {fileID: 2146396699}
+  spawnPoints:
+  - {fileID: 2146396699}
+  - {fileID: 2091488779}
+  - {fileID: 1250091226}
 --- !u!1 &573845043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Example
   hp: 100
+  damage: 10
 --- !u!114 &1452808618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1393,6 +1397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Example
   hp: 100
+  damage: 10
 --- !u!1 &2091488778
 GameObject:
   m_ObjectHideFlags: 0
