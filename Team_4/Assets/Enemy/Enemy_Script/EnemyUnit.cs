@@ -1,40 +1,53 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyUnit : MonoBehaviour
 {
+    [SerializeField] private Button selectButton;
+
     private int hp;
     private int damage;
     private Action<int> dealDamageToTarget;
-    
-    private bool Isdead = false;
+    private EnemyController controller;
+    private EnemyManager_Example manager;
+    private bool isDead = false;
 
-    // Controllerから呼ばれる。自分の行動関数をControllerに渡す
-    public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc)
+    public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc, EnemyManager_Example manager)
     {
         hp = data.maxHp;
         damage = data.damage;
         dealDamageToTarget = dealDamageFunc;
-        
-        controller.Init(Attack); // Attackという関数そのものをcontrollerに渡す
+        this.controller = controller;
+        this.manager = manager;
+
+        controller.Init(Attack);
+
+        if (selectButton != null)
+        {
+            selectButton.onClick.AddListener(() => manager.OnSelectTarget(gameObject));
+        }
     }
 
-    // この敵の行動
     private void Attack()
     {
+        if (isDead) return;
+
         dealDamageToTarget?.Invoke(damage);
         Debug.Log($"{name}の攻撃！ {damage}ダメージ");
     }
 
-    // 自分がダメージを受けたときの処理
     public void TakeDamage(int amount)
     {
+        if (isDead) return;
+
         hp -= amount;
+        Debug.Log($"{name}は{amount}ダメージ！ 残りHP:{hp}"); 
         if (hp <= 0)
         {
-            Isdead = true;
-            EnemyController.Instance.EnemyDead(gameObject);
+            isDead = true;
+            controller.EnemyDead(gameObject);
+            Destroy(gameObject);
         }
     }
-
 }
