@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 845921e994cd31b46bcbb17895347262, type: 3}
+  m_Script: {fileID: 11500000, guid: a76684a4df616814891ebbb05f641e4b, type: 3}
   m_Name: Ver2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: ver2
-  prefab: {fileID: 841498950651061586, guid: fdb7f54601b64a24489f6c88565af812, type: 3}
-  maxHp: 80
-  damage: 8
+  enemyName: 
+  prefab: {fileID: 0}
+  maxHp: 0
+  damage: 0

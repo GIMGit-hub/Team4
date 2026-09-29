@@ -4,10 +4,10 @@ public class Player_Example : MonoBehaviour
 {
     [SerializeField] private int hp = 100;
 
-    // Enemy‘¤‚É‚Í‚±‚ÌŠÖ”‚»‚Ì‚à‚Ì‚ğ“n‚·
+    // Enemyå´ã«ã¯ã“ã®é–¢æ•°ãã®ã‚‚ã®ã‚’æ¸¡ã™
     public void TakeDamage(int amount)
     {
         hp -= amount;
-        Debug.Log($"ƒvƒŒƒCƒ„[‚Í{amount}ƒ_ƒ[ƒWI c‚èHP:{hp}");
+        Debug.Log($"ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯{amount}ãƒ€ãƒ¡ãƒ¼ã‚¸ï¼ æ®‹ã‚ŠHP:{hp}");
     }
 }

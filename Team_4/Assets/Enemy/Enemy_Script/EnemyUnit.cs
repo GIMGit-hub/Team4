@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
@@ -7,33 +6,35 @@ public class EnemyUnit : MonoBehaviour
     private int hp;
     private int damage;
     private Action<int> dealDamageToTarget;
-    private bool isdead = false;
+    
+    private bool Isdead = false;
 
-
-    // Controller‚©‚çŒÄ‚Î‚ê‚éB©•ª‚Ìs“®ŠÖ”‚ğController‚É“n‚·
+    // Controllerã‹ã‚‰å‘¼ã°ã‚Œã‚‹ã€‚è‡ªåˆ†ã®è¡Œå‹•é–¢æ•°ã‚’Controllerã«æ¸¡ã™
     public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc)
     {
         hp = data.maxHp;
         damage = data.damage;
         dealDamageToTarget = dealDamageFunc;
-
-        controller.Init(Attack); // Attack‚Æ‚¢‚¤ŠÖ”‚»‚Ì‚à‚Ì‚ğcontroller‚É“n‚·
+        
+        controller.Init(Attack); // Attackã¨ã„ã†é–¢æ•°ãã®ã‚‚ã®ã‚’controllerã«æ¸¡ã™
     }
 
-    // ‚±‚Ì“G‚Ìs“®
+    // ã“ã®æ•µã®è¡Œå‹•
     private void Attack()
     {
         dealDamageToTarget?.Invoke(damage);
-        Debug.Log($"{name}‚ÌUŒ‚I {damage}ƒ_ƒ[ƒW");
+        Debug.Log($"{name}ã®æ”»æ’ƒï¼ {damage}ãƒ€ãƒ¡ãƒ¼ã‚¸");
     }
 
-    // ©•ª‚ªƒ_ƒ[ƒW‚ğó‚¯‚½‚Æ‚«‚Ìˆ—
+    // è‡ªåˆ†ãŒãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã¨ãã®å‡¦ç†
     public void TakeDamage(int amount)
     {
         hp -= amount;
         if (hp <= 0)
         {
+            Isdead = true;
             EnemyController.Instance.EnemyDead(gameObject);
         }
     }
+
 }
