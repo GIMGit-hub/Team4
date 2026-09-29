@@ -394,7 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 361771233}
-  - component: {fileID: 361771232}
+  - component: {fileID: 361771234}
   m_Layer: 0
   m_Name: EnemyController
   m_TagString: Untagged
@@ -402,21 +402,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &361771232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361771231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff1fc8ba321e23542aac773650c93c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  enemyDataList:
-  - {fileID: 11400000, guid: 06e5df53a389c344387b2f843cfc7b92, type: 2}
-  spawnPoint: {fileID: 2146396699}
 --- !u!4 &361771233
 Transform:
   m_ObjectHideFlags: 0
@@ -432,6 +417,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &361771234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361771231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c3643f4a045664ca24bce80ac4d7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  enemyDataList:
+  - {fileID: 11400000, guid: f829260daf753324886dde3163f89314, type: 2}
+  spawnPoint: {fileID: 2146396699}
 --- !u!1 &573845043
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,8 +785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 522ebf84595f0d140beb6ce4fd789b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager_Example
-  controller: {fileID: 361771232}
-  player: {fileID: 1452808617}
+  controller: {fileID: 361771234}
+  player: {fileID: 1452808621}
 --- !u!4 &1109052782
 Transform:
   m_ObjectHideFlags: 0
@@ -1302,6 +1302,7 @@ GameObject:
   - component: {fileID: 1452808619}
   - component: {fileID: 1452808618}
   - component: {fileID: 1452808617}
+  - component: {fileID: 1452808621}
   m_Layer: 5
   m_Name: player
   m_TagString: Untagged
@@ -1379,6 +1380,19 @@ RectTransform:
   m_AnchoredPosition: {x: 634, y: -446.19742}
   m_SizeDelta: {x: 652, y: 187.6052}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1452808621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452808616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0cfab3f5c0dfd48a00ef026d3beb2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_Example
+  hp: 100
 --- !u!1 &2091488778
 GameObject:
   m_ObjectHideFlags: 0
