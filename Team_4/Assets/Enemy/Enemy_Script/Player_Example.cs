@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player_Example : MonoBehaviour
 {
     [SerializeField] private int hp = 100;
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage = 1000;
 
     public void Attack(EnemyController controller, GameObject target)
     {

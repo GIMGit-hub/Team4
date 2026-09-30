@@ -9,13 +9,12 @@ public class EnemyController : MonoBehaviour
 
     private const int MaxSimultaneous = 3;
 
-    [Header("全敵データ")]
-    [SerializeField] private EnemyData[] enemyDataList;
-
     [SerializeField] private Transform[] spawnPoints;
 
     private readonly List<Action> receivedFunctions = new List<Action>();
     private List<GameObject> SpawndEnemy = new List<GameObject>();
+
+    private Action onFloorClear; // フロアの敵を全滅させたときに呼ぶ
 
     private void Awake()
     {
@@ -32,25 +31,52 @@ public class EnemyController : MonoBehaviour
         receivedFunctions.Add(func);
     }
 
-    public void SpawnEnemy(int index, Action<int> dealDamageToTarget, EnemyManager_Example manager)
+    // 変更: フロアのデータをまとめて受け取り、その敵を全部(上限まで)生成する
+    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, EnemyManager_Example manager, Action onClear)
     {
-        if (SpawndEnemy.Count >= MaxSimultaneous)
+        Debug.Log($"=== SpawnFloor 呼び出し: ステージ{floorData.stage}-{floorData.floor} 敵数:{floorData.enemy.Count} ===");
+
+        // リセット(前のフロアの残りが無いように)
+        foreach (GameObject old in SpawndEnemy.ToList())
         {
-            Debug.Log("これ以上生成できません(最大数に達しています)");
-            return;
+            if (old != null) Destroy(old);
         }
+        SpawndEnemy.Clear();
+        receivedFunctions.Clear();
 
-        if (index < 0 || index >= enemyDataList.Length)
+        onFloorClear = onClear;
+
+        int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
+        for (int i = 0; i < count; i++)
         {
-            Debug.LogWarning("その番号の敵データがありません");
-            return;
+            SpawnOne(floorData.enemy[i], dealDamageToTarget, manager);
         }
+    }
 
-        EnemyData data = enemyDataList[index];
-
-        if (data.prefab == null)
+    // EnemyUnitから呼ばれる: 1つの行動を実行する共通ロジック
+    public void ExecuteAction(EnemyActionData action, EnemyUnit self, Action<int> dealDamageToTarget)
+    {
+        switch (action.effectType)
         {
-            Debug.LogWarning($"{data.enemyName}にプレハブが設定されていません");
+            case ActionEffectType.Damage:
+                int dmg = Mathf.RoundToInt(action.value * self.GetDamageDealtRate());
+                dealDamageToTarget?.Invoke(dmg);
+                Debug.Log($"{self.name}の{action.actionName}！ {dmg}ダメージ");
+                self.OnAfterAttack(); // 攻撃後の特性(3%上昇など)を適用
+                break;
+
+            case ActionEffectType.SelfDamageDealtBuff:
+                self.AddDamageDealtBuff(action.value / 100f, action.duration);
+                Debug.Log($"{self.name}は{action.actionName}！ 次のダメージ+{action.value}%");
+                break;
+        }
+    }
+
+    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, EnemyManager_Example manager)
+    {
+        if (data == null || data.prefab == null)
+        {
+            Debug.LogWarning("敵データまたはプレハブが設定されていません");
             return;
         }
 
@@ -77,92 +103,63 @@ public class EnemyController : MonoBehaviour
         }
 
         unit.Init(data, this, dealDamageToTarget, manager);
-
         SpawndEnemy.Add(go);
+
+        Debug.Log($"{data.enemyName}を{point.name}に生成(現在の生存数:{SpawndEnemy.Count})");
     }
 
-    // 空いているスポーンポイントを優先して選ぶ
     private Transform GetFreeSpawnPoint()
     {
         List<Transform> free = new List<Transform>();
         foreach (Transform p in spawnPoints)
         {
-            bool used = false;
-            foreach (GameObject enemy in SpawndEnemy)
-            {
-                if (enemy != null && enemy.transform.parent == p)
-                {
-                    used = true;
-                    break;
-                }
-            }
+            bool used = SpawndEnemy.Any(e => e != null && e.transform.parent == p);
             if (!used) free.Add(p);
         }
-
         if (free.Count == 0) return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
         return free[UnityEngine.Random.Range(0, free.Count)];
     }
 
     public void RunAllActions()
     {
+        Debug.Log($"=== RunAllActions 呼び出し(登録数:{receivedFunctions.Count}) ===");
         List<Action> snapshot = new List<Action>(receivedFunctions);
-        foreach (Action func in snapshot)
-        {
-            func?.Invoke();
-        }
+        foreach (Action func in snapshot) func?.Invoke();
     }
 
-    public int DebugGetDataCount()
-    {
-        return enemyDataList != null ? enemyDataList.Length : -1;
-    }
-
-    // プレイヤーの攻撃を受け取り、指定された敵(GameObject)にダメージを与える
     public void PlayerAttack(int damage, GameObject target)
     {
+        Debug.Log($"=== PlayerAttack 呼び出し(target={target?.name}, damage={damage}) ===");
+
         if (target == null || !SpawndEnemy.Contains(target))
         {
             Debug.Log("その敵はもういません");
             return;
         }
 
-       
         EnemyUnit unit = target.GetComponent<EnemyUnit>();
-        //unit?.TakeDamage(damage);
+        if (unit == null) return;
 
         Debug.Log($"プレイヤーの攻撃！ {target.name}に{damage}ダメージ");
         unit.TakeDamage(damage);
-
     }
 
-    public int GetAliveEnemyCount()
-    {
-        return SpawndEnemy.Count;
-    }
+    public int GetAliveEnemyCount() => SpawndEnemy.Count;
 
     public void EnemyDead(GameObject obj)
     {
-        foreach (var func in SpawndEnemy.ToList())
+        if (SpawndEnemy.Remove(obj))
         {
-            if (func == obj)
+            Debug.LogWarning($"{obj.name}を倒した(残り生存数:{SpawndEnemy.Count})");
+
+            EnemyUnit unit = obj.GetComponent<EnemyUnit>();
+            receivedFunctions.RemoveAll(a => a.Target == unit);
+
+            if (SpawndEnemy.Count == 0)
             {
-                Debug.LogWarning($"{obj}殺した、お前が殺した");
-                SpawndEnemy.Remove(func);
-
-                EnemyUnit unit = obj.GetComponent<EnemyUnit>();
-                receivedFunctions.RemoveAll(a => a.Target == unit);
-
-                if (SpawndEnemy.Count == 0)
-                {
-                    EnemyAnnihilation();
-                }
-                break;
+                Debug.Log("フロアの敵を全滅させました");
+                onFloorClear?.Invoke();
             }
         }
-    }
-
-    public void EnemyAnnihilation()
-    {
-
     }
 }
