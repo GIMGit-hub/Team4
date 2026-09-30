@@ -205,7 +205,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1109052781}
         m_TargetAssemblyTypeName: EnemyManager_Example, Assembly-CSharp
         m_MethodName: OnClickCreate
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -467,7 +467,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 183736244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1109052781}
+        m_TargetAssemblyTypeName: EnemyManager_Example, Assembly-CSharp
+        m_MethodName: OnClickSelectStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &183736244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,8 +701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c3643f4a045664ca24bce80ac4d7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  enemyDataList:
-  - {fileID: 11400000, guid: f829260daf753324886dde3163f89314, type: 2}
   spawnPoints:
   - {fileID: 2146396699}
   - {fileID: 2091488779}
@@ -777,7 +787,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 456900183}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1109052781}
+        m_TargetAssemblyTypeName: EnemyManager_Example, Assembly-CSharp
+        m_MethodName: OnClickSelectStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &456900183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,7 +1136,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 778201407}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1109052781}
+        m_TargetAssemblyTypeName: EnemyManager_Example, Assembly-CSharp
+        m_MethodName: OnClickSelectStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &778201407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,6 +1601,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager_Example
   controller: {fileID: 361771234}
   player: {fileID: 1452808621}
+  allFloors:
+  - {fileID: 11400000, guid: 59560342fd706a2449518622a00030f0, type: 2}
+  - {fileID: 11400000, guid: b8cb6fd0316ff4a4182c90aeffa4a29d, type: 2}
+  - {fileID: 11400000, guid: 52b35efd12202c04d911af33c6ef8f45, type: 2}
+  - {fileID: 11400000, guid: d0b31a756bfba8c4e8e5285d76689365, type: 2}
+  - {fileID: 11400000, guid: d20aff1ef8f631d418ed85dfca8db9bd, type: 2}
+  currentStage: 1
+  currentFloor: 1
 --- !u!4 &1109052782
 Transform:
   m_ObjectHideFlags: 0
@@ -2115,7 +2157,6 @@ GameObject:
   - component: {fileID: 1452808620}
   - component: {fileID: 1452808619}
   - component: {fileID: 1452808618}
-  - component: {fileID: 1452808617}
   - component: {fileID: 1452808621}
   m_Layer: 5
   m_Name: player
@@ -2124,20 +2165,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1452808617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452808616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6ebbbe78caeda04280999032fda2f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player_Example
-  hp: 100
-  damage: 10
 --- !u!114 &1452808618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2208,7 +2235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Example
   hp: 100
-  damage: 10
+  damage: 50
 --- !u!1 &2091488778
 GameObject:
   m_ObjectHideFlags: 0

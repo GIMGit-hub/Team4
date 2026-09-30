@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fe439b4de7ce643a2a5f6bde3ccfa0, type: 3}
+  m_Name: Stage3_1
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_StageData
+  stage: 3
+  floor: 1
+  enemy:
+  - {fileID: 11400000, guid: f406a0b46911b174ba5c425fb9a2ddcf, type: 2}

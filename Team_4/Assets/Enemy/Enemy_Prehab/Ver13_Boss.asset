@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a76684a4df616814891ebbb05f641e4b, type: 3}
+  m_Name: Ver13_Boss
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyName: "\u52C7\u6562\u306A\u30ED\u30DC\u30C3\u30C8\u30DC\u30B9\u5175"
+  prefab: {fileID: 4404235476414510029, guid: a5535e4d44495764e8f1ca8b514882e7, type: 3}
+  maxHp: 9000
+  actions:
+  - {fileID: 11400000, guid: 7eed7ea3df51b3c4584754270bed74e9, type: 2}
+  damageDealtGainPerAttack: 0
