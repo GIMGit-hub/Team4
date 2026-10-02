@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
-using static Deck;
 
 public enum CardZone
 {
@@ -24,12 +22,26 @@ public class CardInstance
     public string CardName => template.GetComponent<CardData>().cardName;
 }
 
+[System.Serializable]
+public class SynthesisList
+{
+    [Header("合成元")]
+    public CardData card_A;
+    public CardData card_B;
+    [Header("合成結果")]
+    public GameObject resultCard;
+}
+
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance { get; private set; }
 
     [Header("全部のカード(コンボカードもここにいれる)")]
-    [SerializeField] private List<GameObject> allCardList = new();
+    [SerializeField] private List<GameObject> allCardList = new();   
+
+    [Header("合成のリスト")]
+    [SerializeField] private List<SynthesisList> synthesisList = new();
+
 
     [Header("カード使用判定")]
     [SerializeField] public RectTransform hitColision;
@@ -148,6 +160,20 @@ public class CardManager : MonoBehaviour
         return true;
     }
 
+    public void ConvertCost(CardInstance instance)
+    {
+        //カードの移動、合成カードは削除
+        if (instance.template.GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
+            CardMove(instance, CardZone.Discard);
+        else
+            GetZoneList(instance.zone).Remove(instance);
+
+        //カード使用しましたよ～_OnCardUsed発火
+        OnCardUsed?.Invoke();
+        StartCoroutine(CostHeal(1));
+    }
+
+
     private IEnumerator CardActivation()
     {
         //queが残り無ければ終了
@@ -193,7 +219,7 @@ public class CardManager : MonoBehaviour
     {
         if (GetZoneList(instance.zone).Contains(instance) != false)
             GetZoneList(instance.zone).Remove(instance);
-        GetZoneList(zone).Add(instance);
+            GetZoneList(zone).Add(instance);
         instance.zone = zone;
 
         OnCardMoved?.Invoke(instance, zone);

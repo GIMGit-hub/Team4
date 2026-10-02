@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler
+public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler,IPointerClickHandler
 {
     public CardInstance BoundInstance { get; private set; }
     public bool isSelected { get; private set; } = false;
@@ -71,6 +71,13 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         else                    ReturnToHand();
 
         OnDragEnded?.Invoke(this);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Right) return;
+
+        m_cardManager.ConvertCost(BoundInstance);
     }
 
     private void UsingCard()
