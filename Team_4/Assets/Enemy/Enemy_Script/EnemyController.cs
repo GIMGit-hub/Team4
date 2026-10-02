@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class EnemyController : MonoBehaviour
     private readonly List<Action> receivedFunctions = new List<Action>();
     private List<GameObject> SpawndEnemy = new List<GameObject>();
 
-    private Action onFloorClear; // フロアの敵を全滅させたときに呼ぶ
+    private Action onFloorClear;
 
     private void Awake()
     {
@@ -31,12 +32,11 @@ public class EnemyController : MonoBehaviour
         receivedFunctions.Add(func);
     }
 
-    // 変更: フロアのデータをまとめて受け取り、その敵を全部(上限まで)生成する
-    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, EnemyManager_Example manager, Action onClear)
+    //dealDamageToTargetに加えてplayer本体も受け取る
+    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager, Action onClear)
     {
         Debug.Log($"=== SpawnFloor 呼び出し: ステージ{floorData.stage}-{floorData.floor} 敵数:{floorData.enemy.Count} ===");
 
-        // リセット(前のフロアの残りが無いように)
         foreach (GameObject old in SpawndEnemy.ToList())
         {
             if (old != null) Destroy(old);
@@ -49,30 +49,56 @@ public class EnemyController : MonoBehaviour
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
         for (int i = 0; i < count; i++)
         {
-            SpawnOne(floorData.enemy[i], dealDamageToTarget, manager);
+            SpawnOne(floorData.enemy[i], dealDamageToTarget, player, manager);
         }
     }
 
-    // EnemyUnitから呼ばれる: 1つの行動を実行する共通ロジック
-    public void ExecuteAction(EnemyActionData action, EnemyUnit self, Action<int> dealDamageToTarget)
+    //playerを受け取り、TargetDamageDealtDebuffに対応
+    public IEnumerator ExecuteAction(EnemyActionData action, EnemyUnit self, Action<int> dealDamageToTarget, Player_Example player)
     {
-        switch (action.effectType)
-        {
-            case ActionEffectType.Damage:
-                int dmg = Mathf.RoundToInt(action.value * self.GetDamageDealtRate());
-                dealDamageToTarget?.Invoke(dmg);
-                Debug.Log($"{self.name}の{action.actionName}！ {dmg}ダメージ");
-                self.OnAfterAttack(); // 攻撃後の特性(3%上昇など)を適用
-                break;
+        Debug.Log($"{self.name}の{action.actionName}");
 
-            case ActionEffectType.SelfDamageDealtBuff:
-                self.AddDamageDealtBuff(action.value / 100f, action.duration);
-                Debug.Log($"{self.name}は{action.actionName}！ 次のダメージ+{action.value}%");
-                break;
+        foreach (ActionEffect effect in action.effects)
+        {
+            switch (effect.effectType)
+            {
+                case ActionEffectType.Damage:
+                    int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate());
+                    dealDamageToTarget?.Invoke(dmg);
+                    Debug.Log($"  → {dmg}ダメージ");
+                    self.OnAfterAttack();
+                    break;
+
+                case ActionEffectType.SelfDamageDealtBuff:
+                    self.AddDamageDealtBuff(effect.value / 100f, effect.duration);
+                    Debug.Log($"  → 次のダメージ+{effect.value}%");
+                    break;
+
+                case ActionEffectType.SelfDamageTakenBuff:
+                    self.AddDamageTakenBuff(effect.value / 100f, effect.duration);
+                    Debug.Log($"  → 被ダメージ-{effect.value}%");
+                    break;
+
+                case ActionEffectType.TargetDamageDealtDebuff:
+                    player.ApplyDamageDealtDebuff(effect.value, effect.duration);
+                    Debug.Log($"  → 相手の与ダメ-{effect.value}%");
+                    break;
+
+                case ActionEffectType.Heal:
+                    self.Heal(Mathf.RoundToInt(effect.value));
+                    Debug.Log($"  → {effect.value}回復");
+                    break;
+
+                case ActionEffectType.DoNothing:
+                    break;
+            }
+
+            yield return new WaitForSeconds(1);
         }
     }
 
-    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, EnemyManager_Example manager)
+    //playerを受け取り、Initとターン実行に渡す
+    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager)
     {
         if (data == null || data.prefab == null)
         {
@@ -102,7 +128,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        unit.Init(data, this, dealDamageToTarget, manager);
+        unit.Init(data, this, dealDamageToTarget, player, manager);
         SpawndEnemy.Add(go);
 
         Debug.Log($"{data.enemyName}を{point.name}に生成(現在の生存数:{SpawndEnemy.Count})");

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a76684a4df616814891ebbb05f641e4b, type: 3}
-  m_Name: Ver3_Sol
+  m_Name: Ver5_Sol
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: "\u5805\u5B9F\u306E\u30ED\u30DC\u30C3\u30C8\u5175"
+  enemyName: "\u91CE\u86EE\u306A\u30ED\u30DC\u30C3\u30C8\u5175"
   prefab: {fileID: 6913625181649624364, guid: 512c5966bdc017f49aa0b6ae228c6bf0, type: 3}
-  maxHp: 480
+  maxHp: 600
   actions:
-  - {fileID: 11400000, guid: 4b8a3a9fe2f6b2a47a2ea4557080e4a5, type: 2}
-  - {fileID: 11400000, guid: a591a00eb62d7e7488fcda524121a31e, type: 2}
-  - {fileID: 11400000, guid: fc8961d1b95b3e8458de91a71eca09dc, type: 2}
+  - {fileID: 11400000, guid: 113ff75861c6fe64bad6a7fcd0b971f3, type: 2}
+  - {fileID: 11400000, guid: e485ed032cc59774f938d2d0767d9e95, type: 2}
   damageDealtGainPerAttack: 0
-  damageTakenReductionPerAttack: 3
+  damageTakenReductionPerAttack: 0
+  battleStartSelfDamageDealtBuffPercent: 30

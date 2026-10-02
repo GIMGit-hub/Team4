@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fe439b4de7ce643a2a5f6bde3ccfa0, type: 3}
-  m_Name: Stage_1_1
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy_StageData
-  stage: 1
-  floor: 1
-  enemy:
-  - {fileID: 11400000, guid: 3173698dfc4beac44ac805c1823027c8, type: 2}
+  m_Script: {fileID: 11500000, guid: 041ff419c99259746b2dab895efbc8eb, type: 3}
+  m_Name: Action_Punch
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyActionData
+  actionName: "\u6BB4\u308A"
+  effects:
+  - effectType: 0
+    value: 8
+    duration: 0

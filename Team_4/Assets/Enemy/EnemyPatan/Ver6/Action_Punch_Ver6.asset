@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 041ff419c99259746b2dab895efbc8eb, type: 3}
-  m_Name: Action_Punch
+  m_Name: Action_Punch_Ver6
   m_EditorClassIdentifier: Assembly-CSharp::EnemyActionData
-  actionName: "\u6BB4\u308A"
-  effectType: 0
-  value: 8
-  duration: 0
+  actionName: "\u8EE2\u304C\u308B"
+  effects:
+  - effectType: 0
+    value: 10
+    duration: 0
+  - effectType: 2
+    value: 10
+    duration: 1

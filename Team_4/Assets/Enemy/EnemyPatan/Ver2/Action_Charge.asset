@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Action_Charge
   m_EditorClassIdentifier: Assembly-CSharp::EnemyActionData
   actionName: "\u529B\u3092\u305F\u3081\u308B"
-  effectType: 1
-  value: 8
-  duration: 1
+  effects:
+  - effectType: 2
+    value: 8
+    duration: 1

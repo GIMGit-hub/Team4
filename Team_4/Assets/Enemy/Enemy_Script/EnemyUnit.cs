@@ -11,6 +11,7 @@ public class EnemyUnit : MonoBehaviour
     private int hp;
     private int actionIndex = 0;
     private Action<int> dealDamageToTarget;
+    private Player_Example player;
     private EnemyController controller;
     private EnemyManager_Example manager;
     private bool isDead = false;
@@ -18,12 +19,17 @@ public class EnemyUnit : MonoBehaviour
     private float damageDealtBuff = 0f; // 一時的な倍率上乗せ(力を溜めるなど)
     private int buffRemainingTurns = 0;
     private float angerMultiplier = 1f; // 恒久的な倍率(攻撃するたび上昇)
+    private float damageTakenBuff = 0f;
+    private int damageTakenBuffTurns = 0;
+    private float defenseMultiplier = 1f; //攻撃するたび被ダメが減る(Ver3用)の恒久倍率
 
-    public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc, EnemyManager_Example manager)
+
+    public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc,Player_Example player, EnemyManager_Example manager)
     {
         this.data = data;
         hp = data.maxHp;
         dealDamageToTarget = dealDamageFunc;
+        this.player = player;
         this.controller = controller;
         this.manager = manager;
 
@@ -32,6 +38,20 @@ public class EnemyUnit : MonoBehaviour
         if (selectButton != null)
         {
             selectButton.onClick.AddListener(() => manager.OnSelectTarget(gameObject));
+        }
+
+        //戦闘開始時に一度だけ発動する効果
+        if (data.battleStartSelfDamageDealtBuffPercent > 0)
+        {
+            AddDamageDealtBuff(data.battleStartSelfDamageDealtBuffPercent / 100f, 999); // 999=実質ずっと効く
+            Debug.Log($"{name}は戦闘開始時に自分の与ダメが{data.battleStartSelfDamageDealtBuffPercent}%上昇！");
+        }
+
+        //Ver6用
+        if (data.battleStartSelfDamageTakenBuffPercent > 0)
+        {
+            AddDamageTakenBuff(data.battleStartSelfDamageTakenBuffPercent / 100f, 999);
+            Debug.Log($"{name}は戦闘開始時に自分の被ダメが{data.battleStartSelfDamageTakenBuffPercent}%減少！");
         }
     }
 
@@ -43,7 +63,7 @@ public class EnemyUnit : MonoBehaviour
         EnemyActionData action = data.actions[actionIndex];
         actionIndex = (actionIndex + 1) % data.actions.Count;
 
-        controller.ExecuteAction(action, this, dealDamageToTarget);
+        StartCoroutine(controller.ExecuteAction(action, this, dealDamageToTarget,player));
 
         TickDownBuff();
     }
@@ -63,6 +83,21 @@ public class EnemyUnit : MonoBehaviour
         buffRemainingTurns = duration;
     }
 
+    //「硬くなる」などが呼ぶ
+    public void AddDamageTakenBuff(float rate, int duration)
+    {
+        damageTakenBuff += rate;
+        damageTakenBuffTurns = duration;
+    }
+
+    //回復
+    public void Heal(int amount)
+    {
+        hp += amount;
+        if (hp > data.maxHp) hp = data.maxHp;
+        Debug.Log($"{name}の残りHP:{hp}(回復後)");
+    }
+
     // 攻撃した直後、固有の特性(3%上昇など)を適用
     public void OnAfterAttack()
     {
@@ -80,14 +115,32 @@ public class EnemyUnit : MonoBehaviour
             buffRemainingTurns--;
             if (buffRemainingTurns <= 0) damageDealtBuff = 0f;
         }
+
+        if (damageTakenBuffTurns > 0)
+        {
+            damageTakenBuffTurns--;
+            if (damageTakenBuffTurns <= 0) damageTakenBuff = 0f;
+        }
     }
 
     public void TakeDamage(int amount)
     {
         if (isDead) return;
 
-        hp -= amount;
-        Debug.Log($"{name}は{amount}ダメージ！ 残りHP:{hp}");
+        float reduceRate = defenseMultiplier;
+        if (damageTakenBuffTurns > 0) reduceRate -= damageTakenBuff;
+
+        int finalAmount = Mathf.Max(0, Mathf.RoundToInt(amount * reduceRate));
+        hp -= finalAmount;
+        Debug.Log($"{name}は{finalAmount}ダメージ！ 残りHP:{hp}");
+
+        //攻撃を受けるたび、Ver3の恒久軽減を適用
+        if (data.damageTakenReductionPerAttack > 0)
+        {
+            defenseMultiplier *= 1f - data.damageTakenReductionPerAttack / 100f;
+            //Ver3デバッグ用
+            //Debug.Log($"{name}は被ダメージが{data.damageTakenReductionPerAttack}%減少！ 軽減倍率:x{defenseMultiplier:F4}(四捨五入前の実際の値)");
+        }
 
         if (hp <= 0)
         {
