@@ -122,7 +122,7 @@ public class HandLayout : MonoBehaviour
 
             rect.DOLocalMove(targetPos, tweenDuration);
             rect.DOLocalRotateQuaternion(targetRot, tweenDuration);
-            rect.SetSiblingIndex(isSelected ? cards.Count - 1 : i);
+            rect.SetSiblingIndex(isSelected ? cards.Count : i);
         }
 
         if(isSelecting)

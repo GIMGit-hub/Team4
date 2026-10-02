@@ -1,7 +1,5 @@
-using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +8,9 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
     private EffectManager effect;
 
-    private float nowHp = 0;
-    private float nowDp = 0;
-    private int nowCost = 0;
+    public float nowHp { get; private set; } = 0;
+    public float nowDp { get; private set; } = 0;
+    public int nowCost { get; private set; } = 0;
 
     [Header("最大/開始時ステータス")]
     [SerializeField] private float maxHp = 100f;
@@ -137,9 +135,7 @@ public class Player : MonoBehaviour
         nowCost -= cost - (int)GetEffect(CardEffect.EffectType.CostBuff);
     }
 
-    //--------------------------------------------n----------------------------//
-
-
+    //-------------------------------------------------------------------------//
 
     //被弾処理
 
