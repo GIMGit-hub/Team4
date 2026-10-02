@@ -38,7 +38,7 @@ public class EnemyManager_Example : MonoBehaviour
         }
 
         Debug.Log($"=== ステージ{currentStage}-{currentFloor} 開始 ===");
-        controller.SpawnFloor(data, player.TakeDamage, this, OnFloorClear);
+        controller.SpawnFloor(data, player.TakeDamage,player, this, OnFloorClear);
     }
 
     // フロアクリア時に呼ばれる(Controllerから)
