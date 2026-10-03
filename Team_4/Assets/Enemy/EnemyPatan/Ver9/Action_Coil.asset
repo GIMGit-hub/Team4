@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 041ff419c99259746b2dab895efbc8eb, type: 3}
-  m_Name: Action_NoAction
+  m_Name: Action_Coil
   m_EditorClassIdentifier: Assembly-CSharp::EnemyActionData
-  actionName: "\u4F55\u3082\u3057\u306A\u3044"
+  actionName: "\u7D61\u307F\u3064\u304F"
   effects:
-  - effectType: 6
-    value: 0
-    duration: 0
-    hitCount: 1
+  - effectType: 4
+    value: 30
+    duration: 2

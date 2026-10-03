@@ -16,5 +16,18 @@ MonoBehaviour:
   prefab: {fileID: 4404235476414510029, guid: a5535e4d44495764e8f1ca8b514882e7, type: 3}
   maxHp: 9000
   actions:
-  - {fileID: 11400000, guid: 7eed7ea3df51b3c4584754270bed74e9, type: 2}
+  - {fileID: 11400000, guid: 0af7630c55b245a4ea49a4b87bb6b8df, type: 2}
+  - {fileID: 11400000, guid: fc8961d1b95b3e8458de91a71eca09dc, type: 2}
+  - {fileID: 11400000, guid: 0f907affe60b8ad47b9cc9a3b77764c7, type: 2}
+  - {fileID: 11400000, guid: c3bb2a401f44b294390191d9729dd8a3, type: 2}
   damageDealtGainPerAttack: 0
+  damageTakenReductionPerAttack: 0
+  damageDealtBonusPerAliveEnemyPercent: 0
+  damageDealtGainPerHitTaken: 0
+  damageDealtGainPerHitTakenCap: 0
+  battleStartSelfDamageDealtBuffPercent: 0
+  battleStartSelfDamageTakenBuffPercent: 0
+  turnStartTargetDamageDealtDebuffPercent: 0
+  turnStartHeal: 0
+  turnStartSelfDamageDealtBuffPercent: 50
+  turnStartSelfBuffMaxTurns: 5
