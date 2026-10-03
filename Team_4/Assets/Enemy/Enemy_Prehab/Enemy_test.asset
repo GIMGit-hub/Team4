@@ -10,19 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a76684a4df616814891ebbb05f641e4b, type: 3}
-  m_Name: Ver9_Cap
+  m_Name: Enemy_test
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: "\u535A\u611B\u306A\u30ED\u30DC\u30C3\u30C8\u5175\u9577"
-  prefab: {fileID: 2343709353309008227, guid: 49d46b541a870444aa3222d9d39b3a57, type: 3}
-  maxHp: 6500
+  enemyName: test
+  prefab: {fileID: 6913625181649624364, guid: 512c5966bdc017f49aa0b6ae228c6bf0, type: 3}
+  maxHp: 100
   actions:
   - {fileID: 11400000, guid: fc8961d1b95b3e8458de91a71eca09dc, type: 2}
-  - {fileID: 11400000, guid: 8c79ad4c01ff98a48beb73474ff9aa65, type: 2}
-  - {fileID: 11400000, guid: ab518976b41bc634bb1986d56ea5d47a, type: 2}
   damageDealtGainPerAttack: 0
   damageTakenReductionPerAttack: 0
   damageDealtBonusPerAliveEnemyPercent: 0
+  damageDealtGainPerHitTaken: 0
+  damageDealtGainPerHitTakenCap: 0
   battleStartSelfDamageDealtBuffPercent: 0
   battleStartSelfDamageTakenBuffPercent: 0
   turnStartTargetDamageDealtDebuffPercent: 0
-  turnStartHeal: 500
+  turnStartHeal: 0
+  turnStartSelfDamageDealtBuffPercent: 0
+  turnStartSelfBuffMaxTurns: 0

@@ -15,6 +15,7 @@ public class EnemyManager_Example : MonoBehaviour
     [SerializeField] private int currentFloor = 1;
 
     private GameObject selectedTarget;
+    private int battleTurnCount = 0;
 
     private void Start()
     {
@@ -72,9 +73,12 @@ public class EnemyManager_Example : MonoBehaviour
         Debug.Log($"攻撃対象: {target.name} を選択");
     }
 
+   
+
     public void OnClickEnemyAction()
     {
-        Debug.Log("=== OnClickEnemyAction 呼び出し ===");
+        battleTurnCount++;
+        Debug.Log($"========== ターン{battleTurnCount} ==========");
 
         if (selectedTarget == null)
         {
@@ -82,6 +86,7 @@ public class EnemyManager_Example : MonoBehaviour
         }
         else
         {
+            Debug.Log($"[ターン{battleTurnCount}] Player の行動: 攻撃");
             player.Attack(controller, selectedTarget);
         }
 

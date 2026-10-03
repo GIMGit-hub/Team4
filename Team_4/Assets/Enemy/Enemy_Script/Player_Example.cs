@@ -6,11 +6,15 @@ public class Player_Example : MonoBehaviour
     [SerializeField] private int damage = 1000;
 
     private float damageDealtMultiplier = 1f;  
-    private int damageDealtDebuffTurns = 0;     
+    private int damageDealtDebuffTurns = 0;
+
+    private float damageTakenMultiplier = 1f;
+    private int damageTakenDebuffTurns = 0;
 
     public void Attack(EnemyController controller, GameObject target)
     {
         int finalDamage = Mathf.RoundToInt(damage * damageDealtMultiplier); // 倍率を掛ける
+        Debug.Log($"    → {target.name}に{finalDamage}ダメージ");
         controller.PlayerAttack(finalDamage, target);
     }
 
@@ -25,5 +29,12 @@ public class Player_Example : MonoBehaviour
         damageDealtMultiplier *= 1f - percent / 100f;
         damageDealtDebuffTurns = duration;
         Debug.Log($"プレイヤーの与ダメが{percent}%減少！ 現在の倍率:x{damageDealtMultiplier:F3}");
+    }
+    //敵の「絡みつく」などから呼ばれる
+    public void ApplyDamageTakenDebuff(float percent, int duration)
+    {
+        damageTakenMultiplier *= 1f + percent / 100f;
+        damageTakenDebuffTurns = duration;
+        Debug.Log($"プレイヤーの被ダメが{percent}%増加！ 現在の倍率:x{damageTakenMultiplier:F3}");
     }
 }

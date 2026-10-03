@@ -7,7 +7,9 @@ public enum ActionEffectType
     SelfDamageDealtBuff,
     SelfDamageTakenBuff,
     TargetDamageDealtDebuff,
+    TargetDamageTakenDebuff,
     Heal,
+    SelfDamage,
     DoNothing
 }
 
@@ -18,6 +20,7 @@ public class ActionEffect
     public ActionEffectType effectType;
     public float value;
     public int duration = 1;
+    public int hitCount = 1;//ƒ_ƒ[ƒW‚ğ‰½‰ñŒJ‚è•Ô‚·‚©
 }
 
 [CreateAssetMenu(fileName = "EnemyActionData", menuName = "Scriptable Objects/EnemyActionData")]

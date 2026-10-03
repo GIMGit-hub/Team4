@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 041ff419c99259746b2dab895efbc8eb, type: 3}
-  m_Name: Action_NoAction
+  m_Name: Action_Assault
   m_EditorClassIdentifier: Assembly-CSharp::EnemyActionData
-  actionName: "\u4F55\u3082\u3057\u306A\u3044"
+  actionName: "\u7A81\u6483"
   effects:
-  - effectType: 6
-    value: 0
+  - effectType: 0
+    value: 18
     duration: 0
-    hitCount: 1
+    hitCount: 0

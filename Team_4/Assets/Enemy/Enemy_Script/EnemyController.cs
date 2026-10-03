@@ -16,6 +16,8 @@ public class EnemyController : MonoBehaviour
     private List<GameObject> SpawndEnemy = new List<GameObject>();
 
     private Action onFloorClear;
+   
+    
 
     private void Awake()
     {
@@ -56,17 +58,20 @@ public class EnemyController : MonoBehaviour
     //playerを受け取り、TargetDamageDealtDebuffに対応
     public IEnumerator ExecuteAction(EnemyActionData action, EnemyUnit self, Action<int> dealDamageToTarget, Player_Example player)
     {
-        Debug.Log($"{self.name}の{action.actionName}");
+        //Debug.Log($"{self.name}の{action.actionName}");
 
         foreach (ActionEffect effect in action.effects)
         {
             switch (effect.effectType)
             {
                 case ActionEffectType.Damage:
-                    int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate());
-                    dealDamageToTarget?.Invoke(dmg);
-                    Debug.Log($"  → {dmg}ダメージ");
-                    self.OnAfterAttack();
+                    for (int i = 0; i < Mathf.Max(1, effect.hitCount); i++)
+                    {
+                        int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate());
+                        dealDamageToTarget?.Invoke(dmg);
+                        Debug.Log($"    → {dmg}ダメージ");
+                        self.OnAfterAttack();
+                    }
                     break;
 
                 case ActionEffectType.SelfDamageDealtBuff:
@@ -87,6 +92,16 @@ public class EnemyController : MonoBehaviour
                 case ActionEffectType.Heal:
                     self.Heal(Mathf.RoundToInt(effect.value));
                     Debug.Log($"  → {effect.value}回復");
+                    break;
+
+                case ActionEffectType.TargetDamageTakenDebuff:
+                    player.ApplyDamageTakenDebuff(effect.value, effect.duration);
+                    Debug.Log($"  → 相手の被ダメ+{effect.value}%");
+                    break;
+
+                case ActionEffectType.SelfDamage: 
+                    self.TakeSelfDamage(Mathf.RoundToInt(effect.value));
+                    Debug.Log($"    → 自身に{effect.value}ダメージ(反動)");
                     break;
 
                 case ActionEffectType.DoNothing:
