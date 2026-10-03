@@ -22,6 +22,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     private HandLayout m_handLayout;
     private CardManager m_cardManager;
 
+    private Vector2 discardPoint = new Vector2(-1238, -245);
     private float tweenDuration = 0.15f;
 
     public event System.Action<CardController> OnDragEnded;
@@ -77,7 +78,11 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     {
         if (eventData.button != PointerEventData.InputButton.Right) return;
 
-        m_cardManager.ConvertCost(BoundInstance);
+        GotoDiscard(() =>
+        {
+            Debug.Log("aaaaaaaaaaaa");
+            m_cardManager.ConvertCost(BoundInstance); // アニメーション完了後に実行される
+        });
     }
 
     private void UsingCard()
@@ -114,6 +119,13 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         rect.localScale = Vector3.one;
 
         rect.DOSizeDelta(size, tweenDuration);
+    }
+
+    public void GotoDiscard(System.Action onComplete = null)
+    {
+        isDraging = true;
+        gameObject.GetComponent<RectTransform>().DOLocalMove(discardPoint, tweenDuration)
+            .OnComplete(() => { onComplete?.Invoke(); });
     }
 
     public void OnPointerEnter(PointerEventData eventData)

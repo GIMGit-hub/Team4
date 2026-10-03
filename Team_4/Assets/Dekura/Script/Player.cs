@@ -13,17 +13,14 @@ public class Player : MonoBehaviour
     public int nowCost { get; private set; } = 0;
 
     [Header("最大/開始時ステータス")]
-    [SerializeField] private float maxHp = 100f;
+    [SerializeField] public float maxHp = 100f;
     [SerializeField] private float startHp = 100f;
-    [SerializeField] private int maxCost = 5;
+    [SerializeField] private float startDp = 20f;
+    [SerializeField] public int maxCost = 5;
     [SerializeField] private int startCost = 3;
 
     [Header("使用デッキ")]
     [SerializeField] public Deck deck;
-
-    [Header("コンポーネント")]
-    [SerializeField] private Image hp_Image;
-    [SerializeField] private Image cost_Image;
 
     [Header("debug用ウィンドウ")]
     [SerializeField] private TextMeshProUGUI debugWindow;
@@ -61,6 +58,7 @@ public class Player : MonoBehaviour
 
         effect = FindAnyObjectByType<EffectManager>();
         nowHp = startHp;
+        nowDp = startDp;
         nowCost = startCost;
 
         UpdateUi();
@@ -105,8 +103,6 @@ public class Player : MonoBehaviour
         attackResult = value + GetEffect(CardEffect.EffectType.AttackBuff);
         countResult = count;
     }
-
-    
 
     public void DpHeal(float value)
     {

@@ -54,6 +54,8 @@ public class TurnManager : MonoBehaviour
         NowTurn = TurnState.Changing;
         Debug.Log("TurnChanging...");
 
+        if (nextTurn == TurnState.EnemyTurn) CardManager.Instance.HandReset();
+        if (nextTurn == TurnState.PlayerTurn) StartCoroutine(CardManager.Instance.Call(6));
         yield return new WaitForSeconds(turnChangeDiray);
 
         Debug.Log("Complete");
