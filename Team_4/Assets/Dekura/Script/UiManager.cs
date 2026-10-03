@@ -12,15 +12,19 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Image playerHpBar_dmg;
     private float lastHp = 0;
     private float lastDp = 0;
+    private float hpBar_size = 0;
 
     [Header("COST")]
-    [SerializeField] private Image cost_active;
-    [SerializeField] private Image cost_inactive;
+    [SerializeField] private Sprite cost_active;
+    [SerializeField] private Sprite cost_inactive;
     [SerializeField] private List<Image> costsImage = new List<Image>();
     private int lastCost = 0;
 
     [Header("ColisionSpace")]
     [SerializeField] private Image colisionSpace_use;
+
+    private void OnEnable() { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed += UpdateUi; }
+    private void OnDisable() { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed -= UpdateUi; }
 
     private void Awake()
     {
@@ -33,10 +37,15 @@ public class UiManager : MonoBehaviour
 
         Instance = this;
         //---------------------------//
+
+        hpBar_size = playerHpBar_hp.GetComponent<RectTransform>().sizeDelta.x;
     }
 
     private void Start()
     {
+        CardManager.Instance.OnCardUsed -= UpdateUi;
+        CardManager.Instance.OnCardUsed += UpdateUi;
+
         SetLastData();
         UpdateUi();
     }
@@ -44,14 +53,24 @@ public class UiManager : MonoBehaviour
     public void UpdateUi()
     {
         float nowHp = Player.Instance.nowHp;
+        float maxHp = Player.Instance.maxHp;
         float nowDp = Player.Instance.nowDp;
         int nowCost = Player.Instance.nowCost;
 
-        foreach (var img in costsImage)
+        float diff = nowHp / maxHp;
+        float sizediff = hpBar_size * diff;
+        playerHpBar_hp.GetComponent<RectTransform>().sizeDelta = new Vector2(sizediff, playerHpBar_hp.GetComponent<RectTransform>().sizeDelta.y);
+
+        diff = nowDp / maxHp;
+        sizediff = hpBar_size * diff;
+        playerHpBar_dp.GetComponent<RectTransform>().sizeDelta = new Vector2(sizediff, playerHpBar_dp.GetComponent<RectTransform>().sizeDelta.y);
+
+        for (int i = 0; i < costsImage.Count; i++) 
         {
-            if (img == null) continue;
+            if (costsImage[i] == null) continue;
 
-
+            if (nowCost > i) costsImage[i].sprite = cost_active;
+            else costsImage[i].sprite = cost_inactive;
         }
 
         SetLastData();

@@ -117,6 +117,20 @@ public class CardManager : MonoBehaviour
         DeckShuffle();
     }
 
+    public void HandReset()
+    {
+        Debug.Log("HandReset...");
+
+        foreach (var card in hand.ToList())
+        {
+            card.template.GetComponent<CardController>().GotoDiscard(() =>
+            {
+                CardMove(card, CardZone.Discard);
+            });
+        }
+
+    }
+
     private void DeckShuffle()
     {
         for (int i = deck.Count - 1; i >= 0; i--) 
@@ -125,7 +139,6 @@ public class CardManager : MonoBehaviour
             (deck[i], deck[j]) = (deck[j], deck[i]);    //タプル::一行で入れ替えられる！
         }
     }
-
 
     //---------------------------------------------------------------------------------------//
 
@@ -153,7 +166,10 @@ public class CardManager : MonoBehaviour
         if (instance.template.GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
             CardMove(instance, CardZone.Discard);
         else
+        {
             GetZoneList(instance.zone).Remove(instance);
+            OnCardMoved?.Invoke(instance, CardZone.Discard);
+        }
 
         //効果発動
         if (queue.Count > 0) StartCoroutine(CardActivation());
@@ -162,15 +178,21 @@ public class CardManager : MonoBehaviour
 
     public void ConvertCost(CardInstance instance)
     {
+
+
         //カードの移動、合成カードは削除
         if (instance.template.GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
             CardMove(instance, CardZone.Discard);
         else
+        {
             GetZoneList(instance.zone).Remove(instance);
+            OnCardMoved?.Invoke(instance, CardZone.Discard);
+        }
+
+        StartCoroutine(CostHeal(1));
 
         //カード使用しましたよ～_OnCardUsed発火
         OnCardUsed?.Invoke();
-        StartCoroutine(CostHeal(1));
     }
 
 
