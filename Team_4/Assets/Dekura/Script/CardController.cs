@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,6 +6,14 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler,IPointerClickHandler
 {
+    [Header("カードの見た目")]
+    [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI kanjiText;
+
+    [Header("コストのハイライト")]
+    [SerializeField] private Color highlightCostColor;
+    [SerializeField] private float highlightCostBold = 0.2f;
+
     public CardInstance BoundInstance { get; private set; }
     public bool isSelected { get; private set; } = false;
     public bool isDraging { get; private set; } = false;
@@ -17,15 +24,14 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     private Transform parent;
     private int siblingIndex;
     private Vector2 size;
-    private CardData thisCardData;
 
-    private HandLayout m_handLayout;
     private CardManager m_cardManager;
 
     private Vector2 discardPoint = new Vector2(-1238, -245);
     private float tweenDuration = 0.15f;
 
-    public event System.Action<CardController> OnDragEnded;
+    public static event System.Action<Vector2> OnDragStarted;
+    public static event System.Action OnDragEnded;
 
     void Awake()
     {
@@ -33,14 +39,35 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         canvas = GetComponentInParent<Canvas>();
         size = rect.sizeDelta;
 
-        thisCardData = GetComponent<CardData>();
-
-        m_handLayout = FindAnyObjectByType<HandLayout>();
         m_cardManager = FindAnyObjectByType<CardManager>();
 
         parent = transform.parent;
         siblingIndex=transform.GetSiblingIndex();
     }
+
+
+    //------------------------------データ更新-----------------------------------//
+
+    public void UpdateCardVisual()
+    {
+        if( Player.Instance.GetEffect(CardEffect.EffectType.CostBuff) != 0)
+        {
+            costText.text = (BoundInstance.Cost - (int)Player.Instance.GetEffect(CardEffect.EffectType.CostBuff)).ToString();
+            costText.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, highlightCostColor);
+            costText.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, highlightCostBold);
+        }
+        else
+        {
+            costText.text = BoundInstance.Cost.ToString();
+            costText.fontMaterial = costText.font.material;
+        }
+        kanjiText.text = BoundInstance.CardName;
+    }
+
+    public void Bind(CardInstance instance) => BoundInstance = instance;
+
+    //-------------------------------Player操作系----------------------------------//
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
@@ -56,7 +83,8 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
 
-        rect.anchoredPosition += eventData.delta/canvas.scaleFactor; 
+        rect.anchoredPosition += eventData.delta/canvas.scaleFactor;
+        OnDragStarted?.Invoke(eventData.position);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -71,7 +99,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         else if (isUseCard)     UsingCard();
         else                    ReturnToHand();
 
-        OnDragEnded?.Invoke(this);
+        OnDragEnded?.Invoke();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -80,10 +108,26 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
 
         GotoDiscard(() =>
         {
-            Debug.Log("aaaaaaaaaaaa");
             m_cardManager.ConvertCost(BoundInstance); // アニメーション完了後に実行される
         });
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
+        if (isDraging || isSelected) return;
+
+        SoundsManager.Instance.PlaySound("pati");
+        isSelected = true;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
+
+        isSelected = false;
+    }
+
+    //------------------------------カード自身の挙動-------------------------------------//
 
     private void UsingCard()
     {
@@ -127,20 +171,4 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         gameObject.GetComponent<RectTransform>().DOLocalMove(discardPoint, tweenDuration)
             .OnComplete(() => { onComplete?.Invoke(); });
     }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
-
-        SoundsManager.Instance.PlaySound("pati");
-        isSelected = true;
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
-
-        isSelected = false;
-    }
-
-    public void Bind(CardInstance instance) => BoundInstance = instance;
 }

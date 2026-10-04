@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class SynthesisSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField]private GameObject debugSynCard;
-
+    private SlotBase slotBase;
     [NonSerialized] public RectTransform rectTransform;
     public bool isHaving {  get; private set; }
     public GameObject havingCard {  get; private set; }
@@ -16,6 +15,7 @@ public class SynthesisSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHan
 
     private void Awake()
     {
+        slotBase = GetComponentInParent<SlotBase>();
         rectTransform = GetComponent<RectTransform>();
     }
 
@@ -25,6 +25,7 @@ public class SynthesisSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHan
     public void SetCard(GameObject card)
     {
         isHaving = true;
+        slotBase?.SetHaving(true);
         havingCard = card;
 
         int cardCount = 0;
@@ -38,6 +39,7 @@ public class SynthesisSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHan
     public void RemoveCard()
     {
         isHaving = false;
+        slotBase?.SetHaving(false);
         havingCard = null;
     }
 

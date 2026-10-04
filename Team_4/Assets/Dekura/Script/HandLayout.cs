@@ -30,6 +30,8 @@ public class HandLayout : MonoBehaviour
     private Dictionary<CardInstance, GameObject> activeCards = new();
 
     public bool isSelected { get; private set; }
+    private bool isAnimating = false;
+
 
     private void Start()
     {
@@ -120,6 +122,8 @@ public class HandLayout : MonoBehaviour
                 targetRot = Quaternion.Euler(0, 0, angle);
             }
 
+            isAnimating = true;
+
             rect.DOLocalMove(targetPos, tweenDuration);
             rect.DOLocalRotateQuaternion(targetRot, tweenDuration);
             rect.SetSiblingIndex(isSelected ? cards.Count : i);
@@ -134,5 +138,19 @@ public class HandLayout : MonoBehaviour
         {
             handArea.DOLocalMove(handAreaPosition, tweenDuration);
         }
+    }
+
+    /// <summary>
+    /// 指定されたCardInstanceに対応するアクティブなカードのGameObjectを取得
+    /// </summary>
+    /// <param name="instance"></param>
+    /// <returns></returns>
+    public GameObject GetActiveCard(CardInstance instance)
+    {
+        if (activeCards.TryGetValue(instance, out var go))
+        {
+            return go;
+        }
+        return null;
     }
 }
