@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877a7b32430cbb747a977daa72c879a0, type: 3}
   m_Name: TestDeck 1
   m_EditorClassIdentifier: Assembly-CSharp::Deck
-  deckName: itigeki
+  deckName: test
   deckCards:
-  - card: {fileID: 8195112710207023301, guid: 75e36d487ae0bf048ab0f7495f861a83, type: 3}
+  - card: {fileID: 8195112710207023301, guid: 31779070b8e189341994408d470bac17, type: 3}
     count: 10
   - card: {fileID: 8195112710207023301, guid: 795d0c71e775c894fa2bfcbc5978c693, type: 3}
     count: 1

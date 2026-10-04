@@ -11,6 +11,10 @@ public enum CardZone
     Discard
 }
 
+/// <summary>
+/// カードの実体
+/// これを使ってカードの情報をやり取りする
+/// </summary>
 [System.Serializable]
 public class CardInstance
 {
@@ -19,7 +23,9 @@ public class CardInstance
     public CardZone zone;
     public Vector2? sponePosition;
 
+    public int Cost => template.GetComponent<CardData>().cost;
     public string CardName => template.GetComponent<CardData>().cardName;
+    public CardData.CostType costType => template.GetComponent<CardData>().costType;
 }
 
 [System.Serializable]
@@ -120,15 +126,15 @@ public class CardManager : MonoBehaviour
     public void HandReset()
     {
         Debug.Log("HandReset...");
+        HandLayout handLayout = FindAnyObjectByType<HandLayout>();
 
         foreach (var card in hand.ToList())
         {
-            card.template.GetComponent<CardController>().GotoDiscard(() =>
+            handLayout.GetActiveCard(card).GetComponent<CardController>().GotoDiscard(() =>
             {
                 CardMove(card, CardZone.Discard);
             });
         }
-
     }
 
     private void DeckShuffle()
@@ -178,8 +184,6 @@ public class CardManager : MonoBehaviour
 
     public void ConvertCost(CardInstance instance)
     {
-
-
         //カードの移動、合成カードは削除
         if (instance.template.GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
             CardMove(instance, CardZone.Discard);

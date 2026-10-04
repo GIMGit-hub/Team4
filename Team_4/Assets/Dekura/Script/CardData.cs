@@ -20,6 +20,9 @@ public class CardEffect
         AceCall,            //エースカードドロー
 
         ReceiveDamageUp,    //受けるダメージ上昇(%)
+
+        HpHeal_damage,
+        HpHeal_count,
     }
     public enum EffectTarget
     {
@@ -46,10 +49,17 @@ public class CardData : MonoBehaviour
         DeckCard,
         SynsethisCard
     }
+    public enum CostType
+    {
+        Normal,
+        Hp,
+        AllCost
+    }
 
     [Header("カード情報")]
     public CardType cardType;
     public string cardName;
+    public CostType costType = CostType.Normal;
     public int cost;
 
     [Header("効果種/効果量/発動回数::効果処理順に書くこと！")]
