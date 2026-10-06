@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a76684a4df616814891ebbb05f641e4b, type: 3}
+  m_Name: Ver15_FinalBoss
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyName: "\u8D85\u8D8A\u3057\u305F\u30E9\u30B9\u30DC\u30B9"
+  prefab: {fileID: 8039187628056660986, guid: d438e9827e136ce46bd805669533a7aa, type: 3}
+  maxHp: 20000
+  actions:
+  - {fileID: 11400000, guid: 329a9ef51b006a84a81a4f14d3122bd9, type: 2}
+  - {fileID: 11400000, guid: e9ab1afcbe08aa04ebb1d523241e4432, type: 2}
+  - {fileID: 11400000, guid: 4a23a09943ddaa34ea7ae49a20e6cf37, type: 2}
+  damageDealtGainPerAttack: 0
+  damageTakenReductionPerAttack: 0
+  damageDealtBonusPerAliveEnemyPercent: 0
+  damageDealtGainPerHitTaken: 0
+  damageDealtGainPerHitTakenCap: 0
+  selfActionFixedGainPerHit: 1
+  selfActionFixedGainCap: 999
+  battleStartSelfDamageDealtBuffPercent: 0
+  battleStartSelfDamageTakenBuffPercent: 0
+  turnStartTargetDamageDealtDebuffPercent: 0
+  turnStartTargetDamageDealtDebuffMaxTurns: 0
+  turnStartHeal: 0
+  turnStartSelfDamageDealtBuffPercent: 60
+  turnStartSelfBuffMaxTurns: 3

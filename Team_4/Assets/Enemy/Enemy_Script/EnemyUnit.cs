@@ -24,6 +24,7 @@ public class EnemyUnit : MonoBehaviour
     private int damageTakenBuffTurns = 0;
     private float defenseMultiplier = 1f; //攻撃するたび被ダメが減る(Ver3用)の恒久倍率
     private float hitTakenDamageBonus = 0f; // Ver12用、被弾のたび増える与ダメボーナス
+    private float fixedDamageBonus = 0f; //Ver15用
 
     public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc,Player_Example player, EnemyManager_Example manager)
     {
@@ -64,9 +65,11 @@ public class EnemyUnit : MonoBehaviour
 
         turnCount++;
 
-        if (data.turnStartTargetDamageDealtDebuffPercent > 0)
+        if (data.turnStartTargetDamageDealtDebuffPercent > 0 &&
+     (data.turnStartTargetDamageDealtDebuffMaxTurns == 0 || turnCount <= data.turnStartTargetDamageDealtDebuffMaxTurns))
         {
             player.ApplyDamageDealtDebuff(data.turnStartTargetDamageDealtDebuffPercent, 1);
+            Debug.Log($"{name}はターン開始時に相手の与ダメを{data.turnStartTargetDamageDealtDebuffPercent}%減らした");
         }
 
         if (data.turnStartHeal > 0)
@@ -116,6 +119,9 @@ public class EnemyUnit : MonoBehaviour
         return rate;
     }
 
+    // 固定値の加算分(%ではなく実数で乗るので、ダメージ計算側で使う)
+    public float GetFixedDamageBonus() => fixedDamageBonus;
+
     // 「力を溜める」などが呼ぶ
     public void AddDamageDealtBuff(float rate, int duration)
     {
@@ -145,6 +151,14 @@ public class EnemyUnit : MonoBehaviour
         {
             angerMultiplier *= 1f + data.damageDealtGainPerAttack / 100f;
             Debug.Log($"{name}の怒り倍率: x{angerMultiplier:F3}");
+        }
+
+        // Ver15用
+        if (data.selfActionFixedGainPerHit > 0)
+        {
+            fixedDamageBonus += data.selfActionFixedGainPerHit;
+            fixedDamageBonus = Mathf.Min(fixedDamageBonus, data.selfActionFixedGainCap);
+            Debug.Log($"{name}の固定ダメージ上乗せ: +{fixedDamageBonus}(上限{data.selfActionFixedGainCap})");
         }
     }
 

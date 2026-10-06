@@ -10,6 +10,8 @@ public enum ActionEffectType
     TargetDamageTakenDebuff,
     Heal,
     SelfDamage,
+    TargetMaxHpReduction,
+    SetTargetHpToOne,
     DoNothing
 }
 
@@ -31,4 +33,7 @@ public class EnemyActionData : ScriptableObject
 
     [Header("効果(複数持てる)")]
     public List<ActionEffect> effects;
+
+    [Header("ランダム行動(trueならeffectsの中から1つだけランダムに実行)")]
+    public bool isRandomPick = false;
 }

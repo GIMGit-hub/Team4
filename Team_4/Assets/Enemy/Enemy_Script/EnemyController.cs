@@ -60,14 +60,29 @@ public class EnemyController : MonoBehaviour
     {
         //Debug.Log($"{self.name}の{action.actionName}");
 
-        foreach (ActionEffect effect in action.effects)
+        List<ActionEffect> effectsToRun;
+
+        //ランダム行動なら、1つだけ抽選する
+        if (action.isRandomPick && action.effects.Count > 0)
+        {
+            ActionEffect picked =
+                action.effects[UnityEngine.Random.Range(0, action.effects.Count)];
+
+            effectsToRun = new List<ActionEffect> { picked };
+        }
+        else
+        {
+            effectsToRun = action.effects;
+        }
+
+        foreach (ActionEffect effect in effectsToRun)
         {
             switch (effect.effectType)
             {
                 case ActionEffectType.Damage:
                     for (int i = 0; i < Mathf.Max(1, effect.hitCount); i++)
                     {
-                        int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate());
+                        int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate()) + Mathf.RoundToInt(self.GetFixedDamageBonus());
                         dealDamageToTarget?.Invoke(dmg);
                         Debug.Log($"    → {dmg}ダメージ");
                         self.OnAfterAttack();
@@ -103,6 +118,17 @@ public class EnemyController : MonoBehaviour
                     self.TakeSelfDamage(Mathf.RoundToInt(effect.value));
                     Debug.Log($"    → 自身に{effect.value}ダメージ(反動)");
                     break;
+
+                case ActionEffectType.TargetMaxHpReduction:
+                    player.ReduceMaxHp(Mathf.RoundToInt(effect.value));
+                    Debug.Log($"    → 相手の最大HPを{effect.value}減らした");
+                    break;
+
+                case ActionEffectType.SetTargetHpToOne:
+                    player.SetHpToOne();
+                    Debug.Log($"    → 相手の体力を1にした");
+                    break;
+
 
                 case ActionEffectType.DoNothing:
                     break;

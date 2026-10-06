@@ -19,13 +19,16 @@ public class EnemyData : ScriptableObject
     [Header("攻撃を受ける度与ダメ上昇(上限あり//Ver12用)")]
     public float damageDealtGainPerHitTaken = 0f;      //1回の被弾につき増える%
     public float damageDealtGainPerHitTakenCap = 0f;   //増加の上限%
+    public float selfActionFixedGainPerHit = 0f; // 1回の攻撃で増える固定値
+    public float selfActionFixedGainCap = 0f;    // 上限値
 
     [Header("戦闘開始時に一度だけ発動")]
     public float battleStartSelfDamageDealtBuffPercent = 0f; // Ver5用: 自分の与ダメが戦闘開始時に上昇(一回限り)
     public float battleStartSelfDamageTakenBuffPercent = 0f; // Ver6用
 
     [Header("毎ターン開始時に発動")]
-    public float turnStartTargetDamageDealtDebuffPercent = 0f; //Ver8用
+    public float turnStartTargetDamageDealtDebuffPercent = 0f; //Ver8,14用
+    public int turnStartTargetDamageDealtDebuffMaxTurns = 0;   //0=無期限(Ver8用)、N=Nターンまで(Ver14用)
     public int turnStartHeal = 0; //Ver9用
     public float turnStartSelfDamageDealtBuffPercent = 0f; //Ver13用
     public int turnStartSelfBuffMaxTurns = 0; //何ターン目まで発動するか
