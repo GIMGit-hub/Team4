@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_text: "\u8FFD\n\u6483"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -678,7 +678,7 @@ MonoBehaviour:
   cardName: "\u8FFD\u6483"
   costType: 0
   cost: 1
-  cardDescription: 
+  cardDescription: "\u6575\u5358\u4F53\u306B25\u30C0\u30E1\u30FC\u30B8\xD73\u56DE\u653B\u6483\\n\u3053\u306E\u30AB\u30FC\u30C9\u3092\u4F7F\u7528\u3059\u308B\u5EA6\u306B\u3001\\n\u5A01\u529B\u304C25\u305A\u3064\u5897\u52A0\u3059\u308B"
   effects:
   - target: 1
     type: 13
