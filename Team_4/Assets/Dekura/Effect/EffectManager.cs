@@ -1,8 +1,7 @@
-using Unity.VisualScripting;
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class EffectManager : MonoBehaviour
@@ -40,20 +39,25 @@ public class EffectManager : MonoBehaviour
     public void Playfade(string name, float delay = 0f)
     {
         fade.DOKill();
+        Color color;
 
         switch (name)
         {
             case "heal":
-                fade.DOColor(healColor, 0.1f);
+                color = healColor;
                 break;
             case "damage":
-                fade.DOColor(damageColor, 0.1f);
+                color = damageColor;
                 break;
-
-            default: return;
+            default:
+                return;
         }
 
-        fade.DOFade(0f,0.5f).SetDelay(delay);
+        DOTween.Sequence()
+        .SetTarget(fade)
+        .Append(fade.DOColor(color, 0.1f))
+        .AppendInterval(delay)
+        .Append(fade.DOFade(0f, 1f));
     }
 
     public void PlayEffect(string name, Vector3 position)

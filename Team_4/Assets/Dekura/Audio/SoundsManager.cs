@@ -32,13 +32,20 @@ public class SoundsManager : MonoBehaviour
     public void PlaySound(string name)
     {
         //配列から該当の名前を持つ要素の検索
-        var sound = System.Array.Find(sounds, s => s.name == name);
+        var sound = System.Array.FindAll(sounds, s => s.name == name);
 
-        if (sound == null)
+        switch(sound.Length)
         {
-            Debug.LogWarning($"Sound not Found：{name}");
-            return;
+            case 0:
+                Debug.LogWarning($"Sound not Found：{name}");
+                break;
+            case 1:
+                audioSource.PlayOneShot(sound[0].soundfile, sound[0].volume);
+                break;
+            default:
+                int rand = Random.Range(0, sound.Length);
+                audioSource.PlayOneShot(sound[rand].soundfile, sound[rand].volume);
+                break;
         }
-        audioSource.PlayOneShot(sound.soundfile, sound.volume);
     }
 }

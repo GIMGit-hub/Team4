@@ -1,8 +1,9 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.EventSystems;
 
-public class HandLayout : MonoBehaviour
+public class HandLayout : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("手札スペース")]
     [SerializeField] private Transform handArea;
@@ -29,19 +30,27 @@ public class HandLayout : MonoBehaviour
     private List<GameObject> cards = new List<GameObject>();
     private Dictionary<CardInstance, GameObject> activeCards = new();
 
-    public bool isSelected { get; private set; }
+    public bool isSelected { get; private set; } = false;
+    public bool isOnCursol { get; private set; } = false;
     private bool isAnimating = false;
 
+    private void OnEnable() => SetEventSubscribed(true);
+    private void OnDisable() => SetEventSubscribed(false);
 
     private void Start()
     {
         handAreaPosition = handArea.localPosition;
-        CardManager.Instance.OnCardMoved -= HandCardMoved;
-        CardManager.Instance.OnCardMoved += HandCardMoved;
+        SetEventSubscribed(true); 
     }
 
-    private void OnEnable()  { if (CardManager.Instance != null) CardManager.Instance.OnCardMoved += HandCardMoved; }
-    private void OnDisable() { if (CardManager.Instance != null) CardManager.Instance.OnCardMoved -= HandCardMoved; }
+    private void SetEventSubscribed(bool isEnable)
+    {
+        if (CardManager.Instance != null)
+        {
+            CardManager.Instance.OnCardMoved -= HandCardMoved;
+            if (isEnable) CardManager.Instance.OnCardMoved += HandCardMoved;
+        }
+    }
 
     private void Update()
     {
@@ -89,14 +98,22 @@ public class HandLayout : MonoBehaviour
         float totalWidth = cardWidth * (count - 1);
         float startX = -totalWidth / 2f;
 
-        bool isSelecting = false;
+        bool canHover = isOnCursol;
 
         for (int i = 0; i < count; i++)
         {
             RectTransform rect = cards[i].GetComponent<RectTransform>();
             CardController card = cards[i].GetComponentInChildren<CardController>();
 
-            if (card.isDraging || card.m_currentSlot != null)  continue;
+            if (card.isDraging)
+            {
+                canHover = false;
+                continue;
+            }
+            else if (card.m_currentSlot != null)
+            {
+                continue;
+            }
 
             float t = count == 1 ? 0.5f : (float)i / (count - 1);
             float centeredT = t - 0.5f;
@@ -114,7 +131,6 @@ public class HandLayout : MonoBehaviour
             {
                 targetPos = new Vector2(x, y + hoverCardY);
                 targetRot = Quaternion.identity;
-                isSelecting = true;
             }
             else
             {
@@ -128,8 +144,7 @@ public class HandLayout : MonoBehaviour
             rect.DOLocalRotateQuaternion(targetRot, tweenDuration);
             rect.SetSiblingIndex(isSelected ? cards.Count : i);
         }
-
-        if(isSelecting)
+        if (canHover)
         {
             Vector2 position = new Vector2(handAreaPosition.x, handAreaPosition.y + hoverHandAreaY);
             handArea.DOLocalMove(position, tweenDuration);
@@ -138,6 +153,7 @@ public class HandLayout : MonoBehaviour
         {
             handArea.DOLocalMove(handAreaPosition, tweenDuration);
         }
+
     }
 
     /// <summary>
@@ -152,5 +168,17 @@ public class HandLayout : MonoBehaviour
             return go;
         }
         return null;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isOnCursol = true;
+        UpdateLayout();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isOnCursol = false;
+        UpdateLayout();
     }
 }

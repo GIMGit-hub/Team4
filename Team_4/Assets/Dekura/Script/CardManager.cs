@@ -12,6 +12,17 @@ public enum CardZone
 }
 
 /// <summary>
+/// カードの特殊効果を実行するためのインターフェース
+/// インターフェース:
+///     クラスに対して、このような処理をもつと宣言するもの
+///      >>>中身が全く違う処理でも、同じ名前で呼び出せる
+/// </summary>
+public interface ICardSpecialAction 
+{
+    IEnumerator SpecialAction();
+}
+
+/// <summary>
 /// カードの実体
 /// これを使ってカードの情報をやり取りする
 /// </summary>
@@ -23,34 +34,24 @@ public class CardInstance
     public CardZone zone;
     public Vector2? sponePosition;
 
+    public bool AceCard => template.GetComponent<CardData>().Ace;
     public int Cost => template.GetComponent<CardData>().cost;
     public string CardName => template.GetComponent<CardData>().cardName;
     public CardData.CostType costType => template.GetComponent<CardData>().costType;
-}
-
-[System.Serializable]
-public class SynthesisList
-{
-    [Header("合成元")]
-    public CardData card_A;
-    public CardData card_B;
-    [Header("合成結果")]
-    public GameObject resultCard;
 }
 
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance { get; private set; }
 
-    [Header("全部のカード(コンボカードもここにいれる)")]
-    [SerializeField] private List<GameObject> allCardList = new();   
-
     [Header("合成のリスト")]
-    [SerializeField] private List<SynthesisList> synthesisList = new();
-
+    [SerializeField] private List<SynPattern> synthesisList = new();
 
     [Header("カード使用判定")]
     [SerializeField] public RectTransform hitColision;
+
+    [Header("カード使用時の効果処理遅延")]
+    [SerializeField] public float activateDuration = 0.5f;
 
     private List<CardInstance> hand = new();
     private List<CardInstance> deck = new();
@@ -153,20 +154,27 @@ public class CardManager : MonoBehaviour
     public bool UseCard(CardInstance instance)
     {
         //コスト支払い可能かの確認
-        int needCost = instance.template.GetComponent<CardData>().cost;
-        Debug.Log($"needCost::{needCost}");
-        if (!Player.Instance.CanUseCost(needCost)) return false;
+        CardData.CostType costType = instance.template.GetComponent<CardData>().costType;
+        int needCost = instance.Cost;
 
+        if (!Player.Instance.CanUseCost(costType, needCost)) return false;
+
+        Debug.Log($"needCost::{needCost}");
         Debug.Log($"{instance.CardName}::発動準備");
 
-        //効果をqueに入れてく
-        foreach(var effects in instance.template.GetComponent<CardData>().effects)
+        //特殊効果を持つカードか確認
+        ICardSpecialAction cardSpecialAction = instance.template.GetComponent<ICardSpecialAction>();
+        if (cardSpecialAction == null) 
         {
-            queue.Enqueue(effects);
+            //効果をqueに入れてく
+            foreach (var effects in instance.template.GetComponent<CardData>().effects)
+            {
+                queue.Enqueue(effects);
+            }
         }
 
         //コスト支払い
-        Player.Instance.UseCost(needCost);
+        Player.Instance.UseCost(costType, needCost);
 
         //カードの移動、合成カードは削除
         if (instance.template.GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
@@ -178,7 +186,7 @@ public class CardManager : MonoBehaviour
         }
 
         //効果発動
-        if (queue.Count > 0) StartCoroutine(CardActivation());
+        StartCoroutine(CardActivation(cardSpecialAction));
         return true;
     }
 
@@ -200,42 +208,62 @@ public class CardManager : MonoBehaviour
     }
 
 
-    private IEnumerator CardActivation()
+    private IEnumerator CardActivation(ICardSpecialAction cardSpecialAction = null)
     {
-        //queが残り無ければ終了
-        if (queue.Count == 0) yield break;
-
-        //データを取得して、そのqueを解除
-        CardEffect effect = queue.Dequeue();
-
-        switch (effect.type)
+        if (cardSpecialAction != null) 
         {
-            case CardEffect.EffectType.Attack:
-                yield return StartCoroutine(Attack(effect.target, effect.value, effect.valueCount));
-                break;
-            case CardEffect.EffectType.Defense:
-                yield return StartCoroutine(DpHeal(effect.value));
-                break;
-            case CardEffect.EffectType.HpHeal:
-                yield return StartCoroutine(HpHeal(effect.value));
-                break;
-            case CardEffect.EffectType.CostHeal:
-                yield return StartCoroutine(CostHeal((int)effect.value));
-                break;
-            case CardEffect.EffectType.AttackBuff:
-            case CardEffect.EffectType.CountBuff:
-            case CardEffect.EffectType.CostBuff:
-                yield return StartCoroutine(AddBuff(effect.type, effect.value, effect.valueCount));
-                break;
-            case CardEffect.EffectType.Call:
-                yield return StartCoroutine(Call((int)effect.value));
-                break;
-            case CardEffect.EffectType.AceCall:
-                break;
+            Debug.Log($"特殊効果待機");
+            yield return StartCoroutine(cardSpecialAction.SpecialAction());
+            cardSpecialAction = null;
+        }
+        else
+        {
+            //queが残り無ければ終了
+            if (queue.Count == 0) yield break;
+
+            //データを取得して、そのqueを解除
+            CardEffect effect = queue.Dequeue();
+
+            switch (effect.type)
+            {
+                case CardEffect.EffectType.Attack:
+                    yield return StartCoroutine(Attack(effect.target, effect.value, effect.valueCount));
+                    break;
+                case CardEffect.EffectType.Defense:
+                    yield return StartCoroutine(DpHeal(effect.value));
+                    break;
+                case CardEffect.EffectType.HpHeal:
+                    yield return StartCoroutine(HpHeal(effect.value));
+                    break;
+                case CardEffect.EffectType.CostHeal:
+                    yield return StartCoroutine(CostHeal((int)effect.value));
+                    break;
+                case CardEffect.EffectType.AttackBuff:
+                case CardEffect.EffectType.CountBuff:
+                case CardEffect.EffectType.CostBuff:
+                case CardEffect.EffectType.CostFree:
+                    yield return StartCoroutine(AddBuff(effect.type, effect.value, effect.valueCount));
+                    break;
+                case CardEffect.EffectType.Call:
+                    yield return StartCoroutine(Call((int)effect.value));
+                    break;
+                case CardEffect.EffectType.AceCall:
+                    yield return StartCoroutine(AceCall());
+                    yield return StartCoroutine(AddBuff(CardEffect.EffectType.CostBuff_Ace, 1, 1));
+                    break;
+
+                case CardEffect.EffectType.HpHeal_damage:
+                    yield return StartCoroutine(HpHeal_damage(effect.value));
+                    break;
+                case CardEffect.EffectType.HpHeal_count:
+                    yield return StartCoroutine(HpHeal_count(effect.value, effect.valueCount));
+                    break;
+            }
         }
 
         //カード使用しましたよ～_OnCardUsed発火
         OnCardUsed?.Invoke();
+        Player.Instance.AddUseCardCount();
         yield return CardActivation();
     }
 
@@ -243,9 +271,11 @@ public class CardManager : MonoBehaviour
 
     private void CardMove(CardInstance instance, CardZone zone)
     {
-        if (GetZoneList(instance.zone).Contains(instance) != false)
+        //Listを取得、移動元のListから削除、移動先のListに追加、カードのzoneを更新
+        if (GetZoneList(instance.zone).Contains(instance) != false) 
             GetZoneList(instance.zone).Remove(instance);
-            GetZoneList(zone).Add(instance);
+
+        GetZoneList(zone).Add(instance);
         instance.zone = zone;
 
         OnCardMoved?.Invoke(instance, zone);
@@ -253,10 +283,8 @@ public class CardManager : MonoBehaviour
 
     public IEnumerator Attack(CardEffect.EffectTarget target, float value, int count)
     {
-        //その他色々な攻撃加算処理
-
         Player.Instance.Attack(target, value, count);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(activateDuration);
     }
 
     public IEnumerator HpHeal(float value)
@@ -264,27 +292,27 @@ public class CardManager : MonoBehaviour
         Debug.Log($"HpHeal...{value}");
 
         Player.Instance.HpHeal(value);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(activateDuration);
     }
     public IEnumerator DpHeal(float value)
     {
         Debug.Log($"DpHeal...{value}");
 
         Player.Instance.DpHeal(value);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(activateDuration);
     }
     public IEnumerator CostHeal(int value)
     {
         Debug.Log($"CostHeal...{value}");
 
         Player.Instance.CostHeal(value);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(activateDuration);
     }
 
     public IEnumerator AddBuff(CardEffect.EffectType m_type, float m_value, int m_enableTurn) 
     {
-        Player.Instance.AddEffect(m_type, m_value, m_enableTurn);
-        yield return new WaitForSeconds(0.1f);
+        Player.Instance.AddEffect_Turn(m_type, m_value, m_enableTurn);
+        yield return new WaitForSeconds(activateDuration);
     }
 
     public IEnumerator Call(int count)
@@ -297,10 +325,57 @@ public class CardManager : MonoBehaviour
 
             SoundsManager.Instance.PlaySound("call");
             Debug.Log($"Calling...{deck[0]}::count{i}");
+
+            //deck先頭(山上)を手札に移動
             CardMove(deck[0], CardZone.Hand);
             Debug.Log($"DeckCount::{deck.Count}");
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    public IEnumerator AceCall()
+    {
+        Debug.Log($"AceCallStart...");
+
+        //デッキにエースカードがあれば手札に移動、無ければ捨て札から探す
+        foreach (var card in deck.ToList())
+        {
+            if (card.AceCard) 
+            {
+                SoundsManager.Instance.PlaySound("call");
+                Debug.Log($"AceCalling...");
+                CardMove(card, CardZone.Hand);
+                Debug.Log($"DeckCount::{deck.Count}");
+                yield return new WaitForSeconds(0.1f);
+                yield break;
+            }
+        }
+        foreach (var card in discard.ToList())
+        {
+            if (card.AceCard)
+            {
+                SoundsManager.Instance.PlaySound("call");
+                Debug.Log($"AceCalling...");
+                CardMove(card, CardZone.Hand);
+                Debug.Log($"DeckCount::{deck.Count}");
+                yield return new WaitForSeconds(0.1f);
+                yield break;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    public IEnumerator HpHeal_damage(float value)
+    {
+        Debug.Log($"HpHeal_damage...{value}");
+        Player.Instance.HpHeal_damage(value);
+        yield return new WaitForSeconds(0.1f);
+    }
+    public IEnumerator HpHeal_count(float value, int count)
+    {
+        Debug.Log($"HpHeal_count...{value}::count{count}");
+        Player.Instance.HpHeal_count(value, count);
+        yield return new WaitForSeconds(0.1f);
     }
 
     //----------------------------------------------------------------------------------------//
@@ -315,16 +390,23 @@ public class CardManager : MonoBehaviour
     {
         GameObject result = null;
 
-        foreach (var card in allCardList)
+        foreach (var pattern in synthesisList)
         {
-            CardData data = card.GetComponentInChildren<CardData>();
-            if (data.cardName == "promo_Syn")
+            foreach (var needCard in pattern.requiredCards)
             {
-                result = card.gameObject;
-                break;
+                if ((needCard.card_A.cardName == card_A.CardName && needCard.card_B.cardName == card_B.CardName)||
+                    (needCard.card_A.cardName == card_B.CardName && needCard.card_B.cardName == card_A.CardName))
+                {
+                    result = pattern.resultCard;
+                    break;
+                }
             }
         }
-        if (result == null) return null;
+        if (result == null)
+        {
+            Debug.LogWarning($"Synthesis failed: {card_A.CardName} + {card_B.CardName}");
+            return null;
+        }
 
         CardMove(card_A, CardZone.Discard);
         CardMove(card_B, CardZone.Discard);
@@ -339,7 +421,25 @@ public class CardManager : MonoBehaviour
 
         CardMove(resultInstance, CardZone.Hand);
 
+
         return resultInstance;
+    }
+
+    public List<GameObject> GetCandidates(CardInstance card)
+    {
+        // Implementation for getting synthesis candidates
+        List<GameObject> candidates = new List<GameObject>();
+
+        foreach (var pattern in synthesisList)
+        {
+            foreach (var needCard in pattern.requiredCards)
+            {
+                if (needCard.card_A.cardName == card.CardName) candidates.Add(needCard.card_B.cardPrefab);
+                else if (needCard.card_B.cardName == card.CardName) candidates.Add(needCard.card_A.cardPrefab);
+            }
+        }
+
+        return candidates;
     }
 
     public List<CardInstance> GetZoneList(CardZone zone) => zone switch

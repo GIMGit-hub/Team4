@@ -796,7 +796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   costText: {fileID: 8271255700082070572}
   kanjiText: {fileID: 1517283776634236700}
-  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 0}
+  highlightCostColor: {r: 0.51171637, g: 1, b: 0, a: 1}
   highlightCostBold: 0.2
 --- !u!114 &8195112710207023301
 MonoBehaviour:
@@ -810,10 +810,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  cardPrefab: {fileID: 8578336792466497532}
   cardType: 1
-  cardName: "\u62BD\u9078"
-  costType: 1
-  cost: 10
+  cardName: "\u5438\u8840"
+  costType: 0
+  cost: 3
   effects:
   - target: 1
     type: 0

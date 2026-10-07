@@ -23,6 +23,11 @@ public class CardEffect
 
         HpHeal_damage,
         HpHeal_count,
+        CostBuff_Ace,
+
+        SpecialAction,
+        Revive,
+        CostFree
     }
     public enum EffectTarget
     {
@@ -34,7 +39,7 @@ public class CardEffect
     [Header("効果対象")]
     public EffectTarget target;
 
-    [Header("効果内容")]
+    [Header("効果内容(SpecialActionはvalue,count入力不用)")]
     public EffectType type;
     public float value;
 
@@ -53,8 +58,12 @@ public class CardData : MonoBehaviour
     {
         Normal,
         Hp,
-        AllCost
+        AllCost,
+        Ace,
     }
+
+    [Header("カード本体")]
+    public GameObject cardPrefab;
 
     [Header("カード情報")]
     public CardType cardType;

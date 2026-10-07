@@ -20,6 +20,9 @@ public class SlotBase : MonoBehaviour
     private RectTransform rect;
     private Canvas canvas;
 
+    private void OnEnable() => SetEventSubscribed(true);
+    private void OnDisable() => SetEventSubscribed(false);
+
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -29,20 +32,17 @@ public class SlotBase : MonoBehaviour
 
     private void Start()
     {
-        CardController.OnDragStarted += HandleCardDrag;
-        CardController.OnDragEnded += HandleCardDragEnd;
+        SetEventSubscribed(true);
     }
 
-    private void OnEnable()
-    {
-        CardController.OnDragStarted += HandleCardDrag;
-        CardController.OnDragEnded += HandleCardDragEnd;
-    }
-
-    private void OnDisable()
+    private void SetEventSubscribed(bool isEnable)
     {
         CardController.OnDragStarted -= HandleCardDrag;
         CardController.OnDragEnded -= HandleCardDragEnd;
+
+        if (!isEnable) return;
+        CardController.OnDragStarted += HandleCardDrag;
+        CardController.OnDragEnded += HandleCardDragEnd;
     }
 
     private void HandleCardDrag(Vector2 screenPos)
