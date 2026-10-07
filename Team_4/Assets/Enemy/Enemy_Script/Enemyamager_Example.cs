@@ -14,6 +14,8 @@ public class EnemyManager_Example : MonoBehaviour
     [SerializeField] private int currentStage = 1;
     [SerializeField] private int currentFloor = 1;
 
+    [SerializeField] private ActionAnnounceUI actionAnnounceUI;
+
     private GameObject selectedTarget;
     private int battleTurnCount = 0;
 
@@ -39,7 +41,10 @@ public class EnemyManager_Example : MonoBehaviour
         }
 
         Debug.Log($"=== ステージ{currentStage}-{currentFloor} 開始 ===");
-        controller.SpawnFloor(data, player.TakeDamage,player, this, OnFloorClear);
+
+       
+
+        controller.SpawnFloor(data, player.TakeDamage,player, this, OnFloorClear,actionAnnounceUI);
     }
 
     // フロアクリア時に呼ばれる(Controllerから)

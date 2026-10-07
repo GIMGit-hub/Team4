@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
     }
 
     //dealDamageToTargetに加えてplayer本体も受け取る
-    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager, Action onClear)
+    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager, Action onClear,ActionAnnounceUI actionAnnounceUI)
     {
         Debug.Log($"=== SpawnFloor 呼び出し: ステージ{floorData.stage}-{floorData.floor} 敵数:{floorData.enemy.Count} ===");
 
@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
         for (int i = 0; i < count; i++)
         {
-            SpawnOne(floorData.enemy[i], dealDamageToTarget, player, manager);
+            SpawnOne(floorData.enemy[i], dealDamageToTarget, player, manager,actionAnnounceUI);
         }
     }
 
@@ -139,8 +139,10 @@ public class EnemyController : MonoBehaviour
     }
 
     //playerを受け取り、Initとターン実行に渡す
-    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager)
+    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager,ActionAnnounceUI announceUI)
     {
+        
+
         if (data == null || data.prefab == null)
         {
             Debug.LogWarning("敵データまたはプレハブが設定されていません");
@@ -169,7 +171,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        unit.Init(data, this, dealDamageToTarget, player, manager);
+        unit.Init(data, this, dealDamageToTarget, player, manager,announceUI);
         SpawndEnemy.Add(go);
 
         Debug.Log($"{data.enemyName}を{point.name}に生成(現在の生存数:{SpawndEnemy.Count})");
