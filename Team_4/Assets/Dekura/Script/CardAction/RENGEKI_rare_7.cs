@@ -13,7 +13,7 @@ public class RENGEKI_rare_7 : MonoBehaviour, ICardSpecialAction
         for(int i = 0; i < Player.Instance.hitCount; i++)
         {
             Player.Instance.HpHeal(heal);
+            yield return new WaitForSeconds(CardManager.Instance.activateDuration);
         }
-        yield return new WaitForSeconds(CardManager.Instance.activateDuration);
     }
 }

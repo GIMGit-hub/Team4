@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -25,6 +26,9 @@ public class Player : MonoBehaviour
 
     [Header("使用デッキ")]
     [SerializeField] public Deck deck;
+
+    [Header("攻撃間隔")]
+    [SerializeField] private float atkDuriation = 0.2f;
 
     [Header("debug用ウィンドウ")]
     [SerializeField] private TextMeshProUGUI debugWindow;
@@ -110,22 +114,28 @@ public class Player : MonoBehaviour
             $"BUFF_COST  :: +{GetEffect(CardEffect.EffectType.CostBuff)}\n" +
             $"\n" +
             $"ATTACKED:: To {atTarget} , {attackResult} × {countResult}\n" +
-            $"ATK_TOTAL:: {attackTotalResult}";
+            $"ATK_TOTAL:: {attackTotalResult}\n" +
+            $"HIT_COUNT:: {hitCount}";
     }
 
     //------------------------------playerのaction----------------------------//
 
     public void Attack(CardEffect.EffectTarget target, float value, int count, bool CountBuffAdaption = true)
     {
+        StartCoroutine(SpecialAction(target, value, count, CountBuffAdaption));
+    }
+
+    private IEnumerator SpecialAction(CardEffect.EffectTarget target, float value, int count, bool CountBuffAdaption)
+    {
         float damage = value * Mathf.Max(1f, UseBuff(CardEffect.EffectType.AttackBuff) / 100f);
         int hitcount = Mathf.Max(1, count);
 
-        if (CountBuffAdaption) 
+        if (CountBuffAdaption)
             hitcount = Mathf.Max(1, count + (int)UseBuff(CardEffect.EffectType.CountBuff));
 
         Debug.Log($"Player Attack! Target: {target}, Damage: {damage}, Count: {hitcount}");
 
-        for (int i = 0;i< hitcount; i++)
+        for (int i = 0; i < hitcount; i++)
         {
             switch (target)
             {
@@ -143,10 +153,11 @@ public class Player : MonoBehaviour
 
             attackResult = damage;
             countResult = hitcount;
-            hitCount += hitcount;
-            attackTotalResult += damage * hitcount;
+            hitCount++;
+            attackTotalResult += damage;
 
             SoundsManager.Instance.PlaySound("hit");
+            yield return new WaitForSeconds(atkDuriation);
         }
     }
 
@@ -255,6 +266,14 @@ public class Player : MonoBehaviour
     //-------------------------------------------------------------------------//
 
     //被弾処理
+    public void TakeDamage(float amount)
+    {
+        nowHp = Mathf.Max(0f, nowHp - amount);
+        if(nowHp == 0)
+        {
+            //敗北処理
+        }
+    }
 
     //バフの新規獲得
     public void AddEffect_Turn(CardEffect.EffectType m_type, float m_value, int m_enableTurn)

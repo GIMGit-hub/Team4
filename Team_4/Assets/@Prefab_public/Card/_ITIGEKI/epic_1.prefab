@@ -679,6 +679,7 @@ MonoBehaviour:
   cardName: "\u6EC5"
   costType: 3
   cost: 8
+  cardDescription: 
   effects:
   - target: 1
     type: 13

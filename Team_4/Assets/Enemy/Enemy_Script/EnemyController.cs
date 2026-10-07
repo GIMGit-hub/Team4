@@ -16,8 +16,6 @@ public class EnemyController : MonoBehaviour
     private List<GameObject> SpawndEnemy = new List<GameObject>();
 
     private Action onFloorClear;
-   
-    
 
     private void Awake()
     {
@@ -35,7 +33,7 @@ public class EnemyController : MonoBehaviour
     }
 
     //dealDamageToTargetに加えてplayer本体も受け取る
-    public void SpawnFloor(Enemy_StageData floorData, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager, Action onClear,ActionAnnounceUI actionAnnounceUI)
+    public void SpawnFloor(Enemy_StageData floorData, EnemyManager_Example manager, Action onClear, ActionAnnounceUI actionAnnounceUI)
     {
         Debug.Log($"=== SpawnFloor 呼び出し: ステージ{floorData.stage}-{floorData.floor} 敵数:{floorData.enemy.Count} ===");
 
@@ -49,18 +47,76 @@ public class EnemyController : MonoBehaviour
         onFloorClear = onClear;
 
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
+
         for (int i = 0; i < count; i++)
         {
-            SpawnOne(floorData.enemy[i], dealDamageToTarget, player, manager,actionAnnounceUI);
+            Debug.Log($"{floorData.enemy[i]},{GetFreeSpawnPoint(i + 1, count)}");
+            SpawnOne(floorData.enemy[i], manager, actionAnnounceUI, GetFreeSpawnPoint(i + 1, count));
         }
     }
 
+    //playerを受け取り、Initとターン実行に渡す
+    private void SpawnOne(EnemyData data, EnemyManager_Example manager, ActionAnnounceUI announceUI, Transform point)
+    {
+        if (data == null || data.prefab == null)
+        {
+            Debug.LogWarning("敵データまたはプレハブが設定されていません");
+            return;
+        }
+
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("Spawn Pointsが設定されていません");
+            return;
+        }
+
+        GameObject go = Instantiate(data.prefab, point);
+
+        if (go.transform is RectTransform rect)
+        {
+            rect.anchoredPosition = Vector2.zero;
+        }
+
+        EnemyUnit unit = go.GetComponent<EnemyUnit>();
+        if (unit == null)
+        {
+            Debug.LogWarning($"{data.enemyName}のプレハブにEnemyUnitが付いていません");
+            return;
+        }
+
+        unit.Init(data, this, manager, announceUI);
+        SpawndEnemy.Add(go);
+
+        Debug.Log($"{data.enemyName}を{point.name}に生成(現在の生存数:{SpawndEnemy.Count})");
+    }
+    private Transform GetFreeSpawnPoint(int count, int enemyCount) => (enemyCount, count) switch
+    {
+        (1, 1) => spawnPoints[1],
+        (2, 1) => spawnPoints[0],
+        (2, 2) => spawnPoints[2],
+        (3 ,1) => spawnPoints[0],
+        (3 ,2) => spawnPoints[1],
+        (3 ,3) => spawnPoints[2],
+        _      => null,
+    };
+    //private Transform oldGetFreeSpawnPoint(int count, int enemyCount)
+    //{
+    //    List<Transform> free = new List<Transform>();
+    //    foreach (Transform p in spawnPoints)
+    //    {
+    //        bool used = SpawndEnemy.Any(e => e != null && e.transform.parent == p);
+    //        if (!used) free.Add(p);
+    //    }
+    //    if (free.Count == 0) return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+    //    return free[UnityEngine.Random.Range(0, free.Count)];
+    //}
+
     //playerを受け取り、TargetDamageDealtDebuffに対応
-    public IEnumerator ExecuteAction(EnemyActionData action, EnemyUnit self, Action<int> dealDamageToTarget, Player_Example player)
+    public IEnumerator ExecuteAction(EnemyActionData action, EnemyUnit self)
     {
         //Debug.Log($"{self.name}の{action.actionName}");
 
-        List<ActionEffect> effectsToRun;
+        List<ActionEffect> effectsToRun = new();
 
         //ランダム行動なら、1つだけ抽選する
         if (action.isRandomPick && action.effects.Count > 0)
@@ -83,7 +139,7 @@ public class EnemyController : MonoBehaviour
                     for (int i = 0; i < Mathf.Max(1, effect.hitCount); i++)
                     {
                         int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate()) + Mathf.RoundToInt(self.GetFixedDamageBonus());
-                        dealDamageToTarget?.Invoke(dmg);
+                        //
                         Debug.Log($"    → {dmg}ダメージ");
                         self.OnAfterAttack();
                     }
@@ -100,7 +156,7 @@ public class EnemyController : MonoBehaviour
                     break;
 
                 case ActionEffectType.TargetDamageDealtDebuff:
-                    player.ApplyDamageDealtDebuff(effect.value, effect.duration);
+                    //player.ApplyDamageDealtDebuff(effect.value, effect.duration);
                     Debug.Log($"  → 相手の与ダメ-{effect.value}%");
                     break;
 
@@ -110,7 +166,7 @@ public class EnemyController : MonoBehaviour
                     break;
 
                 case ActionEffectType.TargetDamageTakenDebuff:
-                    player.ApplyDamageTakenDebuff(effect.value, effect.duration);
+                    //player.ApplyDamageTakenDebuff(effect.value, effect.duration);
                     Debug.Log($"  → 相手の被ダメ+{effect.value}%");
                     break;
 
@@ -120,12 +176,12 @@ public class EnemyController : MonoBehaviour
                     break;
 
                 case ActionEffectType.TargetMaxHpReduction:
-                    player.ReduceMaxHp(Mathf.RoundToInt(effect.value));
+                    //player.ReduceMaxHp(Mathf.RoundToInt(effect.value));
                     Debug.Log($"    → 相手の最大HPを{effect.value}減らした");
                     break;
 
                 case ActionEffectType.SetTargetHpToOne:
-                    player.SetHpToOne();
+                    //player.SetHpToOne();
                     Debug.Log($"    → 相手の体力を1にした");
                     break;
 
@@ -136,57 +192,6 @@ public class EnemyController : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
-    }
-
-    //playerを受け取り、Initとターン実行に渡す
-    private void SpawnOne(EnemyData data, Action<int> dealDamageToTarget, Player_Example player, EnemyManager_Example manager,ActionAnnounceUI announceUI)
-    {
-        
-
-        if (data == null || data.prefab == null)
-        {
-            Debug.LogWarning("敵データまたはプレハブが設定されていません");
-            return;
-        }
-
-        if (spawnPoints == null || spawnPoints.Length == 0)
-        {
-            Debug.LogWarning("Spawn Pointsが設定されていません");
-            return;
-        }
-
-        Transform point = GetFreeSpawnPoint();
-        GameObject go = Instantiate(data.prefab, point);
-
-        if (go.transform is RectTransform rect)
-        {
-            rect.anchoredPosition = Vector2.zero;
-            rect.localScale = Vector3.one;
-        }
-
-        EnemyUnit unit = go.GetComponent<EnemyUnit>();
-        if (unit == null)
-        {
-            Debug.LogWarning($"{data.enemyName}のプレハブにEnemyUnitが付いていません");
-            return;
-        }
-
-        unit.Init(data, this, dealDamageToTarget, player, manager,announceUI);
-        SpawndEnemy.Add(go);
-
-        Debug.Log($"{data.enemyName}を{point.name}に生成(現在の生存数:{SpawndEnemy.Count})");
-    }
-
-    private Transform GetFreeSpawnPoint()
-    {
-        List<Transform> free = new List<Transform>();
-        foreach (Transform p in spawnPoints)
-        {
-            bool used = SpawndEnemy.Any(e => e != null && e.transform.parent == p);
-            if (!used) free.Add(p);
-        }
-        if (free.Count == 0) return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-        return free[UnityEngine.Random.Range(0, free.Count)];
     }
 
     public void RunAllActions()

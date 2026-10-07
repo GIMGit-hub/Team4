@@ -15,4 +15,4 @@ MonoBehaviour:
   stage: 1
   floor: 1
   enemy:
-  - {fileID: 11400000, guid: d97a0fb0fd83d234e88a51e5d0e7ba35, type: 2}
+  - {fileID: 11400000, guid: 256d87e5718821d48a7f3af920a87917, type: 2}

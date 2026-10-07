@@ -5,13 +5,9 @@ using UnityEngine.UI;
 
 public class EnemyUnit : MonoBehaviour
 {
-    [SerializeField] private Button selectButton;
-
     private EnemyData data;
     private int hp;
     private int actionIndex = 0;
-    private Action<int> dealDamageToTarget;
-    private Player_Example player;
     private EnemyController controller;
     private EnemyManager_Example manager;
     private bool isDead = false;
@@ -27,22 +23,15 @@ public class EnemyUnit : MonoBehaviour
     private float fixedDamageBonus = 0f;
     private ActionAnnounceUI announceUI;
 
-    public void Init(EnemyData data, EnemyController controller, Action<int> dealDamageFunc, Player_Example player, EnemyManager_Example manager, ActionAnnounceUI announceUI)
+    public void Init(EnemyData data, EnemyController controller,EnemyManager_Example manager, ActionAnnounceUI announceUI)
     {
         this.data = data;
         hp = data.maxHp;
-        dealDamageToTarget = dealDamageFunc;
-        this.player = player;
         this.controller = controller;
         this.manager = manager;
         this.announceUI = announceUI;
 
         controller.Init(TakeTurn);
-
-        if (selectButton != null)
-        {
-            selectButton.onClick.AddListener(() => manager.OnSelectTarget(gameObject));
-        }
 
         if (data.battleStartSelfDamageDealtBuffPercent > 0)
         {
@@ -64,9 +53,9 @@ public class EnemyUnit : MonoBehaviour
         turnCount++;
 
         if (data.turnStartTargetDamageDealtDebuffPercent > 0 &&
-     (data.turnStartTargetDamageDealtDebuffMaxTurns == 0 || turnCount <= data.turnStartTargetDamageDealtDebuffMaxTurns))
+           (data.turnStartTargetDamageDealtDebuffMaxTurns == 0 || turnCount <= data.turnStartTargetDamageDealtDebuffMaxTurns))
         {
-            player.ApplyDamageDealtDebuff(data.turnStartTargetDamageDealtDebuffPercent, 1);
+            //player.ApplyDamageDealtDebuff(data.turnStartTargetDamageDealtDebuffPercent, 1);
             Debug.Log($"{data.enemyName}はターン開始時に相手の与ダメを{data.turnStartTargetDamageDealtDebuffPercent}%減らした"); // 修正
         }
 
@@ -91,7 +80,7 @@ public class EnemyUnit : MonoBehaviour
             announceUI.Show($"{data.enemyName}の{action.actionName}"); // 修正
         }
 
-        StartCoroutine(controller.ExecuteAction(action, this, dealDamageToTarget, player));
+        StartCoroutine(controller.ExecuteAction(action, this));
 
         TickDownBuff();
     }
