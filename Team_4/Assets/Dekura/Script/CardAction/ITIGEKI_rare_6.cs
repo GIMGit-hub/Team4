@@ -20,6 +20,7 @@ public class ITIGEKI_rare_6 : MonoBehaviour, ICardSpecialAction
 
         float finalDamage = Mathf.Min(maxDamage, minDamage + (maxDamage - minDamage) * percent);
 
+        Player.Instance.Attack(target, finalDamage, 1);
         yield return new WaitForSeconds(CardManager.Instance.activateDuration);
     }
 }

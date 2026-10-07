@@ -115,31 +115,39 @@ public class Player : MonoBehaviour
 
     //------------------------------playerのaction----------------------------//
 
-    public void Attack(CardEffect.EffectTarget target, float value, int count)
+    public void Attack(CardEffect.EffectTarget target, float value, int count, bool CountBuffAdaption = true)
     {
         float damage = value * Mathf.Max(1f, UseBuff(CardEffect.EffectType.AttackBuff) / 100f);
-        int hitcount = Mathf.Max(1, count + (int)UseBuff(CardEffect.EffectType.CountBuff));
+        int hitcount = Mathf.Max(1, count);
+
+        if (CountBuffAdaption) 
+            hitcount = Mathf.Max(1, count + (int)UseBuff(CardEffect.EffectType.CountBuff));
 
         Debug.Log($"Player Attack! Target: {target}, Damage: {damage}, Count: {hitcount}");
 
-        switch (target)
+        for (int i = 0;i< hitcount; i++)
         {
-            case CardEffect.EffectTarget.Enemy:
-                atTarget = "Enemy";
-                break;
-            case CardEffect.EffectTarget.AllEnemy:
-                atTarget = "AllEnemy";
-                break;
-            default:
-                break;
+            switch (target)
+            {
+                case CardEffect.EffectTarget.Enemy:
+                    atTarget = "Enemy";
+
+                    break;
+                case CardEffect.EffectTarget.AllEnemy:
+                    atTarget = "AllEnemy";
+
+                    break;
+                default:
+                    break;
+            }
+
+            attackResult = damage;
+            countResult = hitcount;
+            hitCount += hitcount;
+            attackTotalResult += damage * hitcount;
+
+            SoundsManager.Instance.PlaySound("hit");
         }
-
-        attackResult = damage;
-        countResult = hitcount;
-        hitCount += hitcount;
-        attackTotalResult += damage * hitcount;
-
-        SoundsManager.Instance.PlaySound("hit");
     }
 
     public void DpHeal(float value)

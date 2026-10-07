@@ -35,7 +35,7 @@ public class DiscriptWinUi : MonoBehaviour
             candidateCards.Add(candidateCard);
         }
 
-        if(candidateCards.Count != 0)
+        if (candidateCards.Count != 0) 
         {
             synCandidatesText_none.enabled = false;
 
@@ -50,8 +50,26 @@ public class DiscriptWinUi : MonoBehaviour
             }
         }
 
-        
+        if (cardInstance.cardData.cardDescription != null) 
+        {
+            discriptText_none.enabled = false;
 
+            string cost = cardInstance.costType != CardData.CostType.AllCost
+                ? cardInstance.Cost.ToString()
+                : "";
 
+            discriptText.text =
+                $"{CostTypeToString(cardInstance.costType)} {cost}\n" +
+                $"{cardInstance.cardData.cardDescription}";
+        }
     }
+
+    private string CostTypeToString(CardData.CostType type) => type switch
+    {
+        CardData.CostType.Normal=> "コスト消費",
+        CardData.CostType.Ace =>"コスト消費",
+        CardData.CostType.Hp=>"HP消費",
+        CardData.CostType.AllCost=>"コスト全消費",
+        _=>null,
+    };
 }

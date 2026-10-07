@@ -540,6 +540,7 @@ MonoBehaviour:
   cardName: "\u7652"
   costType: 0
   cost: 1
+  cardDescription: "\u81EA\u8EAB\u306EHP\u309240%\u56DE\u5FA9\u3002"
   effects:
   - target: 0
     type: 2

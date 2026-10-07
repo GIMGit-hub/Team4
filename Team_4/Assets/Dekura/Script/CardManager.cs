@@ -34,10 +34,12 @@ public class CardInstance
     public CardZone zone;
     public Vector2? sponePosition;
 
-    public bool AceCard => template.GetComponent<CardData>().Ace;
-    public int Cost => template.GetComponent<CardData>().cost;
-    public string CardName => template.GetComponent<CardData>().cardName;
-    public CardData.CostType costType => template.GetComponent<CardData>().costType;
+    public CardData cardData => template.GetComponent<CardData>();
+    public bool AceCard => cardData.Ace;
+    public int Cost => cardData.cost;
+    public string CardName => cardData.cardName;
+    public CardData.CostType costType => cardData.costType;
+   
 }
 
 public class CardManager : MonoBehaviour

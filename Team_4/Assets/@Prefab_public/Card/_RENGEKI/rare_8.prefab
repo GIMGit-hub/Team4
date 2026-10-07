@@ -421,7 +421,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0.0010986328, y: 0}
   m_SizeDelta: {x: 295.66, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &4801326115482661923
+--- !u!1 &5848518276297388439
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,9 +429,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6593183471195389851}
-  - component: {fileID: 2024444673836236152}
-  - component: {fileID: 6170651328583421112}
+  - component: {fileID: 7015693738285031850}
+  m_Layer: 5
+  m_Name: disc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7015693738285031850
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848518276297388439}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3426886376557722953}
+  m_Father: {fileID: 5125815311868308563}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 64.78418, y: -190.0628}
+  m_SizeDelta: {x: 166.0936, y: 57.8744}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &8173045842051463136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3426886376557722953}
+  - component: {fileID: 6505725621726465189}
+  - component: {fileID: 3099913878775515235}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -439,14 +475,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &6593183471195389851
+--- !u!224 &3426886376557722953
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4801326115482661923}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 8173045842051463136}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -455,24 +491,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00087929, y: 0}
+  m_AnchoredPosition: {x: -0.0008544922, y: 0}
   m_SizeDelta: {x: 166.09, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2024444673836236152
+--- !u!222 &6505725621726465189
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4801326115482661923}
+  m_GameObject: {fileID: 8173045842051463136}
   m_CullTransparentMesh: 1
---- !u!114 &6170651328583421112
+--- !u!114 &3099913878775515235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4801326115482661923}
+  m_GameObject: {fileID: 8173045842051463136}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -486,7 +522,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "-\u6575\u5358\u4F53 100\u30C0\u30E1\u30FC\u30B8\xD72\u56DE\n-HIT\u3059\u308B\u305F\u3073\u30C0\u30E1\u30FC\u30B8+50"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b8c95c76daf7d94e92a31d1936c7bc7, type: 2}
   m_sharedMaterial: {fileID: 464554085055861006, guid: 9b8c95c76daf7d94e92a31d1936c7bc7, type: 2}
@@ -558,42 +594,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &5848518276297388439
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7015693738285031850}
-  m_Layer: 5
-  m_Name: disc
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7015693738285031850
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5848518276297388439}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6593183471195389851}
-  m_Father: {fileID: 5125815311868308563}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 64.78418, y: -190.0628}
-  m_SizeDelta: {x: 166.0936, y: 57.8744}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8578336792466497532
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,6 +606,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 1811540734825085143}
   m_Layer: 5
   m_Name: rare_8
   m_TagString: Untagged
@@ -677,9 +678,26 @@ MonoBehaviour:
   cardName: "\u8FFD\u6483"
   costType: 0
   cost: 1
+  cardDescription: 
   effects:
   - target: 1
     type: 13
     value: 0
     valueCount: 0
   Ace: 0
+--- !u!114 &1811540734825085143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0bba4a22cea8c479689b7e2d700f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_rare_8
+  target: 0
+  damage: 100
+  count: 2
+  damageUp: 50

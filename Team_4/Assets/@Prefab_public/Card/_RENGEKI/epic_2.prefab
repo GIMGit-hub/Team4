@@ -606,6 +606,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 679187729525571823}
   m_Layer: 5
   m_Name: epic_2
   m_TagString: Untagged
@@ -677,9 +678,25 @@ MonoBehaviour:
   cardName: "\u53CC"
   costType: 3
   cost: 3
+  cardDescription: 
   effects:
   - target: 1
     type: 13
     value: 1
     valueCount: 1
   Ace: 1
+--- !u!114 &679187729525571823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02ab945e96c87442808343751607763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_Ace
+  target: 0
+  damage: 100
+  multipter: 2

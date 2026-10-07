@@ -606,6 +606,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 7846727742128114158}
   m_Layer: 5
   m_Name: rare_12
   m_TagString: Untagged
@@ -677,9 +678,28 @@ MonoBehaviour:
   cardName: "\u6162\u5FC3"
   costType: 0
   cost: 1
+  cardDescription: 
   effects:
   - target: 1
     type: 13
     value: 0
     valueCount: 0
   Ace: 0
+--- !u!114 &7846727742128114158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8bcfeb600bef14aa64e99407c12d60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_rare_12
+  target: 0
+  damage: 100
+  maxCount: 10
+  minCount: 1
+  maxCountHpPer: 100
+  minCountHpPer: 10
