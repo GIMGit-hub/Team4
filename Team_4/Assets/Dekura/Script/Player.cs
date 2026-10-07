@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
         //---------------------------//
         nowHp = startHp;
         nowDp = startDp;
@@ -104,6 +105,8 @@ public class Player : MonoBehaviour
 
     private void UpdateUi()
     {
+        if (debugWindow == null) return;
+
         debugWindow.text =
             $"HP  :: {nowHp} / {maxHp}\n" +
             $"DP  :: {nowDp}\n" +

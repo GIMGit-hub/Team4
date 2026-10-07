@@ -75,6 +75,7 @@ public class EnemyUnit : MonoBehaviour
 
         Debug.Log($"[ターン{turnCount}] {data.enemyName} の行動: {action.actionName}"); // 修正
 
+        //ここ直す
         if (announceUI != null)
         {
             announceUI.Show($"{data.enemyName}の{action.actionName}"); // 修正
