@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9fe439b4de7ce643a2a5f6bde3ccfa0, type: 3}
-  m_Name: Stage2_1
+  m_Name: Stage3_4
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_StageData
-  stage: 2
-  floor: 1
+  stage: 3
+  floor: 4
   enemy:
-  - {fileID: 11400000, guid: 1973e1357cedc6441a479a515a81da1f, type: 2}
-  - {fileID: 11400000, guid: f07f520729c125f43adad042b99215b7, type: 2}
+  - {fileID: 11400000, guid: 2925135af08d83d479df140ae68e7969, type: 2}
