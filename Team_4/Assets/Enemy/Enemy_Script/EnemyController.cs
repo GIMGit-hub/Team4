@@ -11,6 +11,10 @@ public class EnemyController : MonoBehaviour
     private const int MaxSimultaneous = 3;
 
     [SerializeField] private Transform[] spawnPoints;
+    private RectTransform[] spawnPointsStartPosition = new RectTransform[MaxSimultaneous];
+
+    [SerializeField] private Vector2 spawnPointPosition_0;
+    [SerializeField] private Vector2 spawnPointPosition_2;
 
     private readonly List<Action> receivedFunctions = new List<Action>();
     private List<GameObject> SpawndEnemy = new List<GameObject>();
@@ -25,6 +29,11 @@ public class EnemyController : MonoBehaviour
             return;
         }
         Instance = this;
+
+        for (int i = 0; i < MaxSimultaneous; i++) 
+        {
+            spawnPointsStartPosition[i] = spawnPoints[i].GetComponent<RectTransform>();
+        }
     }
 
     public void Init(Action func)
@@ -47,6 +56,20 @@ public class EnemyController : MonoBehaviour
         onFloorClear = onClear;
 
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
+        if (count == 2)
+        {
+            spawnPoints[0].GetComponent<RectTransform>().anchoredPosition = spawnPointPosition_0;
+            //spawnPoints[1].GetComponent<GameObject>().SetActive(false);
+            spawnPoints[2].GetComponent<RectTransform>().anchoredPosition = spawnPointPosition_2;
+        }
+        else
+        {
+            //spawnPoints[1].GetComponent<GameObject>().SetActive(true);
+            for (int i = 0; i < MaxSimultaneous; i++)
+            {
+                spawnPoints[i].GetComponent<RectTransform>().position = spawnPointsStartPosition[i].position;
+            }
+        }
 
         for (int i = 0; i < count; i++)
         {
