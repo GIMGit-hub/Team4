@@ -744,6 +744,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 5436122944957549975}
   m_Layer: 5
   m_Name: rare_10
   m_TagString: Untagged
@@ -815,9 +816,24 @@ MonoBehaviour:
   cardName: "\u7D99\u627F"
   costType: 1
   cost: 30
+  cardDescription: 
   effects:
   - target: 0
     type: 13
     value: 0
     valueCount: 0
   Ace: 0
+--- !u!114 &5436122944957549975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aa6425fff76b644a3281ff92b0ece5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_rare_10
+  target: 0
+  count: 2

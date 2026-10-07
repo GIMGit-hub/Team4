@@ -486,7 +486,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "-\u6575\u5358\u4F53 100\u30C0\u30E1\u30FC\u30B8\xD72\u56DE\n-HIT\u3059\u308B\u305F\u3073\u30C0\u30E1\u30FC\u30B8+50"
+  m_text: "-\u6575\u5358\u4F53 50\u30C0\u30E1\u30FC\u30B8\xD74\u56DE\n-HIT\u3059\u308B\u305F\u3073
+    5%\u56DE\u5FA9"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b8c95c76daf7d94e92a31d1936c7bc7, type: 2}
   m_sharedMaterial: {fileID: 464554085055861006, guid: 9b8c95c76daf7d94e92a31d1936c7bc7, type: 2}
@@ -606,6 +607,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 686699876226634287}
   m_Layer: 5
   m_Name: rare_7
   m_TagString: Untagged
@@ -677,9 +679,26 @@ MonoBehaviour:
   cardName: "\u4E71\u821E"
   costType: 0
   cost: 1
+  cardDescription: 
   effects:
   - target: 1
     type: 13
     value: 0
     valueCount: 0
   Ace: 0
+--- !u!114 &686699876226634287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f56e1b785b743428bd5b392ff8d822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_rare_7
+  target: 0
+  damage: 50
+  count: 4
+  heal: 5

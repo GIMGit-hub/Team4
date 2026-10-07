@@ -677,6 +677,7 @@ MonoBehaviour:
   cardName: "\u7121"
   costType: 0
   cost: 2
+  cardDescription: 
   effects:
   - target: 0
     type: 8

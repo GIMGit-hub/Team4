@@ -70,6 +70,7 @@ public class CardData : MonoBehaviour
     public string cardName;
     public CostType costType = CostType.Normal;
     public int cost;
+    public string cardDescription;
 
     [Header("効果種/効果量/発動回数::効果処理順に書くこと！")]
     public List<CardEffect> effects;
