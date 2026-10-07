@@ -36,7 +36,7 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
-        if (NowTurn == TurnState.EnemyTurn) TurnChange();
+        //if (NowTurn == TurnState.EnemyTurn) TurnChange();
     }
 
     public void TurnChange()

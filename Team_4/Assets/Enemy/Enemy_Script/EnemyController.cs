@@ -217,11 +217,16 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void RunAllActions()
+    public IEnumerator RunAllActions()
     {
         Debug.Log($"=== RunAllActions åƒÇ—èoÇµ(ìoò^êî:{receivedFunctions.Count}) ===");
         List<Action> snapshot = new List<Action>(receivedFunctions);
-        foreach (Action func in snapshot) func?.Invoke();
+        foreach (Action func in snapshot)
+        {
+            func?.Invoke();
+            yield return new WaitForSeconds(1f);
+        }
+        TurnManager.Instance.TurnChange();
     }
 
     public void PlayerAttack(int damage, GameObject target)

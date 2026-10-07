@@ -19,10 +19,24 @@ public class EnemyManager_Example : MonoBehaviour
     private GameObject selectedTarget;
     private int battleTurnCount = 0;
 
+    private void OnEnable() => SetEventSubscribed(true);
+    private void OnDisable() => SetEventSubscribed(false);
+
     private void Start()
     {
+        SetEventSubscribed(true);
         StartCurrentFloor();
     }
+
+    private void SetEventSubscribed(bool isEnable)
+    {
+        if (TurnManager.Instance != null)
+        {
+            TurnManager.Instance.OnTurnChanged -= SwitchTurn;
+            if (isEnable) TurnManager.Instance.OnTurnChanged += SwitchTurn;
+        }
+    }
+
 
     // åªç›ÇÃstage/floorÇ…çáÇ§Enemy_StageDataÇíTÇ∑
     private Enemy_StageData FindFloorData(int stage, int floor)
@@ -91,5 +105,23 @@ public class EnemyManager_Example : MonoBehaviour
         }
 
         controller.RunAllActions();
+    }
+
+    private void SwitchTurn(TurnManager.TurnState turnState)
+    {
+        switch (turnState)
+        {
+            case TurnManager.TurnState.PlayerTurn:
+                break;
+
+            case TurnManager.TurnState.EnemyTurn:
+                StartCoroutine(controller.RunAllActions());
+                break;
+
+            default:
+                break;
+        }
+
+        UiManager.Instance.UpdateUi();
     }
 }
