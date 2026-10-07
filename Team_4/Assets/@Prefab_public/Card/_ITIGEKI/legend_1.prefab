@@ -677,6 +677,7 @@ MonoBehaviour:
   cardName: "\u58CA"
   costType: 0
   cost: 4
+  cardDescription: "\u300C\u6EC5\u300D\u3092\u5F15\u304D\u3001\\n\u30B3\u30B9\u30C80\u3067\u4F7F\u7528\u53EF\u80FD\u306B\u3059\u308B"
   effects:
   - target: 0
     type: 8

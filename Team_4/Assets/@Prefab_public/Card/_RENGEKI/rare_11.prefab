@@ -677,6 +677,7 @@ MonoBehaviour:
   cardName: "\u9023\u6483"
   costType: 0
   cost: 1
+  cardDescription: "\u6575\u5358\u4F53\u306B60\u30C0\u30E1\u30FC\u30B8\xD72\u4E0E\u3048\u3001\\n\u30AB\u30FC\u30C93\u679A\u5F15\u304F"
   effects:
   - target: 1
     type: 0
