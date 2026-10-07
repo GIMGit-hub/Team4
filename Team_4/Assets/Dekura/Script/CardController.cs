@@ -33,6 +33,9 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public static event System.Action<Vector2> OnDragStarted;
     public static event System.Action OnDragEnded;
 
+    private void OnEnable() => SetEventSubscribed(true);
+    private void OnDisable() => SetEventSubscribed(false);
+
     void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -45,23 +48,52 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         siblingIndex=transform.GetSiblingIndex();
     }
 
+    void Start()
+    {
+        SetEventSubscribed(true);
+        UpdateCardVisual();
+    }
 
     //------------------------------データ更新-----------------------------------//
 
+    private void SetEventSubscribed(bool isEnable)
+    {
+        if (Player.Instance != null)
+        {
+            Player.Instance.BuffAdded -= UpdateCardVisual;
+            if (isEnable) Player.Instance.BuffAdded += UpdateCardVisual;
+        }
+    }
+
     public void UpdateCardVisual()
     {
-        if( Player.Instance.GetEffect(CardEffect.EffectType.CostBuff) != 0)
+        if (Player.Instance.GetEffect(CardEffect.EffectType.CostFree) != 0)
+        {
+            costText.text = "0";
+            costText.color = highlightCostColor;
+        }
+        else if ((BoundInstance.costType == CardData.CostType.Normal) &&
+           (Player.Instance.GetEffect(CardEffect.EffectType.CostBuff) != 0))
         {
             costText.text = (BoundInstance.Cost - (int)Player.Instance.GetEffect(CardEffect.EffectType.CostBuff)).ToString();
-            costText.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, highlightCostColor);
-            costText.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, highlightCostBold);
+            costText.color = highlightCostColor;
+            //costText.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, highlightCostColor);
+            //costText.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, highlightCostBold);
         }
-        else
+        else if ((BoundInstance.AceCard) &&
+                (Player.Instance.GetEffect(CardEffect.EffectType.CostBuff_Ace) != 0))
+        {
+            costText.text = "0";
+            costText.color = highlightCostColor;
+            //costText.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, highlightCostColor);
+            //costText.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, highlightCostBold);
+        }
+        else if (BoundInstance.costType != CardData.CostType.AllCost)
         {
             costText.text = BoundInstance.Cost.ToString();
-            costText.fontMaterial = costText.font.material;
+            costText.color = Color.white;
+            //costText.fontMaterial = costText.font.material;
         }
-        kanjiText.text = BoundInstance.CardName;
     }
 
     public void Bind(CardInstance instance) => BoundInstance = instance;
@@ -77,6 +109,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         isDraging = true;
 
         rect.DOKill();
+        DiscriptWindow.Instance.CloseWindow();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -118,13 +151,18 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         if (isDraging || isSelected) return;
 
         SoundsManager.Instance.PlaySound("pati");
-        isSelected = true;
+        if (m_currentSlot == null)
+        {
+            DiscriptWindow.Instance.OpenWindow(gameObject, BoundInstance);
+            isSelected = true;
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
 
         isSelected = false;
+        DiscriptWindow.Instance.CloseWindow();
     }
 
     //------------------------------カード自身の挙動-------------------------------------//

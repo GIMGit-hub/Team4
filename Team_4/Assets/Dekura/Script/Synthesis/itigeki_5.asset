@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e2101192663d946a9860aae33d7e5d, type: 3}
+  m_Name: itigeki_5
+  m_EditorClassIdentifier: Assembly-CSharp::SynPattern
+  resultCard: {fileID: 8578336792466497532, guid: fe94cfff92d96c141b408e0831338d36, type: 3}
+  requiredCards:
+  - card_A: {fileID: 8195112710207023301, guid: 98b1ae05fa49e2542bbb5ff419d5b7a9, type: 3}
+    card_B: {fileID: 8195112710207023301, guid: 55eee7c2ba0a68c4ba8bddd80bbbe553, type: 3}

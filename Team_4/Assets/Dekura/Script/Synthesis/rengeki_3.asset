@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e2101192663d946a9860aae33d7e5d, type: 3}
+  m_Name: rengeki_3
+  m_EditorClassIdentifier: Assembly-CSharp::SynPattern
+  resultCard: {fileID: 8578336792466497532, guid: 3db82050509763943856f79baebfc1f4, type: 3}
+  requiredCards:
+  - card_A: {fileID: 8195112710207023301, guid: 952f7c4be92031a4ba0957bafbabae6d, type: 3}
+    card_B: {fileID: 8195112710207023301, guid: 7225022bdb45ef743b64f00eb00b30e1, type: 3}
+  - card_A: {fileID: 8195112710207023301, guid: 094cc8aaa5eba0e4ea820e9bba309cc0, type: 3}
+    card_B: {fileID: 8195112710207023301, guid: 1fdfcd2c00e1c6446a2316d3a241fa35, type: 3}

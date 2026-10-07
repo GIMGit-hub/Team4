@@ -607,6 +607,7 @@ GameObject:
   - component: {fileID: 5029512761714197135}
   - component: {fileID: 5843693183681023860}
   - component: {fileID: 8195112710207023301}
+  - component: {fileID: 7523894670013203353}
   m_Layer: 5
   m_Name: epic_1
   m_TagString: Untagged
@@ -659,7 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   costText: {fileID: 8271255700082070572}
   kanjiText: {fileID: 2967633298547061347}
-  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 0}
+  highlightCostColor: {r: 0.51171637, g: 1, b: 0, a: 1}
   highlightCostBold: 0.2
 --- !u!114 &8195112710207023301
 MonoBehaviour:
@@ -673,12 +674,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  cardPrefab: {fileID: 8578336792466497532}
   cardType: 0
   cardName: "\u6EC5"
+  costType: 3
   cost: 8
   effects:
-  - target: 0
-    type: 0
+  - target: 1
+    type: 13
     value: 1
     valueCount: 1
   Ace: 1
+--- !u!114 &7523894670013203353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578336792466497532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a138c94fac0d0c4e8234139a9bdf2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ITIGEKI_Ace
+  target: 1
+  damage: 300
+  multipter: 1

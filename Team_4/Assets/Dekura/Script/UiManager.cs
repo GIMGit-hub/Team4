@@ -23,8 +23,8 @@ public class UiManager : MonoBehaviour
     [Header("ColisionSpace")]
     [SerializeField] private Image colisionSpace_use;
 
-    private void OnEnable() { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed += UpdateUi; }
-    private void OnDisable() { if (CardManager.Instance != null) CardManager.Instance.OnCardUsed -= UpdateUi; }
+    private void OnEnable() => SetEventSubscribed(true);
+    private void OnDisable() => SetEventSubscribed(false);
 
     private void Awake()
     {
@@ -43,11 +43,19 @@ public class UiManager : MonoBehaviour
 
     private void Start()
     {
-        CardManager.Instance.OnCardUsed -= UpdateUi;
-        CardManager.Instance.OnCardUsed += UpdateUi;
+        SetEventSubscribed(true);
 
         SetLastData();
         UpdateUi();
+    }
+
+    private void SetEventSubscribed(bool isEnable)
+    {
+        if (CardManager.Instance != null)
+        {
+            CardManager.Instance.OnCardUsed -= UpdateUi;
+            if (isEnable) CardManager.Instance.OnCardUsed += UpdateUi;
+        }
     }
 
     public void UpdateUi()

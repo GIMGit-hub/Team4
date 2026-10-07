@@ -521,7 +521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   costText: {fileID: 515233236938562450}
   kanjiText: {fileID: 5451364284689754483}
-  highlightCostColor: {r: 0.17051923, g: 1, b: 0, a: 0}
+  highlightCostColor: {r: 0.51171637, g: 1, b: 0, a: 1}
   highlightCostBold: 0.2
 --- !u!114 &8195112710207023301
 MonoBehaviour:
@@ -535,6 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4838d297a1242ba4ba8776e749759d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  cardPrefab: {fileID: 8578336792466497532}
   cardType: 0
   cardName: "\u6607"
   costType: 0
@@ -610,7 +611,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u55B0"
+  m_text: "\u6607"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
