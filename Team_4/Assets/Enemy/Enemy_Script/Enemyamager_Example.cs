@@ -25,7 +25,7 @@ public class EnemyManager_Example : MonoBehaviour
     private void Start()
     {
         SetEventSubscribed(true);
-        StartCurrentFloor();
+        //StartCurrentFloor();
     }
 
     private void SetEventSubscribed(bool isEnable)
@@ -45,8 +45,12 @@ public class EnemyManager_Example : MonoBehaviour
     }
 
     // 現在のフロアの敵を生成する
-    private void StartCurrentFloor()
+    public void StartCurrentFloor(int stage,int floor)
     {
+        //StageManagerから現在のステージ、フロアを受け取る
+        currentFloor = floor;
+        currentStage = stage;
+
         Enemy_StageData data = FindFloorData(currentStage, currentFloor);
         if (data == null)
         {
@@ -64,7 +68,7 @@ public class EnemyManager_Example : MonoBehaviour
     {
         Debug.Log($"ステージ{currentStage}-{currentFloor} クリア！");
 
-        currentFloor++;
+        //currentFloor++;
 
         Enemy_StageData next = FindFloorData(currentStage, currentFloor);
         if (next == null)
@@ -73,7 +77,7 @@ public class EnemyManager_Example : MonoBehaviour
             return;
         }
 
-        StartCurrentFloor();
+        //StartCurrentFloor();
     }
 
     // ステージ選択ボタン(あれば): 指定ステージの1フロア目から開始
@@ -81,7 +85,7 @@ public class EnemyManager_Example : MonoBehaviour
     {
         currentStage = stage;
         currentFloor = 1;
-        StartCurrentFloor();
+        //StartCurrentFloor();
     }
 
     public void OnSelectTarget(GameObject target)
