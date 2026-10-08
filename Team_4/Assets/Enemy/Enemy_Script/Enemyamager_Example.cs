@@ -60,7 +60,7 @@ public class EnemyManager_Example : MonoBehaviour
 
         Debug.Log($"=== ステージ{currentStage}-{currentFloor} 開始 ===");
 
-        controller.SpawnFloor(data,this, OnFloorClear,actionAnnounceUI);
+        controller.SpawnFloor(data, this, OnFloorClear, actionAnnounceUI);
     }
 
     // フロアクリア時に呼ばれる(Controllerから)

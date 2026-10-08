@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using NUnit.Framework.Internal;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     public int nowCost { get; private set; } = 0;
     public int useCardCount { get; private set; } = 0;
     public int hitCount { get; private set; } = 0;
+    public int countResult { get; private set; } = 0;
 
     [Header("最大/開始時ステータス")]
     [SerializeField] public float maxHp = 100f;
@@ -48,10 +50,10 @@ public class Player : MonoBehaviour
     //debug
     private float attackResult = 0;
     private float attackTotalResult = 0;
-    private int countResult = 1;
     private string atTarget = null;
 
     public event System.Action BuffAdded;
+    public event System.Action HpMoved;
 
     private void OnEnable() => SetEventSubscribed(true);
     private void OnDisable() => SetEventSubscribed(false);
@@ -123,12 +125,18 @@ public class Player : MonoBehaviour
 
     //------------------------------playerのaction----------------------------//
 
-    public void Attack(CardEffect.EffectTarget target, float value, int count, bool CountBuffAdaption = true)
+    public void Attack(CardEffect.EffectTarget target, float value, int count, EnemyUnit enemy = null, bool CountBuffAdaption = true)
     {
-        StartCoroutine(SpecialAction(target, value, count, CountBuffAdaption));
+
+        if (target == CardEffect.EffectTarget.Enemy && enemy == null)
+        {
+            Debug.LogWarning("Enemy_null");
+            return;
+        }
+        StartCoroutine(SpecialAction(target, value, count, enemy, CountBuffAdaption));
     }
 
-    private IEnumerator SpecialAction(CardEffect.EffectTarget target, float value, int count, bool CountBuffAdaption)
+    private IEnumerator SpecialAction(CardEffect.EffectTarget target, float value, int count, EnemyUnit enemy, bool CountBuffAdaption)
     {
         float damage = value * Mathf.Max(1f, UseBuff(CardEffect.EffectType.AttackBuff) / 100f);
         int hitcount = Mathf.Max(1, count);
@@ -144,11 +152,11 @@ public class Player : MonoBehaviour
             {
                 case CardEffect.EffectTarget.Enemy:
                     atTarget = "Enemy";
-
+                    if(!EnemyController.Instance.PlayerAttack(damage, enemy)) yield break;
                     break;
                 case CardEffect.EffectTarget.AllEnemy:
                     atTarget = "AllEnemy";
-
+                    EnemyController.Instance.PlayerAttackAll(damage);
                     break;
                 default:
                     break;
@@ -272,10 +280,15 @@ public class Player : MonoBehaviour
     public void TakeDamage(float amount)
     {
         nowHp = Mathf.Max(0f, nowHp - amount);
-        if(nowHp == 0)
+        EffectManager.Instance.Playfade("damage");
+        SoundsManager.Instance.PlaySound("damage");
+
+        if (nowHp == 0)
         {
             //敗北処理
         }
+
+        HpMoved?.Invoke();
     }
 
     //バフの新規獲得

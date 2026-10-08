@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour
 {
@@ -11,13 +12,14 @@ public class EnemyController : MonoBehaviour
     private const int MaxSimultaneous = 3;
 
     [SerializeField] private Transform[] spawnPoints;
-    private RectTransform[] spawnPointsStartPosition = new RectTransform[MaxSimultaneous];
+    private Vector2[] spawnPointsStartPosition = new Vector2[MaxSimultaneous];
 
     [SerializeField] private Vector2 spawnPointPosition_0;
     [SerializeField] private Vector2 spawnPointPosition_2;
 
     private readonly List<Action> receivedFunctions = new List<Action>();
     private List<GameObject> SpawndEnemy = new List<GameObject>();
+    private List<GameObject> SpawndDiedEnemy = new List<GameObject>();
 
     private Action onFloorClear;
 
@@ -32,7 +34,7 @@ public class EnemyController : MonoBehaviour
 
         for (int i = 0; i < MaxSimultaneous; i++) 
         {
-            spawnPointsStartPosition[i] = spawnPoints[i].GetComponent<RectTransform>();
+            spawnPointsStartPosition[i] = spawnPoints[i].GetComponent<RectTransform>().anchoredPosition;
         }
     }
 
@@ -56,6 +58,7 @@ public class EnemyController : MonoBehaviour
         onFloorClear = onClear;
 
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
+        Debug.Log($"aaaaaaaaa{count}");
         if (count == 2)
         {
             spawnPoints[0].GetComponent<RectTransform>().anchoredPosition = spawnPointPosition_0;
@@ -65,9 +68,9 @@ public class EnemyController : MonoBehaviour
         else
         {
             //spawnPoints[1].GetComponent<GameObject>().SetActive(true);
-            for (int i = 0; i < MaxSimultaneous; i++)
+            for (int i = 0; i < count; i++)
             {
-                spawnPoints[i].GetComponent<RectTransform>().position = spawnPointsStartPosition[i].position;
+                spawnPoints[i].GetComponent<RectTransform>().anchoredPosition = spawnPointsStartPosition[i];
             }
         }
 
@@ -161,8 +164,8 @@ public class EnemyController : MonoBehaviour
                 case ActionEffectType.Damage:
                     for (int i = 0; i < Mathf.Max(1, effect.hitCount); i++)
                     {
-                        int dmg = Mathf.RoundToInt(effect.value * self.GetDamageDealtRate()) + Mathf.RoundToInt(self.GetFixedDamageBonus());
-                        //
+                        float dmg = effect.value * self.GetDamageDealtRate() + self.GetFixedDamageBonus();
+                        Player.Instance.TakeDamage(dmg);
                         Debug.Log($"    → {dmg}ダメージ");
                         self.OnAfterAttack();
                     }
@@ -229,39 +232,67 @@ public class EnemyController : MonoBehaviour
         TurnManager.Instance.TurnChange();
     }
 
-    public void PlayerAttack(int damage, GameObject target)
+    public bool PlayerAttack(float damage, EnemyUnit unit)
     {
-        Debug.Log($"=== PlayerAttack 呼び出し(target={target?.name}, damage={damage}) ===");
+        //Debug.Log($"=== PlayerAttack 呼び出し(target={target?.name}, damage={damage}) ===");
 
-        if (target == null || !SpawndEnemy.Contains(target))
-        {
-            Debug.Log("その敵はもういません");
-            return;
-        }
+        //if (target == null || !SpawndEnemy.Contains(target))
+        //{
+        //    Debug.Log("その敵はもういません");
+        //    return;
+        //}
 
-        EnemyUnit unit = target.GetComponent<EnemyUnit>();
-        if (unit == null) return;
+        //EnemyUnit unit = target.GetComponent<EnemyUnit>();
+        GameObject target = unit.gameObject;
+        if (unit == null || unit.isDead)  return false;
 
         Debug.Log($"プレイヤーの攻撃！ {target.name}に{damage}ダメージ");
         unit.TakeDamage(damage);
+        return true;
+    }
+
+    public void PlayerAttackAll(float damage)
+    {
+        Debug.Log($"プレイヤーの攻撃！ 全員に{damage}ダメージ");
+        foreach (var enemy in SpawndEnemy.ToList())
+        {
+            EnemyUnit unit = enemy.GetComponent<EnemyUnit>();
+
+            if (unit == null || unit.isDead) continue;
+            unit.TakeDamage(damage);
+        }
     }
 
     public int GetAliveEnemyCount() => SpawndEnemy.Count;
 
     public void EnemyDead(GameObject obj)
     {
-        if (SpawndEnemy.Remove(obj))
+        if (SpawndEnemy.Contains(obj))
         {
             Debug.LogWarning($"{obj.name}を倒した(残り生存数:{SpawndEnemy.Count})");
+
+            SpawndDiedEnemy.Add(obj);
 
             EnemyUnit unit = obj.GetComponent<EnemyUnit>();
             receivedFunctions.RemoveAll(a => a.Target == unit);
 
-            if (SpawndEnemy.Count == 0)
+            if (SpawndEnemy.Count == SpawndDiedEnemy.Count) 
             {
                 Debug.Log("フロアの敵を全滅させました");
-                onFloorClear?.Invoke();
+                AllEnemyDead();
             }
         }
+    }
+
+    public void AllEnemyDead()
+    {
+        foreach(var enemy in SpawndEnemy.ToList())
+        {
+            Destroy(enemy);
+        }
+
+        SpawndEnemy.Clear();
+        SpawndDiedEnemy.Clear();
+        onFloorClear?.Invoke();
     }
 }

@@ -88,4 +88,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1748fa3ee66f444c9f5cd4811de1eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
-  selectButton: {fileID: 0}
+  enemyImage: {fileID: 5516113432437480403}

@@ -9,7 +9,7 @@ public class ITIGEKI_rare_6 : MonoBehaviour, ICardSpecialAction
     [SerializeField] private float maxDamageHpPer = 50f;
     [SerializeField] private float minDamageHpPer = 100f;
 
-    public IEnumerator SpecialAction()
+    public IEnumerator SpecialAction(EnemyUnit enemy = null)
     {
         Debug.Log("ITIGEKI_rare_6 SpecialAction executed.");
 
@@ -20,7 +20,7 @@ public class ITIGEKI_rare_6 : MonoBehaviour, ICardSpecialAction
 
         float finalDamage = Mathf.Min(maxDamage, minDamage + (maxDamage - minDamage) * percent);
 
-        Player.Instance.Attack(target, finalDamage, 1);
+        Player.Instance.Attack(target, finalDamage, 1, enemy);
         yield return new WaitForSeconds(CardManager.Instance.activateDuration);
     }
 }

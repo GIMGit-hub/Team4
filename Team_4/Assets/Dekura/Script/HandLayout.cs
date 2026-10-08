@@ -30,8 +30,9 @@ public class HandLayout : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private List<GameObject> cards = new List<GameObject>();
     private Dictionary<CardInstance, GameObject> activeCards = new();
 
-    public bool isSelected { get; private set; } = false;
-    public bool isOnCursol { get; private set; } = false;
+    public static bool isSelected { get; private set; } = false;
+    public static bool isDraging  { get; private set; } = false;
+    public static bool isOnCursol { get; private set; } = false;
     private bool isAnimating = false;
 
     private void OnEnable() => SetEventSubscribed(true);
@@ -105,7 +106,9 @@ public class HandLayout : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             RectTransform rect = cards[i].GetComponent<RectTransform>();
             CardController card = cards[i].GetComponentInChildren<CardController>();
 
-            if (card.isDraging)
+            isDraging = card.isDraging;
+
+            if (isDraging)
             {
                 canHover = false;
                 continue;

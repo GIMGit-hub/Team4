@@ -2,6 +2,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static CardEffect;
 
 [RequireComponent(typeof(RectTransform))]
 public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IPointerEnterHandler, IPointerExitHandler,IPointerClickHandler
@@ -30,7 +31,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     private Vector2 discardPoint = new Vector2(-1238, -245);
     private float tweenDuration = 0.15f;
 
-    public static event System.Action<Vector2> OnDragStarted;
+    public static event System.Action<Vector2, EffectTarget> OnDragStarted;
     public static event System.Action OnDragEnded;
 
     private void OnEnable() => SetEventSubscribed(true);
@@ -96,6 +97,22 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         }
     }
 
+    private EffectTarget GetEffectTarget()
+    {
+        EffectTarget target = EffectTarget.Player;
+        foreach (var ins in BoundInstance.cardData.effects)
+        {
+            if (ins.target == EffectTarget.Enemy) target = EffectTarget.Enemy;
+            if (ins.target == EffectTarget.AllEnemy)
+            {
+                target = EffectTarget.AllEnemy;
+                break;
+            }
+        }
+
+        return target;
+    }
+
     public void Bind(CardInstance instance) => BoundInstance = instance;
 
     //-------------------------------Player操作系----------------------------------//
@@ -116,21 +133,25 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
 
-        rect.anchoredPosition += eventData.delta/canvas.scaleFactor;
-        OnDragStarted?.Invoke(eventData.position);
+        rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        OnDragStarted?.Invoke(eventData.position, GetEffectTarget());
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        isDraging = false;
-
         bool isUseCard = RectTransformUtility.RectangleContainsScreenPoint(m_cardManager.hitColision, rect.position);
         SynthesisSlot slot = SynthesisSlot.FindSlot(rect.position);
 
+        if (slot != null)
+            SnapToSlot(slot);
+        else if (GetEffectTarget() == EffectTarget.Enemy && SpawnArea.onCursolEnemy != null)
+            UsingCard(SpawnArea.onCursolEnemy);
+        else if (isUseCard && GetEffectTarget() != EffectTarget.Enemy)
+            UsingCard();
+        else
+            ReturnToHand();
 
-        if      (slot != null)  SnapToSlot(slot);
-        else if (isUseCard)     UsingCard();
-        else                    ReturnToHand();
+        isDraging = false;
 
         OnDragEnded?.Invoke();
     }
@@ -167,10 +188,10 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
 
     //------------------------------カード自身の挙動-------------------------------------//
 
-    private void UsingCard()
+    private void UsingCard(EnemyUnit enemy = null)
     {
         Debug.Log($"TryUse_Wating::{BoundInstance}");
-        if (!m_cardManager.UseCard(BoundInstance)) ReturnToHand();
+        if (!m_cardManager.UseCard(BoundInstance, enemy)) ReturnToHand();
     }
 
     public void SnapToSlot(SynthesisSlot slot)
@@ -194,6 +215,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         Debug.Log("ReturnToHand");
         m_currentSlot?.RemoveCard();
         m_currentSlot = null;
+        isDraging = false;
 
         transform.DOKill();
         transform.SetParent(parent, worldPositionStays: false);
