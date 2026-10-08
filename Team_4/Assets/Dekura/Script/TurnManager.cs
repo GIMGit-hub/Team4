@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +11,7 @@ public class TurnManager : MonoBehaviour
     {
         PlayerTurn,
         EnemyTurn,
-        Changing
+        Changing,
     }
 
     public static TurnManager Instance { get; private set; }
@@ -18,6 +20,16 @@ public class TurnManager : MonoBehaviour
 
     [SerializeField]private Button pturnEndButton;         //Pターン切り替えボタン
     [SerializeField]private float turnChangeDiray = 0.5f;    //ターン切り替わりディレイ
+
+    [Header("TurnChangeWindow")]
+    [SerializeField] GameObject window_Player;
+    [SerializeField] GameObject window_Enemy;
+    [SerializeField] Transform parent;
+    [SerializeField] private Vector2 sponePosition;
+    [SerializeField] private Vector2 slowPosition;
+    [SerializeField] private Vector2 endPosition = new Vector2(0f, -700f);
+    [SerializeField] private float duriation = 0.1f;
+
 
     private bool isTurnChanging = false;
 
@@ -31,32 +43,39 @@ public class TurnManager : MonoBehaviour
 
         Instance = this;
 
-        pturnEndButton.onClick.AddListener(TurnChange);
+        pturnEndButton.onClick.AddListener(() => TurnChange());
+        StartCoroutine(AnnnounseWindow(TurnState.PlayerTurn));
     }
-
-    private void Update()
+    private void Start()
     {
-        //if (NowTurn == TurnState.EnemyTurn) TurnChange();
     }
 
-    public void TurnChange()
+    public void FloorClear()
+    {
+        CardManager.Instance.HandReset();
+        NowTurn = TurnState.Changing;
+    }
+
+    public void TurnChange(TurnState nextTurn = default)
     {
         if (isTurnChanging) return;
-        StartCoroutine(TurnChanfeRoutine());
+        StartCoroutine(TurnChangeRoutine(nextTurn));
     }
 
-    private IEnumerator TurnChanfeRoutine()
+    private IEnumerator TurnChangeRoutine(TurnState nextTurn)
     {
         isTurnChanging = true;
 
-        TurnState nextTurn = (NowTurn == TurnState.PlayerTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
-        turnAnnounse(nextTurn);
+        if (nextTurn == default)
+            nextTurn = (NowTurn == TurnState.PlayerTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
+        Coroutine announse = StartCoroutine(AnnnounseWindow(nextTurn));
+
         NowTurn = TurnState.Changing;
         Debug.Log("TurnChanging...");
 
         if (nextTurn == TurnState.EnemyTurn) CardManager.Instance.HandReset();
         if (nextTurn == TurnState.PlayerTurn) StartCoroutine(CardManager.Instance.Call(6));
-        yield return new WaitForSeconds(turnChangeDiray);
+        yield return announse;
 
         Debug.Log("Complete");
         NowTurn = nextTurn;
@@ -64,19 +83,42 @@ public class TurnManager : MonoBehaviour
         isTurnChanging = false;
     }
 
-    private void turnAnnounse(TurnState turn)
+    private IEnumerator AnnnounseWindow(TurnState turn)
     {
+        GameObject go = null;
         switch(turn)
         {
             case TurnState.PlayerTurn:
                 Debug.Log("PlayerTurn");
-                EffectManager.Instance.Playfade("heal", turnChangeDiray);
+                go = Instantiate(window_Player, parent);
+                //EffectManager.Instance.Playfade("heal", turnChangeDiray);
                 break;
 
             case TurnState.EnemyTurn:
                 Debug.Log("EnemyTurn");
-                EffectManager.Instance.Playfade("damage", turnChangeDiray);
+                go = Instantiate(window_Enemy, parent);
+                //EffectManager.Instance.Playfade("damage", turnChangeDiray);
                 break;
+
+            default: break;
         }
+        if (go == null) yield break;
+
+        RectTransform rect = go.GetComponent<RectTransform>();
+        CanvasGroup cg = go.GetComponent<CanvasGroup>();
+        //rect.anchoredPosition = sponePosition;
+
+        //Append>>終了を待って次を開始
+        //Joim>>ひとつ前のAppendと同時に処理、Appendはこれも待つ
+        var seq =
+            DOTween.Sequence()
+            .AppendCallback(() => rect.anchoredPosition = sponePosition)
+            .Append(rect.DOAnchorPos(slowPosition, duriation).SetEase(Ease.OutExpo))
+            .Append(rect.DOAnchorPos(endPosition, duriation / 2f).SetEase(Ease.InExpo))
+            .Join(cg.DOFade(0f, duriation / 2f).SetEase(Ease.InOutExpo));
+
+        yield return seq.WaitForCompletion();
+
+        Destroy(go);
     }
 }

@@ -74,7 +74,6 @@ public class CardManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
         //---------------------------//
     }
 
@@ -324,6 +323,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             if (deck.Count == 0) DeckReset();
+            if (deck.Count == 0) yield break; 
 
             SoundsManager.Instance.PlaySound("call");
             Debug.Log($"Calling...{deck[0]}::count{i}");

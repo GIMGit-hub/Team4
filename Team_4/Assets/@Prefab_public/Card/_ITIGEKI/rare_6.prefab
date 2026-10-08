@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -454,7 +454,7 @@ MonoBehaviour:
   m_text: "\u9006\n\u5883"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3123db50f311b0b41aeca7aa8b245ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ITIGEKI_rare_6
-  target: 0
+  target: 1
   maxDamage: 500
   minDamage: 250
   maxDamageHpPer: 50

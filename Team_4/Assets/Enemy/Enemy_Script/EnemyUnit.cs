@@ -30,6 +30,11 @@ public class EnemyUnit : MonoBehaviour
 
     public void Init(EnemyData data, EnemyController controller,EnemyManager_Example manager, ActionAnnounceUI announceUI)
     {
+        enemyImage.DOFade(0f, 0f)
+            .OnComplete(() =>
+                enemyImage.DOFade(1f, 1.0f / 2f)
+            );
+
         this.data = data;
         hp = data.maxHp;
         this.controller = controller;
@@ -172,6 +177,10 @@ public class EnemyUnit : MonoBehaviour
 
         int finalAmount = (int)Mathf.Max(0, amount * reduceRate);
         hp -= finalAmount;
+
+        RectTransform rect = gameObject.GetComponent<RectTransform>();
+        PopupManager.Instance.ShowDamage(rect.position, finalAmount, false); 
+
         Debug.Log($"{data.enemyName}は{finalAmount}ダメージ！ 残りHP:{hp}"); // 修正
 
         if (data.damageTakenReductionPerAttack > 0)
