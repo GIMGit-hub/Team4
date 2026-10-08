@@ -19,7 +19,7 @@ public enum CardZone
 /// </summary>
 public interface ICardSpecialAction 
 {
-    IEnumerator SpecialAction();
+    IEnumerator SpecialAction(EnemyUnit enemy = null);
 }
 
 /// <summary>
@@ -153,7 +153,7 @@ public class CardManager : MonoBehaviour
 
     //------------------------------------カード使用準備-------------------------------------//
 
-    public bool UseCard(CardInstance instance)
+    public bool UseCard(CardInstance instance, EnemyUnit enemy = null)
     {
         //コスト支払い可能かの確認
         CardData.CostType costType = instance.template.GetComponent<CardData>().costType;
@@ -188,7 +188,7 @@ public class CardManager : MonoBehaviour
         }
 
         //効果発動
-        StartCoroutine(CardActivation(cardSpecialAction));
+        StartCoroutine(CardActivation(enemy, cardSpecialAction));
         return true;
     }
 
@@ -210,12 +210,12 @@ public class CardManager : MonoBehaviour
     }
 
 
-    private IEnumerator CardActivation(ICardSpecialAction cardSpecialAction = null)
+    private IEnumerator CardActivation(EnemyUnit enemy, ICardSpecialAction cardSpecialAction = null)
     {
         if (cardSpecialAction != null) 
         {
             Debug.Log($"特殊効果待機");
-            yield return StartCoroutine(cardSpecialAction.SpecialAction());
+            yield return StartCoroutine(cardSpecialAction.SpecialAction(enemy));
             cardSpecialAction = null;
         }
         else
@@ -229,7 +229,7 @@ public class CardManager : MonoBehaviour
             switch (effect.type)
             {
                 case CardEffect.EffectType.Attack:
-                    yield return StartCoroutine(Attack(effect.target, effect.value, effect.valueCount));
+                    yield return StartCoroutine(Attack(effect.target, effect.value, effect.valueCount, enemy));
                     break;
                 case CardEffect.EffectType.Defense:
                     yield return StartCoroutine(DpHeal(effect.value));
@@ -266,7 +266,7 @@ public class CardManager : MonoBehaviour
         //カード使用しましたよ～_OnCardUsed発火
         OnCardUsed?.Invoke();
         Player.Instance.AddUseCardCount();
-        yield return CardActivation();
+        yield return CardActivation(enemy);
     }
 
     //---------------------------------カード使用時の処理-------------------------------------//
@@ -283,9 +283,9 @@ public class CardManager : MonoBehaviour
         OnCardMoved?.Invoke(instance, zone);
     }
 
-    public IEnumerator Attack(CardEffect.EffectTarget target, float value, int count)
+    public IEnumerator Attack(CardEffect.EffectTarget target, float value, int count, EnemyUnit enemy)
     {
-        Player.Instance.Attack(target, value, count);
+        Player.Instance.Attack(target, value, count, enemy);
         yield return new WaitForSeconds(activateDuration);
     }
 

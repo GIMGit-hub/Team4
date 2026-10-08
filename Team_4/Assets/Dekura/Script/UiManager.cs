@@ -56,6 +56,11 @@ public class UiManager : MonoBehaviour
             CardManager.Instance.OnCardUsed -= UpdateUi;
             if (isEnable) CardManager.Instance.OnCardUsed += UpdateUi;
         }
+        if (Player.Instance != null)
+        {
+            Player.Instance.HpMoved -= UpdateUi;
+            if (isEnable) Player.Instance.HpMoved += UpdateUi;
+        }
     }
 
     public void UpdateUi()

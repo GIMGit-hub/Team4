@@ -697,6 +697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02ab945e96c87442808343751607763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_Ace
-  target: 0
+  target: 1
   damage: 100
   multipter: 2

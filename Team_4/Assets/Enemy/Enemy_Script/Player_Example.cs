@@ -16,7 +16,7 @@ public class Player_Example : MonoBehaviour
     {
         int finalDamage = Mathf.RoundToInt(damage * damageDealtMultiplier); // 倍率を掛ける
         Debug.Log($"    → {target.name}に{finalDamage}ダメージ");
-        controller.PlayerAttack(finalDamage, target);
+       // controller.PlayerAttack(finalDamage, target);
     }
 
     public void TakeDamage(int amount)

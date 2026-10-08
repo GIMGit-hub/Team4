@@ -2,6 +2,7 @@ using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
+using static CardEffect;
 
 public class SlotBase : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class SlotBase : MonoBehaviour
         CardController.OnDragEnded += HandleCardDragEnd;
     }
 
-    private void HandleCardDrag(Vector2 screenPos)
+    private void HandleCardDrag(Vector2 screenPos, EffectTarget target)
     {
         if (isHaving || isAnimating) return; // カードが入っている間は展開を維持
 

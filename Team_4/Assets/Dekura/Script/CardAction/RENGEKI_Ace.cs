@@ -1,5 +1,6 @@
-using UnityEngine;
+using NUnit.Framework.Internal;
 using System.Collections;
+using UnityEngine;
 
 public class RENGEKI_Ace : MonoBehaviour, ICardSpecialAction
 {
@@ -7,11 +8,11 @@ public class RENGEKI_Ace : MonoBehaviour, ICardSpecialAction
     [SerializeField] private float damage = 100f;
     [SerializeField] private int multipter = 2;
 
-    public IEnumerator SpecialAction()
+    public IEnumerator SpecialAction(EnemyUnit enemy = null)
     {
         int hitCount = Player.Instance.hitCount * multipter;
 
-        Player.Instance.Attack(target, damage, hitCount);
+        Player.Instance.Attack(target, damage, hitCount, enemy);
         yield return new WaitForSeconds(CardManager.Instance.activateDuration);
     }
 }

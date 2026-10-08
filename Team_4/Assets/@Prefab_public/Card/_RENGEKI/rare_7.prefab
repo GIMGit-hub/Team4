@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f56e1b785b743428bd5b392ff8d822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RENGEKI_rare_7
-  target: 0
+  target: 1
   damage: 50
   count: 4
   heal: 5

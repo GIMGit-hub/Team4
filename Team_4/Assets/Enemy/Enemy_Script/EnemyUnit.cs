@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,16 @@ using UnityEngine.UI;
 
 public class EnemyUnit : MonoBehaviour
 {
+    [SerializeField] Image enemyImage;
+    private Color defaultColor;
+
+    public bool isDead { get; private set; } = false;
+
     private EnemyData data;
     private int hp;
     private int actionIndex = 0;
     private EnemyController controller;
     private EnemyManager_Example manager;
-    private bool isDead = false;
     private int turnCount = 0;
 
     private float damageDealtBuff = 0f;
@@ -32,6 +37,7 @@ public class EnemyUnit : MonoBehaviour
         this.announceUI = announceUI;
 
         controller.Init(TakeTurn);
+        defaultColor = enemyImage.color;
 
         if (data.battleStartSelfDamageDealtBuffPercent > 0)
         {
@@ -157,14 +163,14 @@ public class EnemyUnit : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         if (isDead) return;
 
         float reduceRate = defenseMultiplier;
         if (damageTakenBuffTurns > 0) reduceRate -= damageTakenBuff;
 
-        int finalAmount = Mathf.Max(0, Mathf.RoundToInt(amount * reduceRate));
+        int finalAmount = (int)Mathf.Max(0, amount * reduceRate);
         hp -= finalAmount;
         Debug.Log($"{data.enemyName}は{finalAmount}ダメージ！ 残りHP:{hp}"); // 修正
 
@@ -183,9 +189,7 @@ public class EnemyUnit : MonoBehaviour
 
         if (hp <= 0)
         {
-            isDead = true;
-            controller.EnemyDead(gameObject);
-            Destroy(gameObject);
+            Die();
         }
     }
 
@@ -202,5 +206,14 @@ public class EnemyUnit : MonoBehaviour
             controller.EnemyDead(gameObject);
             Destroy(gameObject);
         }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        controller.EnemyDead(gameObject);
+        enemyImage.color = defaultColor;
+        enemyImage.DOFade(0.2f, 1.0f);
+        //Destroy(gameObject);
     }
 }
