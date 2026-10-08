@@ -16,9 +16,10 @@ public class ITIGEKI_rare_6 : MonoBehaviour, ICardSpecialAction
         //現在のHP割合
         float playerHpPer = Player.Instance.nowHp / Player.Instance.maxHp * 100f;
         //最大時のダメージ割合と最小時のダメージ割合を基に、現在のHP割合からダメージの割合を計算
-        float percent = ((minDamageHpPer - playerHpPer) / (minDamageHpPer - maxDamageHpPer)) / 100f;
+        float percent = ((minDamageHpPer - playerHpPer) / (minDamageHpPer - maxDamageHpPer));
 
         float finalDamage = Mathf.Min(maxDamage, minDamage + (maxDamage - minDamage) * percent);
+        finalDamage = Mathf.Max(minDamage, finalDamage);
 
         Player.Instance.Attack(target, finalDamage, 1, enemy);
         yield return new WaitForSeconds(CardManager.Instance.activateDuration);

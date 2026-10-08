@@ -58,7 +58,6 @@ public class EnemyController : MonoBehaviour
         onFloorClear = onClear;
 
         int count = Mathf.Min(floorData.enemy.Count, MaxSimultaneous);
-        Debug.Log($"aaaaaaaaa{count}");
         if (count == 2)
         {
             spawnPoints[0].GetComponent<RectTransform>().anchoredPosition = spawnPointPosition_0;
@@ -243,8 +242,8 @@ public class EnemyController : MonoBehaviour
         //}
 
         //EnemyUnit unit = target.GetComponent<EnemyUnit>();
-        GameObject target = unit.gameObject;
         if (unit == null || unit.isDead)  return false;
+        GameObject target = unit.gameObject;
 
         Debug.Log($"プレイヤーの攻撃！ {target.name}に{damage}ダメージ");
         unit.TakeDamage(damage);

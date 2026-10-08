@@ -68,7 +68,6 @@ public class Player : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
         //---------------------------//
         nowHp = startHp;
         nowDp = startDp;

@@ -38,14 +38,15 @@ public class StageSelectManager : MonoBehaviour
 
     private void StartGame(int stage)
     {
-        if(selectedDeck == null)
-        {
-            Debug.LogWarning("デッキが選択されていません！");
-            return;
-        }
+        //if(selectedDeck == null)
+        //{
+        //    Debug.LogWarning("デッキが選択されていません！");
+        //    return;
+        //}
 
         // StageManagerにデッキを渡す
-        StageManager.Instance.SelectDeck(selectedDeck);
+        if (selectedDeck != null)
+            StageManager.Instance.SelectDeck(selectedDeck);
 
         // ステージを選択
         StageManager.Instance.SelectStage(stage);

@@ -13,9 +13,10 @@ public class RENGEKI_rare_12 : MonoBehaviour, ICardSpecialAction
     {
         float playerHpPer = Player.Instance.nowHp / Player.Instance.maxHp * 100f;
         //最大時のダメージ割合と最小時のダメージ割合を基に、現在のHP割合からダメージの割合を計算
-        float percent = ((minCountHpPer - playerHpPer) / (minCountHpPer - maxCountHpPer)) / 100f;
+        float percent = ((minCountHpPer - playerHpPer) / (minCountHpPer - maxCountHpPer));
 
         int finalCount = (int)Mathf.Min(maxCount, minCount + (maxCount - minCount) * percent);
+        finalCount = Mathf.Max(minCount, finalCount);
 
         Player.Instance.Attack(target, damage, finalCount, enemy, false);
         yield return new WaitForSeconds(CardManager.Instance.activateDuration);

@@ -1,5 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static TurnManager;
 
 public class StageManager : MonoBehaviour
 {
@@ -11,6 +14,8 @@ public class StageManager : MonoBehaviour
 
     [Header("ステージごとの最大フロア数(Index0=ステージ1)")]
     [SerializeField] private int[] maxFloorPerStage = { 3, 3, 3 };
+    [SerializeField] private bool[] isFloorCleared;
+    [SerializeField] private Sprite[] floorImage;
 
     [Header("最大ステージ数")]
     [SerializeField] private int maxStage = 3;
@@ -36,6 +41,10 @@ public class StageManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        //多分よくない
+        if (SceneManager.GetActiveScene().name == mainSceneName)
+            SceneManager.LoadScene(mainSceneName);
     }
 
     private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
@@ -58,6 +67,8 @@ public class StageManager : MonoBehaviour
             return;
         }
 
+        UiManager.Instance.BackGround = floorImage[currentStage - 1];
+
         Debug.Log($"=== ステージ{currentStage}-{currentFloor} を開始(StageManagerより) ===");
         manager.StartCurrentFloor(currentStage, currentFloor);
     }
@@ -77,7 +88,7 @@ public class StageManager : MonoBehaviour
     {
         currentStage = Mathf.Clamp(stage, 1, maxStage);
         currentFloor = 1;
-        SceneManager.LoadScene("MainGame");
+        SceneManager.LoadScene(mainSceneName);
     }
 
     // EnemyManagerから、敵全滅時に呼ばれる
@@ -92,35 +103,79 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        EnemyManager_Example manager = FindFirstObjectByType<EnemyManager_Example>();
-        manager?.StartCurrentFloor(currentStage, currentFloor);
+        StartCoroutine(ProceedDirection());
     }
     //クリアしたときの処理
     private void OnStageClear()
     {
         Debug.Log($"=== ステージ{currentStage} クリア！ ===");
 
-        if (currentStage >= maxStage)
+        isFloorCleared[currentStage - 1] = true;
+
+        if (CheckFloorClear()) 
         {
             Debug.Log("=== 全ステージクリア！ ===");
             // TODO: エンディング演出等をここに
             return;
         }
 
-       
-        currentStage++;
-        currentFloor = 1;
-
-        Debug.Log($"=== ステージ{currentStage} 開始！ ===");
-
-        SceneManager.LoadScene("MainGame");
+        StartCoroutine(StageClearDirection());
     }
 
-    private int GetMaxFloor(int stage)
+    private IEnumerator ProceedDirection()
+    {
+        int next = currentFloor + 1;
+        Coroutine uiCoroutine = StartCoroutine(UiManager.Instance.ProceedDirection(currentStage, next));
+
+        if (next == GetMaxFloor(currentStage))
+        {
+            Debug.Log($"BOSS-STAGE");
+        }
+        else
+        {
+            Debug.Log($"{currentStage}-{next}");
+        }
+
+        yield return uiCoroutine;
+        
+        //演出終了後に生成開始命令
+        EnemyManager_Example manager = FindFirstObjectByType<EnemyManager_Example>();
+        manager?.StartCurrentFloor(currentStage, currentFloor);
+        TurnManager.Instance.TurnChange(TurnState.PlayerTurn);
+    }
+
+    private IEnumerator StageClearDirection()
+    {
+        Debug.Log($"STAGE_CLEAR!");
+
+        //koko
+
+        yield return new WaitForSeconds(1.5f);
+
+        InitStagePosition();
+        SceneManager.LoadScene(stageSelectSceneName);
+    }
+
+    public int GetMaxFloor(int stage)
     {
         int index = stage - 1;
         if (maxFloorPerStage != null && index >= 0 && index < maxFloorPerStage.Length)
             return maxFloorPerStage[index];
         return 1;
+    }
+
+    private bool CheckFloorClear()
+    {
+        foreach (var floor in isFloorCleared)
+        {
+            if (!floor) return false;
+        }
+        return true;
+    }
+
+    public void InitStagePosition()
+    {
+        currentFloor = 1;
+        currentStage = 1;
     }
 }

@@ -68,8 +68,6 @@ public class EnemyManager_Example : MonoBehaviour
     {
         Debug.Log($"ステージ{currentStage}-{currentFloor} クリア！");
 
-        //currentFloor++;
-
         Enemy_StageData next = FindFloorData(currentStage, currentFloor);
         if (next == null)
         {
@@ -77,6 +75,8 @@ public class EnemyManager_Example : MonoBehaviour
             return;
         }
 
+        TurnManager.Instance.FloorClear();
+        StageManager.Instance.OnFloorClear();
         //StartCurrentFloor();
     }
 

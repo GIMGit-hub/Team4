@@ -32,29 +32,29 @@ public class SpawnArea : MonoBehaviour
     {
         if (target == EffectTarget.Player) return;
 
-        if (target == EffectTarget.AllEnemy)
+        bool isAnyHit = false;
+
+        foreach (var image in spawnAreaImage)
         {
-            foreach (var image in spawnAreaImage) SetHighlight(image, true);
-        }
-        else
-        {
-            foreach (var image in spawnAreaImage)
+            if (FindEnemyImage(image) == null) continue;
+            if (FindEnemyImage(image).GetComponentInChildren<EnemyUnit>().isDead) continue;
+
+            RectTransform rect = image.rectTransform;
+            bool isHit = RectTransformUtility.RectangleContainsScreenPoint(rect, pointerPosition);
+
+            if (target == EffectTarget.AllEnemy)
+                 isHit = RectTransformUtility.RectangleContainsScreenPoint(CardManager.Instance.hitColision, pointerPosition);
+
+            if (isHit) 
             {
-                if (FindEnemyImage(image) == null) continue;
-                if (FindEnemyImage(image).GetComponentInChildren<EnemyUnit>().isDead) continue;
-
-                RectTransform rect = image.rectTransform;
-                bool isHit = RectTransformUtility.RectangleContainsScreenPoint(rect, pointerPosition);
-
-                if (isHit)
-                {
-                    SetHighlight(image, true);
-                    return;
-                }
-                SetHighlight(image, false);
+                SetHighlight(image, true);
+                isAnyHit = true;
+                continue;
             }
-            ResetHighlight();
+            SetHighlight(image, false);
         }
+
+        if(!isAnyHit) ResetHighlight();
     }
 
     private void SetHighlight(Image spawnArea, bool enable)
