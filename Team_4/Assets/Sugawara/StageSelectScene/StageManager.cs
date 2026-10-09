@@ -59,6 +59,8 @@ public class StageManager : MonoBehaviour
     {
         if (scene.name != mainSceneName) return;
 
+        Debug.Log($"[検証] OnSceneLoaded時点のcurrentStage={currentStage}, currentFloor={currentFloor}"); // 追加
+
         SoundsManager.Instance.PlayBGM("battle");
 
         if (Player.Instance != null && selectedDeck != null)
@@ -92,6 +94,8 @@ public class StageManager : MonoBehaviour
     // ステージ選択シーンのボタンから呼ぶ
     public void SelectStage(int stage)
     {
+        Debug.Log($"[検証] SelectStage呼び出し: 引数stage={stage}"); // 追加
+
         currentStage = Mathf.Clamp(stage, 1, maxStage);
         currentFloor = 1;
         SceneManager.LoadScene(mainSceneName);

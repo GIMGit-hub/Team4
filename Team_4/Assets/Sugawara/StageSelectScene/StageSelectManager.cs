@@ -8,33 +8,33 @@ public class StageSelectManager : MonoBehaviour
 
     private Deck selectedDeck;
 
-    public void OnClickDeck1()
-    {
-        selectedDeck = deck1;
+    //public void OnClickDeck1()
+    //{
+    //    selectedDeck = deck1;
 
-        Debug.Log($"デッキ1を選択: {selectedDeck.deckName}");
-    }
+    //    Debug.Log($"デッキ1を選択: {selectedDeck.deckName}");
+    //}
 
-    public void OnClickDeck2()
-    {
-        selectedDeck = deck2;
+    //public void OnClickDeck2()
+    //{
+    //    selectedDeck = deck2;
 
-        Debug.Log($"デッキ2を選択: {selectedDeck.deckName}");
-    }
-    public void OnClickStage1()
-    {
-        StartGame(1);
-    }
+    //    Debug.Log($"デッキ2を選択: {selectedDeck.deckName}");
+    //}
+    //public void OnClickStage1()
+    //{
+    //    StartGame(1);
+    //}
 
-    public void OnClickStage2()
-    {
-        StartGame(2);
-    }
+    //public void OnClickStage2()
+    //{
+    //    StartGame(2);
+    //}
 
-    public void OnClickStage3()
-    {
-        StartGame(3);
-    }
+    //public void OnClickStage3()
+    //{
+    //    StartGame(3);
+    //}
 
     private void StartGame(int stage)
     {
