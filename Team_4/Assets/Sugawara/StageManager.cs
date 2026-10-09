@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static TurnManager;
@@ -26,7 +27,7 @@ public class StageManager : MonoBehaviour
     [Header("選択中のデッキ")]
     [SerializeField] private Deck selectedDeck;
 
-    [SerializeField] private bool isTutorialed=false;
+    [SerializeField] private bool isTutorialed = false;
     public bool IsTutorialed { get=>isTutorialed;set=> isTutorialed=value;}
 
     public int CurrentStage => currentStage;
@@ -174,6 +175,17 @@ public class StageManager : MonoBehaviour
             if (!floor) return false;
         }
         return true;
+    }
+
+    public bool IsStageUnlocked(int stage)
+    {
+        if (stage == 1) return true;
+        return isFloorCleared != null && stage - 2 < isFloorCleared.Length && isFloorCleared[stage - 2];
+    }
+
+    public bool IsStageCleared(int stage)
+    {
+        return isFloorCleared != null && stage - 1 < isFloorCleared.Length && isFloorCleared[stage - 1];
     }
 
     public void InitStagePosition()
