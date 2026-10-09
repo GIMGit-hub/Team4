@@ -1,15 +1,28 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SceneChanger : MonoBehaviour
 {
-    [SerializeField] private string nextSceneName = "StageSelectScene";
+    [Header("“_–Åˆ—")]
+    [SerializeField] private StartImageEffect startImageEffect;
 
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null &&
+            Mouse.current.leftButton.wasPressedThisFrame)
         {
-            SceneFader.LoadScene(nextSceneName);
+            if (startImageEffect != null)
+            {
+                // æ‚ÉImage‚ğ“_–Å‚³‚¹‚é
+                startImageEffect.OnStartClicked();
+            }
+            else
+            {
+                Debug.LogError(
+                    "StartImageEffect ‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                );
+            }
         }
     }
 }
