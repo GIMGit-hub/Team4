@@ -2,7 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayInfoWindow : MonoBehaviour
+/// <summary>
+/// AiŠÛ“Š‚°
+/// ‚ä‚é‚µ‚Ä
+/// </summary>
+public class PlayInfoWindow : MonoBehaviour, IWindowInit
 {
     [SerializeField] private Button closeButton;
     [SerializeField] Button leftButton;
@@ -10,7 +14,9 @@ public class PlayInfoWindow : MonoBehaviour
 
     [SerializeField] ScrollRect scrollRect;
     [SerializeField] float duration = 0.25f;
-    Coroutine routine;
+    private Coroutine routine;
+
+    private System.Action closeAction;
 
     void Awake()
     {
@@ -20,7 +26,11 @@ public class PlayInfoWindow : MonoBehaviour
         scrollRect.onValueChanged.AddListener(_ => UpdateButtons());
     }
 
-    void Start() => UpdateButtons();
+    public void WindowInit(System.Action action)
+    {
+        closeAction = action;
+        UpdateButtons();
+    }
 
     void MoveByItem(int dir)
     {
@@ -73,6 +83,7 @@ public class PlayInfoWindow : MonoBehaviour
 
     public void Close()
     {
+        closeAction?.Invoke();
         Destroy(gameObject);
     }
 }

@@ -223,6 +223,7 @@ public class EnemyUnit : MonoBehaviour
         controller.EnemyDead(gameObject);
         enemyImage.color = defaultColor;
         enemyImage.DOFade(0.2f, 1.0f);
+        SoundsManager.Instance.PlaySound("break");
         //Destroy(gameObject);
     }
 }

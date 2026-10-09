@@ -430,7 +430,7 @@ public class CardManager : MonoBehaviour
 
         CardMove(resultInstance, CardZone.Hand);
 
-
+        SoundsManager.Instance.PlaySound("syncard");
         return resultInstance;
     }
 

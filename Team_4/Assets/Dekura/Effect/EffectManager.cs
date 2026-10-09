@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,12 +19,18 @@ public class EffectManager : MonoBehaviour
         public float loopDuration = 0f;
     }
 
+    [System.Serializable]
+    private class FadeColor
+    {
+        public string name;
+        public Color color;
+    }
+
     [SerializeField] private Canvas canvas;
     [SerializeField] private Image fade;
     [SerializeField] private EffectData[] effects;
 
-    [SerializeField] private Color healColor;
-    [SerializeField] private Color damageColor;
+    [SerializeField] private List<FadeColor> fadecolors = new List<FadeColor>();
 
     void Awake()
     {
@@ -39,19 +46,17 @@ public class EffectManager : MonoBehaviour
     public void Playfade(string name, float delay = 0f)
     {
         fade.DOKill();
-        Color color;
+        Color color = default;
 
-        switch (name)
+        foreach(var c in fadecolors)
         {
-            case "heal":
-                color = healColor;
+            if (c.name == name)
+            {
+                color = c.color;
                 break;
-            case "damage":
-                color = damageColor;
-                break;
-            default:
-                return;
+            }
         }
+        if (color == default) return;
 
         DOTween.Sequence()
         .SetTarget(fade)

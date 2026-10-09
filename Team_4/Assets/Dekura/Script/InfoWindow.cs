@@ -3,16 +3,24 @@ using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-public class InfoWindow : MonoBehaviour
+public class InfoWindow : MonoBehaviour, IWindowInit
 {
     [SerializeField] private Button closeButton;
     [SerializeField] private Image image;
     [SerializeField] public Sprite sprite_itigeki;
     [SerializeField] public Sprite sprite_rengeki;
 
+    private System.Action closeAction;
+
     private void Awake()
     {
         closeButton.onClick.AddListener(() => Close());
+        InitData();
+    }
+
+    public void WindowInit(System.Action action)
+    {
+        closeAction = action;
         InitData();
     }
 
@@ -33,6 +41,7 @@ public class InfoWindow : MonoBehaviour
 
     public void Close()
     {
+        closeAction?.Invoke();
         Destroy(gameObject);
     }
 }

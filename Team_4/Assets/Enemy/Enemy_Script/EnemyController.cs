@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     private List<GameObject> SpawndEnemy = new List<GameObject>();
     private List<GameObject> SpawndDiedEnemy = new List<GameObject>();
 
+    private ActionAnnounceUI announceUI;
     private Action onFloorClear;
 
     private void Awake()
@@ -78,6 +79,8 @@ public class EnemyController : MonoBehaviour
             Debug.Log($"{floorData.enemy[i]},{GetFreeSpawnPoint(i + 1, count)}");
             SpawnOne(floorData.enemy[i], manager, actionAnnounceUI, GetFreeSpawnPoint(i + 1, count));
         }
+
+        announceUI = actionAnnounceUI;
     }
 
     //playerを受け取り、Initとターン実行に渡す
@@ -182,6 +185,7 @@ public class EnemyController : MonoBehaviour
 
                 case ActionEffectType.TargetDamageDealtDebuff:
                     //player.ApplyDamageDealtDebuff(effect.value, effect.duration);
+                    Player.Instance.TakeDamage(effect.value);
                     Debug.Log($"  → 相手の与ダメ-{effect.value}%");
                     break;
 
@@ -192,6 +196,7 @@ public class EnemyController : MonoBehaviour
 
                 case ActionEffectType.TargetDamageTakenDebuff:
                     //player.ApplyDamageTakenDebuff(effect.value, effect.duration);
+                    Player.Instance.TakeDamage(effect.value);
                     Debug.Log($"  → 相手の被ダメ+{effect.value}%");
                     break;
 
@@ -202,11 +207,12 @@ public class EnemyController : MonoBehaviour
 
                 case ActionEffectType.TargetMaxHpReduction:
                     //player.ReduceMaxHp(Mathf.RoundToInt(effect.value));
+                    Player.Instance.TakeDamage(effect.value);
                     Debug.Log($"    → 相手の最大HPを{effect.value}減らした");
                     break;
 
                 case ActionEffectType.SetTargetHpToOne:
-                    //player.SetHpToOne();
+                    Player.Instance.SetHpToOne();
                     Debug.Log($"    → 相手の体力を1にした");
                     break;
 
@@ -292,6 +298,8 @@ public class EnemyController : MonoBehaviour
 
         SpawndEnemy.Clear();
         SpawndDiedEnemy.Clear();
+
+        //Invoke(nameof(onFloorClear), 1.0f);
         onFloorClear?.Invoke();
     }
 }

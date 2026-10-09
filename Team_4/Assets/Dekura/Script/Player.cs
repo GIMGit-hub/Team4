@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     public int hitCount { get; private set; } = 0;
     public int countResult { get; private set; } = 0;
 
+    public bool isDead { get; private set; } = false;
+
     [Header("最大/開始時ステータス")]
     [SerializeField] public float maxHp = 100f;
     [SerializeField] private float startHp = 100f;
@@ -202,6 +204,8 @@ public class Player : MonoBehaviour
     public void CostHeal(int value)
     {
         nowCost = Mathf.Min(nowCost + value, maxCost);
+        EffectManager.Instance.Playfade("cost");
+        SoundsManager.Instance.PlaySound("healcost");
     }
 
     public bool CanUseCost(CardData.CostType type, int cost)
@@ -283,10 +287,30 @@ public class Player : MonoBehaviour
         EffectManager.Instance.Playfade("damage");
         SoundsManager.Instance.PlaySound("damage");
 
-        if (nowHp == 0)
+        if (nowHp <= 0f && !isDead) 
         {
-            //敗北処理
+            if (GetEffect(CardEffect.EffectType.Revive) > 0f)
+            {
+                UseBuff(CardEffect.EffectType.Revive);
+                nowHp = maxHp;
+                EffectManager.Instance.Playfade("heal");
+                SoundsManager.Instance.PlaySound("heal");
+            }
+            else
+            {
+                StartCoroutine(StageManager.Instance.PlayerDead());
+                isDead = true;
+            }
         }
+
+        HpMoved?.Invoke();
+    }
+
+    public void SetHpToOne()
+    {
+        nowHp = 1f;
+        EffectManager.Instance.Playfade("damage");
+        SoundsManager.Instance.PlaySound("damage");
 
         HpMoved?.Invoke();
     }
@@ -301,6 +325,8 @@ public class Player : MonoBehaviour
             enableTurn = m_enableTurn,
         });
 
+        EffectManager.Instance.Playfade("buffs");
+        SoundsManager.Instance.PlaySound("buffs");
         BuffAdded?.Invoke();
     }
     public void AddEffect_Count(CardEffect.EffectType m_type, float m_value, int m_enableCount)
@@ -311,6 +337,9 @@ public class Player : MonoBehaviour
             value = m_value,
             enableTurn = m_enableCount,
         });
+
+        EffectManager.Instance.Playfade("buffs");
+        SoundsManager.Instance.PlaySound("buffs");
         BuffAdded?.Invoke();
     }
     //バフ総量の確認

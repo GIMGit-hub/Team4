@@ -13,8 +13,10 @@ public class SoundsManager : MonoBehaviour
     }
 
     [SerializeField] private SoundsData[] sounds;
+    [SerializeField] private SoundsData[] bgms;
 
-    private AudioSource audioSource;
+    private AudioSource audioSource_bgm;
+    private AudioSource audioSource_se;
 
     void Awake()
     {
@@ -26,7 +28,11 @@ public class SoundsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
-        audioSource = GetComponent<AudioSource>();
+
+        audioSource_bgm = GetComponent<AudioSource>();
+        audioSource_bgm.loop = true;
+        audioSource_se = GetComponent<AudioSource>();
+        audioSource_se.loop = false;
     }
 
     public void PlaySound(string name)
@@ -40,12 +46,24 @@ public class SoundsManager : MonoBehaviour
                 Debug.LogWarning($"Sound not Found：{name}");
                 break;
             case 1:
-                audioSource.PlayOneShot(sound[0].soundfile, sound[0].volume);
+                audioSource_se.PlayOneShot(sound[0].soundfile, sound[0].volume);
                 break;
             default:
                 int rand = Random.Range(0, sound.Length);
-                audioSource.PlayOneShot(sound[rand].soundfile, sound[rand].volume);
+                audioSource_se.PlayOneShot(sound[rand].soundfile, sound[rand].volume);
                 break;
         }
     }
+
+    public void PlayBGM(string name)
+    {
+        var sound = System.Array.FindAll(bgms, s => s.name == name);
+
+        if (audioSource_bgm.clip == sound[0].soundfile && audioSource_bgm.isPlaying) return;
+        audioSource_bgm.clip = sound[0].soundfile;
+        audioSource_bgm.volume = sound[0].volume;
+        audioSource_bgm.Play();
+    }
+
+    public void StopBGM() => audioSource_bgm.Stop();
 }

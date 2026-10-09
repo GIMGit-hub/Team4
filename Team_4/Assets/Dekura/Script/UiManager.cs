@@ -38,6 +38,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] Transform parent;
     [SerializeField] private Vector2 sponePosition;
     [SerializeField] private float fadeDuriation = 0.1f;
+    [SerializeField] private float proceedDuriation = 1.5f;
 
     public Sprite BackGround { set => background.sprite = value; }
 
@@ -117,7 +118,7 @@ public class UiManager : MonoBehaviour
     public IEnumerator ProceedDirection(int stage, int floor)
     {
         Transform ts = background.GetComponent<Transform>();
-        ts.DOScale(ts.localScale + proceedScareVolume, 1.5f);
+        ts.DOScale(ts.localScale + proceedScareVolume, proceedDuriation);
 
         Vector3 basePos = ts.localPosition;
 
@@ -128,14 +129,18 @@ public class UiManager : MonoBehaviour
         int nowFloor = StageManager.Instance.CurrentFloor;
         int maxFloor = StageManager.Instance.GetMaxFloor(StageManager.Instance.CurrentStage);
 
-        if (floor == maxFloor)
+        if (nowFloor == maxFloor)
         {
-            Debug.Log($"BOSS-STAGE");
+            textUi.text = $"- BOSS BATTLE!! -";
+            EffectManager.Instance.Playfade("damage", proceedDuriation);
         }
-        textUi.text = $"- BATTLE {nowFloor} / {maxFloor} -";
+        else
+        {
+            textUi.text = $"- BATTLE {nowFloor} / {maxFloor} -";
+        }
 
         float t = 0f;
-        while (t < 1.5f) 
+        while (t < proceedDuriation) 
         {
             t += Time.deltaTime;
             // abs(sin)で「着地で跳ね返る」歩行っぽい動きになるらしい
