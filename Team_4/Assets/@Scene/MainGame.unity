@@ -4989,6 +4989,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 964603652481093976, guid: dbc4ac503788e2f408b60f305d32794d, type: 3}
+      propertyPath: selectedDeck
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e5cca3e0c2088b46a0215c6eb25c0df, type: 2}
     - target: {fileID: 5202750374029302174, guid: dbc4ac503788e2f408b60f305d32794d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 437.40002

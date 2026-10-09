@@ -27,6 +27,9 @@ public class StageManager : MonoBehaviour
     [Header("選択中のデッキ")]
     [SerializeField] private Deck selectedDeck;
 
+    //クリア済みかどうか(Index0=ステージ1)
+    private bool[] stageCleared;
+
     public int CurrentStage => currentStage;
     public int CurrentFloor => currentFloor;
 
@@ -171,6 +174,17 @@ public class StageManager : MonoBehaviour
             if (!floor) return false;
         }
         return true;
+    }
+
+    public bool IsStageUnlocked(int stage)
+    {
+        if (stage == 1) return true;
+        return isFloorCleared != null && stage - 2 < isFloorCleared.Length && isFloorCleared[stage - 2];
+    }
+
+    public bool IsStageCleared(int stage)
+    {
+        return isFloorCleared != null && stage - 1 < isFloorCleared.Length && isFloorCleared[stage - 1];
     }
 
     public void InitStagePosition()
