@@ -141,6 +141,7 @@ public class CardManager : MonoBehaviour
                 else
                 {
                     GetZoneList(card.zone).Remove(card);
+                    OnCardMoved?.Invoke(card, CardZone.Discard);
                 }
             });
         }

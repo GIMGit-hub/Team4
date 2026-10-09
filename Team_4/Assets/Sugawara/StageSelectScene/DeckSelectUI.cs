@@ -63,6 +63,8 @@ public class DeckSelectUI : MonoBehaviour
     // 各デッキカードのOnClickに登録
     public void OnClickDeck(int index)
     {
+        SoundsManager.Instance.PlaySound("accept");
+
         DeckManager.Instance.EquipDeck(index);
         RefreshCards();
         DeckImageSelect(index);

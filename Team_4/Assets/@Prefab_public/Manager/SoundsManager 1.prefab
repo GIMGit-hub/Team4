@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3138406548576680056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9055984743736940994}
+  - component: {fileID: 605083821664839179}
+  - component: {fileID: 4503737513322439027}
+  m_Layer: 0
+  m_Name: SoundsManager 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9055984743736940994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138406548576680056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960.8866, y: 539.9999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &605083821664839179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138406548576680056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358d3d9611a0e2f43a4f5ddb216dbceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundsManager
+  sounds:
+  - name: pati
+    soundfile: {fileID: 8300000, guid: 39257fa7f590a6c47ab823909006240c, type: 3}
+    volume: 0.41
+  - name: call
+    soundfile: {fileID: 8300000, guid: 4d93e7838ef30be4d9d590a0997ce82d, type: 3}
+    volume: 0.41
+  - name: heal
+    soundfile: {fileID: 8300000, guid: 8fb3a57c82c143341ad1454eb3bf2dcd, type: 3}
+    volume: 0.41
+  - name: damage
+    soundfile: {fileID: 8300000, guid: 16bc8048b8f8fbd4495a49de419953b7, type: 3}
+    volume: 0.41
+  - name: hit
+    soundfile: {fileID: 8300000, guid: d185ffc442f0a37478a036c1f5aeb1be, type: 3}
+    volume: 0.41
+  - name: hit
+    soundfile: {fileID: 8300000, guid: 699433380d7554c478ced8fe6f1512d6, type: 3}
+    volume: 0.41
+  - name: hit
+    soundfile: {fileID: 8300000, guid: 0de612dee0911cc42be92c45c1bf8043, type: 3}
+    volume: 0.41
+  - name: healcost
+    soundfile: {fileID: 8300000, guid: 6bdc66b1551f80341a6ac1556452f31d, type: 3}
+    volume: 0.41
+  - name: buffs
+    soundfile: {fileID: 8300000, guid: 03653a5122788a243a3ae850f6b5fc5c, type: 3}
+    volume: 0.41
+  - name: syncard
+    soundfile: {fileID: 8300000, guid: 8d9216b33fe4b9c44845afd211a7ca29, type: 3}
+    volume: 0.41
+  - name: info
+    soundfile: {fileID: 8300000, guid: 6d689504f27725f4f986b182df482240, type: 3}
+    volume: 0.41
+  - name: accept
+    soundfile: {fileID: 8300000, guid: e652191db06030d4e89f91c43d423c90, type: 3}
+    volume: 0.41
+  - name: break
+    soundfile: {fileID: 8300000, guid: 26fa8ae2f8480f44e90fabafe51a23a6, type: 3}
+    volume: 0.41
+  - name: win
+    soundfile: {fileID: 8300000, guid: 758daa89f8d34c14bb631372134d644b, type: 3}
+    volume: 0.41
+  - name: lose
+    soundfile: {fileID: 8300000, guid: d181ba1fa6d79054994fa4331e6efb60, type: 3}
+    volume: 0.41
+  bgms:
+  - name: normal
+    soundfile: {fileID: 8300000, guid: 3ef60954b3dba7b4a9fafc502df76303, type: 3}
+    volume: 0.521
+  - name: battle
+    soundfile: {fileID: 8300000, guid: 376142b26a87af243981032b305d5815, type: 3}
+    volume: 0.44
+  - name: boss
+    soundfile: {fileID: 8300000, guid: a2d0bd01f97957648bd19fa933929b35, type: 3}
+    volume: 0.237
+  - name: lastboss
+    soundfile: {fileID: 8300000, guid: a467120a4ad04af42b81cf319ee0fec8, type: 3}
+    volume: 0.521
+--- !u!82 &4503737513322439027
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138406548576680056}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.702
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
