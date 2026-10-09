@@ -77,7 +77,6 @@ public class EnemyManager_Example : MonoBehaviour
 
         TurnManager.Instance.FloorClear();
         StageManager.Instance.OnFloorClear();
-        //StartCurrentFloor();
     }
 
     // ステージ選択ボタン(あれば): 指定ステージの1フロア目から開始

@@ -16,6 +16,7 @@ public class TurnManager : MonoBehaviour
 
     public static TurnManager Instance { get; private set; }
     public TurnState NowTurn { get; private set; } = TurnState.PlayerTurn;
+    public int NowTurnCount { get; private set; } = 0;
     public event Action<TurnState> OnTurnChanged;          //ターン切り替わり時に通知
 
     [SerializeField]private Button pturnEndButton;         //Pターン切り替えボタン
@@ -46,8 +47,10 @@ public class TurnManager : MonoBehaviour
         pturnEndButton.onClick.AddListener(() => TurnChange());
         StartCoroutine(AnnnounseWindow(TurnState.PlayerTurn));
     }
-    private void Start()
+
+    public void NowFloorAnnnounse()
     {
+        StartCoroutine(AnnnounseWindow(NowTurn));
     }
 
     public void FloorClear()
@@ -59,6 +62,7 @@ public class TurnManager : MonoBehaviour
     public void TurnChange(TurnState nextTurn = default)
     {
         if (isTurnChanging) return;
+        SoundsManager.Instance.PlaySound("accept");
         StartCoroutine(TurnChangeRoutine(nextTurn));
     }
 
@@ -81,10 +85,14 @@ public class TurnManager : MonoBehaviour
         NowTurn = nextTurn;
         OnTurnChanged?.Invoke(NowTurn);
         isTurnChanging = false;
+        NowTurnCount++;
     }
 
     private IEnumerator AnnnounseWindow(TurnState turn)
     {
+        if (!StageManager.Instance.IsTutorialed) yield break;
+        if (Player.Instance.isDead) yield break;
+
         GameObject go = null;
         switch(turn)
         {

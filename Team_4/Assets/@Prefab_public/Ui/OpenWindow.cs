@@ -1,6 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+
+public interface IWindowInit
+{
+    void WindowInit(System.Action action);
+}
 
 public class OpenWindow : MonoBehaviour
 {
@@ -16,7 +23,9 @@ public class OpenWindow : MonoBehaviour
 
     [Header("çáê¨ÉäÉXÉgóp")]
     [SerializeField] Transform windowSpace;
-    [SerializeField] List<sponeWindowSetting> settingList=new();
+    [SerializeField] List<sponeWindowSetting> settingList = new();
+
+    private GameObject showingWindow;
 
     private void Awake()
     {
@@ -29,6 +38,7 @@ public class OpenWindow : MonoBehaviour
 
         Instance = this;
         //---------------------------//
+
         foreach (var setting in settingList)
         {
             setting.button.onClick.AddListener(()=>ShowWindow(setting.name));
@@ -39,18 +49,39 @@ public class OpenWindow : MonoBehaviour
         if (!StageManager.Instance.IsTutorialed)
         {
             ShowWindow("Tutorial");
-            StageManager.Instance.IsTutorialed = true;
         }
     }
 
     public void ShowWindow(string name)
     {
+        if (showingWindow != null) return;
+
+        SoundsManager.Instance.PlaySound("info");
+
         foreach (var setting in settingList)
         {
             if(setting.name != name) continue;
 
             GameObject go = Instantiate(setting.window, windowSpace);
+            go.GetComponent<IWindowInit>().WindowInit(CloseWindow);
+            showingWindow = go;
             return;
+        }
+
+        Debug.LogError("window_notfound");
+    }
+
+    public void CloseWindow()
+    {
+        if (showingWindow == null) return;
+
+        showingWindow = null;
+        SoundsManager.Instance.PlaySound("accept");
+
+        if (!StageManager.Instance.IsTutorialed)
+        {
+            StageManager.Instance.IsTutorialed = true;
+            TurnManager.Instance.NowFloorAnnnounse();
         }
     }
 }

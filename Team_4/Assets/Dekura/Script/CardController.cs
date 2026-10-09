@@ -121,18 +121,21 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
+        if (Player.Instance.isDead) return;
 
-        m_currentSlot?.RemoveCard();
-        m_currentSlot = null;
+        ReturnToHand();
         isDraging = true;
 
-        rect.DOKill();
+        rect.eulerAngles = Vector3.zero;
+        SetPositionToPointer(eventData);
+
         DiscriptWindow.Instance.CloseWindow();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
+        if (Player.Instance.isDead) return;
 
         rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
         OnDragStarted?.Invoke(eventData.position, GetEffectTarget());
@@ -160,6 +163,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Right) return;
+        if (Player.Instance.isDead) return;
 
         GotoDiscard(() =>
         {
@@ -171,6 +175,7 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
         if (isDraging || isSelected) return;
+        if (Player.Instance.isDead) return;
 
         SoundsManager.Instance.PlaySound("pati");
         if (m_currentSlot == null)
@@ -182,9 +187,24 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public void OnPointerExit(PointerEventData eventData)
     {
         if (TurnManager.Instance.NowTurn != TurnManager.TurnState.PlayerTurn) return;
+        if (Player.Instance.isDead) return;
 
         isSelected = false;
         DiscriptWindow.Instance.CloseWindow();
+    }
+
+    private void SetPositionToPointer(PointerEventData eventData)
+    {
+        // Screen Space - Overlay の場合は null
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay
+            ? null
+            : canvas.worldCamera;
+
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                rect, eventData.position, cam, out Vector3 world))
+        {
+            rect.position = world;
+        }
     }
 
     //------------------------------カード自身の挙動-------------------------------------//

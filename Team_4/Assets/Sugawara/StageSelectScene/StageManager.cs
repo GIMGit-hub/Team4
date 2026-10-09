@@ -23,6 +23,7 @@ public class StageManager : MonoBehaviour
     [Header("シーン名")]
     [SerializeField] private string mainSceneName = "MainGame";
     [SerializeField] private string stageSelectSceneName = "StageSelectScene";
+    [SerializeField] private string gameClearSceneName = "ClearScene";
 
     [Header("選択中のデッキ")]
     [SerializeField] private Deck selectedDeck;
@@ -57,6 +58,8 @@ public class StageManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name != mainSceneName) return;
+
+        SoundsManager.Instance.PlayBGM("battle");
 
         if (Player.Instance != null && selectedDeck != null)
         {
@@ -115,14 +118,6 @@ public class StageManager : MonoBehaviour
 
         isFloorCleared[currentStage - 1] = true;
 
-        if (CheckFloorClear()) 
-        {
-            Debug.Log("=== 全ステージクリア！ ===");
-            // TODO: エンディング演出等をここに
-
-            return;
-        }
-
         StartCoroutine(StageClearDirection());
     }
 
@@ -153,8 +148,16 @@ public class StageManager : MonoBehaviour
         Debug.Log($"STAGE_CLEAR!");
 
         //クリア演出等をここに
+        yield return StartCoroutine(ClearManager.Instance.PlayClear());
 
-        yield return new WaitForSeconds(1.5f);
+        InitStagePosition();
+        if (CheckFloorClear()) SceneManager.LoadScene(gameClearSceneName);
+        else  SceneManager.LoadScene(stageSelectSceneName);
+    }
+
+    public IEnumerator PlayerDead()
+    {
+        yield return  StartCoroutine(ClearManager.Instance.PlayLose());
 
         InitStagePosition();
         SceneManager.LoadScene(stageSelectSceneName);
@@ -174,6 +177,7 @@ public class StageManager : MonoBehaviour
         {
             if (!floor) return false;
         }
+        Debug.Log("CheckFloorClear");
         return true;
     }
 
