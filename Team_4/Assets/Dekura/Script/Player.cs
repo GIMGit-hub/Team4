@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 
     [Header("攻撃間隔")]
     [SerializeField] private float atkDuriation = 0.2f;
+    public float AthDur { get=>atkDuriation; }
 
     [Header("debug用ウィンドウ")]
     [SerializeField] private TextMeshProUGUI debugWindow;
@@ -211,7 +212,7 @@ public class Player : MonoBehaviour
         switch (type)
         {
             case CardData.CostType.Normal:
-                isCanUse = nowCost >= cost - (int)GetEffect(CardEffect.EffectType.CostBuff);
+                isCanUse = nowCost >= Mathf.Max(0,cost - (int)GetEffect(CardEffect.EffectType.CostBuff));
                 break;
             case CardData.CostType.Hp:
                 isCanUse = nowHp > 1;
@@ -235,7 +236,7 @@ public class Player : MonoBehaviour
             switch (type)
             {
                 case CardData.CostType.Normal:
-                    nowCost -= cost - (int)UseBuff(CardEffect.EffectType.CostBuff);
+                    nowCost -= Mathf.Max(0, cost - (int)GetEffect(CardEffect.EffectType.CostBuff));
                     break;
 
                 case CardData.CostType.Hp:
@@ -375,5 +376,10 @@ public class Player : MonoBehaviour
 
         UpdateUi();
         UiManager.Instance.UpdateUi();
+    }
+
+    public string GetDeckName()
+    {
+        return deck.deckName;
     }
 }
