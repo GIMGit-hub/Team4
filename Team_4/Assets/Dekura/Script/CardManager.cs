@@ -134,7 +134,14 @@ public class CardManager : MonoBehaviour
         {
             handLayout.GetActiveCard(card).GetComponent<CardController>().GotoDiscard(() =>
             {
-                CardMove(card, CardZone.Discard);
+                if(handLayout.GetActiveCard(card).GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
+                {
+                    CardMove(card, CardZone.Discard);
+                }
+                else
+                {
+                    GetZoneList(card.zone).Remove(card);
+                }
             });
         }
     }

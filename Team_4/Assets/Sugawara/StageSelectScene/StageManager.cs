@@ -27,8 +27,8 @@ public class StageManager : MonoBehaviour
     [Header("選択中のデッキ")]
     [SerializeField] private Deck selectedDeck;
 
-    //クリア済みかどうか(Index0=ステージ1)
-    private bool[] stageCleared;
+    [SerializeField] private bool isTutorialed = false;
+    public bool IsTutorialed { get=>isTutorialed;set=> isTutorialed=value;}
 
     public int CurrentStage => currentStage;
     public int CurrentFloor => currentFloor;
@@ -119,6 +119,7 @@ public class StageManager : MonoBehaviour
         {
             Debug.Log("=== 全ステージクリア！ ===");
             // TODO: エンディング演出等をここに
+
             return;
         }
 
@@ -151,7 +152,7 @@ public class StageManager : MonoBehaviour
     {
         Debug.Log($"STAGE_CLEAR!");
 
-        //koko
+        //クリア演出等をここに
 
         yield return new WaitForSeconds(1.5f);
 

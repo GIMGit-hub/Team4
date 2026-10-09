@@ -128,6 +128,10 @@ public class UiManager : MonoBehaviour
         int nowFloor = StageManager.Instance.CurrentFloor;
         int maxFloor = StageManager.Instance.GetMaxFloor(StageManager.Instance.CurrentStage);
 
+        if (floor == maxFloor)
+        {
+            Debug.Log($"BOSS-STAGE");
+        }
         textUi.text = $"- BATTLE {nowFloor} / {maxFloor} -";
 
         float t = 0f;
