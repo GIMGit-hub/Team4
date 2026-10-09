@@ -146,6 +146,7 @@ public class StageManager : MonoBehaviour
     private IEnumerator StageClearDirection()
     {
         Debug.Log($"STAGE_CLEAR!");
+        if (CheckFloorClear()) SoundsManager.Instance.StopBGM();
 
         //ƒNƒŠƒA‰‰o“™‚ğ‚±‚±‚É
         yield return StartCoroutine(ClearManager.Instance.PlayClear());
@@ -169,6 +170,10 @@ public class StageManager : MonoBehaviour
         if (maxFloorPerStage != null && index >= 0 && index < maxFloorPerStage.Length)
             return maxFloorPerStage[index];
         return 1;
+    }
+    public int GetMaxStage()
+    {
+        return maxFloorPerStage.Length;
     }
 
     private bool CheckFloorClear()

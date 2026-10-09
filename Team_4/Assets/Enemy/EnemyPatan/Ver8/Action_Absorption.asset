@@ -17,6 +17,9 @@ MonoBehaviour:
   - effectType: 0
     value: 12
     duration: 0
+    hitCount: 1
   - effectType: 4
-    value: 1200
+    value: 20
     duration: 0
+    hitCount: 1
+  isRandomPick: 0

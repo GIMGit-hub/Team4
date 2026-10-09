@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundsManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class SoundsManager : MonoBehaviour
     private AudioSource audioSource_bgm;
     private AudioSource audioSource_se;
 
+    private void OnEnable() => SceneManager.sceneLoaded += SetSceneBGM;
+    private void OnDisable() => SceneManager.sceneLoaded -= SetSceneBGM;
+
     void Awake()
     {
         if (Instance != null)
@@ -33,6 +37,14 @@ public class SoundsManager : MonoBehaviour
         audioSource_bgm.loop = true;
         audioSource_se = GetComponent<AudioSource>();
         audioSource_se.loop = false;
+
+        SetSceneBGM(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+    }
+
+    private void SetSceneBGM(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainGame") return;
+        PlayBGM("normal");
     }
 
     public void PlaySound(string name)

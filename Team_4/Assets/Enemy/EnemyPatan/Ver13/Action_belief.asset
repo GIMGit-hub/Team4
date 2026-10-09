@@ -15,10 +15,11 @@ MonoBehaviour:
   actionName: "\u4FE1\u5FF5"
   effects:
   - effectType: 1
-    value: 20
+    value: 10
     duration: 1
     hitCount: 0
   - effectType: 2
-    value: 20
+    value: 10
     duration: 1
     hitCount: 0
+  isRandomPick: 0

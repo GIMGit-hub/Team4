@@ -42,12 +42,14 @@ public class StageSelectUI : MonoBehaviour
     // 各ステージボタンのOnClickに登録
     public void OnClickStage(int stageNumber)
     {
+        SoundsManager.Instance.PlaySound("accept");
         StageManager.Instance.SelectStage(stageNumber);
     }
 
     // デッキボタンのOnClickに登録
     public void OnClickDeckButton()
     {
+        SoundsManager.Instance.PlaySound("accept");
         fadeScreen.FadeOutIn(() =>
         {
             ShowDeckPanel();
@@ -57,6 +59,7 @@ public class StageSelectUI : MonoBehaviour
     // デッキ画面のOKボタンから呼ばれる
     public void OnClickDeckOK()
     {
+        SoundsManager.Instance.PlaySound("accept");
         fadeScreen.FadeOutIn(() =>
         {
             ShowStagePanel();

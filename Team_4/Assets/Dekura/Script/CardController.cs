@@ -73,8 +73,8 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
             costText.text = "0";
             costText.color = highlightCostColor;
         }
-        else if ((BoundInstance.costType == CardData.CostType.Normal) && 
-                 (BoundInstance.costType == CardData.CostType.Ace) &&
+        else if (((BoundInstance.costType == CardData.CostType.Normal) || 
+                 (BoundInstance.costType == CardData.CostType.Ace)) &&
            (Player.Instance.GetEffect(CardEffect.EffectType.CostBuff) != 0))
         {
             costText.text = (Mathf.Max(0, BoundInstance.Cost - (int)Player.Instance.GetEffect(CardEffect.EffectType.CostBuff))).ToString();

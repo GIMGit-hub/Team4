@@ -37,7 +37,6 @@ public class EnemyManager_Example : MonoBehaviour
         }
     }
 
-
     // 現在のstage/floorに合うEnemy_StageDataを探す
     private Enemy_StageData FindFloorData(int stage, int floor)
     {
@@ -50,6 +49,14 @@ public class EnemyManager_Example : MonoBehaviour
         //StageManagerから現在のステージ、フロアを受け取る
         currentFloor = floor;
         currentStage = stage;
+        int maxFloor = StageManager.Instance.GetMaxFloor(currentStage);
+        int maxStage = StageManager.Instance.GetMaxStage();
+
+        if (currentFloor == maxFloor)
+        {
+            if (currentStage == maxStage) SoundsManager.Instance.PlayBGM("lastboss");
+            else SoundsManager.Instance.PlayBGM("boss");
+        }
 
         Enemy_StageData data = FindFloorData(currentStage, currentFloor);
         if (data == null)

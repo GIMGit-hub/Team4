@@ -29,14 +29,15 @@ public class StartImageEffect : MonoBehaviour, IPointerClickHandler
 
     public void OnStartClicked()
     {
-        if (isProcessing)
-            return;
+        if (isProcessing) return;
 
         if (startImage == null)
         {
             Debug.LogError("“_–Å‚³‚¹‚éImage‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
             return;
         }
+
+        SoundsManager.Instance.PlaySound("accept");
 
         isProcessing = true;
         StartCoroutine(BlinkAndFade());
