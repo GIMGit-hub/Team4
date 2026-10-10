@@ -33,9 +33,11 @@ public class SoundsManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        audioSource_bgm = GetComponent<AudioSource>();
+        audioSource_bgm = gameObject.AddComponent<AudioSource>();
+        audioSource_bgm.playOnAwake = false;
         audioSource_bgm.loop = true;
-        audioSource_se = GetComponent<AudioSource>();
+        audioSource_se = gameObject.AddComponent<AudioSource>();
+        audioSource_se.playOnAwake = false;
         audioSource_se.loop = false;
 
         SetSceneBGM(SceneManager.GetActiveScene(), LoadSceneMode.Single);
@@ -70,6 +72,11 @@ public class SoundsManager : MonoBehaviour
     public void PlayBGM(string name)
     {
         var sound = System.Array.FindAll(bgms, s => s.name == name);
+        if (sound.Length == 0)
+        {
+            Debug.LogWarning($"BGM not Found：{name}");
+            return;
+        }
 
         if (audioSource_bgm.clip == sound[0].soundfile && audioSource_bgm.isPlaying) return;
         audioSource_bgm.clip = sound[0].soundfile;
