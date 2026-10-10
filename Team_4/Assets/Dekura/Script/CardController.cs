@@ -239,6 +239,8 @@ public class CardController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         m_currentSlot = null;
         isDraging = false;
 
+        OnDragEnded?.Invoke();
+
         transform.DOKill();
         transform.SetParent(parent, worldPositionStays: false);
         transform.SetSiblingIndex(siblingIndex);

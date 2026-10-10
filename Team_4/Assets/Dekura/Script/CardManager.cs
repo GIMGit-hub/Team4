@@ -134,6 +134,10 @@ public class CardManager : MonoBehaviour
         {
             handLayout.GetActiveCard(card).GetComponent<CardController>().GotoDiscard(() =>
             {
+                if (handLayout.GetActiveCard(card).GetComponent<CardController>().m_currentSlot != null)
+                {
+                    handLayout.GetActiveCard(card).GetComponent<CardController>().ReturnToHand();
+                }
                 if(handLayout.GetActiveCard(card).GetComponent<CardData>().cardType == CardData.CardType.DeckCard)
                 {
                     CardMove(card, CardZone.Discard);
@@ -431,6 +435,7 @@ public class CardManager : MonoBehaviour
 
         CardMove(resultInstance, CardZone.Hand);
 
+        EffectManager.Instance.Playfade("synthesis");
         SoundsManager.Instance.PlaySound("syncard");
         return resultInstance;
     }

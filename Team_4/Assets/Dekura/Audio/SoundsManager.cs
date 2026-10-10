@@ -85,4 +85,6 @@ public class SoundsManager : MonoBehaviour
     }
 
     public void StopBGM() => audioSource_bgm.Stop();
+    public void PauseBGM() => audioSource_bgm.Pause();
+    public void UnPauseBGM() => audioSource_bgm.UnPause();
 }

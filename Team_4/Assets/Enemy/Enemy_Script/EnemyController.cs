@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] private Vector2 spawnPointPosition_0;
     [SerializeField] private Vector2 spawnPointPosition_2;
+
+    [SerializeField] Color activateColor = Color.gray;
 
     private readonly List<Action> receivedFunctions = new List<Action>();
     private List<GameObject> SpawndEnemy = new List<GameObject>();
@@ -144,6 +148,16 @@ public class EnemyController : MonoBehaviour
         //Debug.Log($"{self.name}の{action.actionName}");
 
         List<ActionEffect> effectsToRun = new();
+
+        Image img = self.GetComponent<Image>();
+        Color baseColor = img.color;
+
+        DOTween.Sequence()
+        .SetTarget(img)
+        .Append(img.DOColor(activateColor, 0.1f))
+        .Append(img.DOColor(baseColor, 0.1f))
+        .Append(img.DOColor(activateColor, 0.1f))
+        .Append(img.DOColor(baseColor, 0.1f));
 
         //ランダム行動なら、1つだけ抽選する
         if (action.isRandomPick && action.effects.Count > 0)

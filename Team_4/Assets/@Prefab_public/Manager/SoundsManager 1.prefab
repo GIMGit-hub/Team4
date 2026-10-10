@@ -87,10 +87,10 @@ MonoBehaviour:
     volume: 0.41
   - name: win
     soundfile: {fileID: 8300000, guid: 758daa89f8d34c14bb631372134d644b, type: 3}
-    volume: 0.41
+    volume: 0.281
   - name: lose
     soundfile: {fileID: 8300000, guid: d181ba1fa6d79054994fa4331e6efb60, type: 3}
-    volume: 0.41
+    volume: 0.192
   bgms:
   - name: normal
     soundfile: {fileID: 8300000, guid: 3ef60954b3dba7b4a9fafc502df76303, type: 3}

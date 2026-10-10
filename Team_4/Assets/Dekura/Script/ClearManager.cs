@@ -41,6 +41,7 @@ public class ClearManager : MonoBehaviour
         RectTransform rect = go.GetComponent<RectTransform>();
         CanvasGroup cg = go.GetComponent<CanvasGroup>();
 
+        SoundsManager.Instance.StopBGM();
         SoundsManager.Instance.PlaySound("win");
 
         //Append>>終了を待って次を開始
@@ -64,10 +65,12 @@ public class ClearManager : MonoBehaviour
         RectTransform rect = go.GetComponent<RectTransform>();
         CanvasGroup cg = go.GetComponent<CanvasGroup>();
 
+        SoundsManager.Instance.StopBGM();
         SoundsManager.Instance.PlaySound("lose");
 
         //Append>>終了を待って次を開始
         //Joim>>ひとつ前のAppendと同時に処理、Appendはこれも待つ
+
         var seq =
             DOTween.Sequence()
             .AppendCallback(() => rect.anchoredPosition = sponePosition)
