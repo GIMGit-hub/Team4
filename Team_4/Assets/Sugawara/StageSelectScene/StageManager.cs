@@ -128,6 +128,7 @@ public class StageManager : MonoBehaviour
     {
         int next = currentFloor + 1;
         Coroutine uiCoroutine = StartCoroutine(UiManager.Instance.ProceedDirection(currentStage, next));
+        Player.Instance.DecreaseBuffTurn();
 
         if (next == GetMaxFloor(currentStage))
         {
