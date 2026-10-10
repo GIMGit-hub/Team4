@@ -27,7 +27,9 @@ public class CardEffect
 
         SpecialAction,
         Revive,
-        CostFree
+        CostFree,
+
+        ActivateBuff,
     }
     public enum EffectTarget
     {

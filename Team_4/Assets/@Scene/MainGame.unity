@@ -5243,7 +5243,7 @@ PrefabInstance:
     - target: {fileID: 8242381915795406307, guid: dbc4ac503788e2f408b60f305d32794d, type: 3}
       propertyPath: selectedDeck
       value: 
-      objectReference: {fileID: 11400000, guid: a03fface864a9b0449a2baea1c152ed9, type: 2}
+      objectReference: {fileID: 11400000, guid: 85fb51695d7ffd4409d96e7ac23d03bf, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

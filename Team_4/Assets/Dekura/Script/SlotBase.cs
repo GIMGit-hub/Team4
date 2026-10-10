@@ -1,6 +1,4 @@
 using DG.Tweening;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using static CardEffect;
 

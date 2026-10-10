@@ -1,6 +1,4 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class InfoWindow : MonoBehaviour, IWindowInit

@@ -1,8 +1,6 @@
 using DG.Tweening;
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ClearManager : MonoBehaviour
 {
