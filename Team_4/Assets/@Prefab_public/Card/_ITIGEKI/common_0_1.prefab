@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -525,7 +525,7 @@ MonoBehaviour:
   m_text: "\u7121\n\u8272"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
-  m_sharedMaterial: {fileID: -5840235654076262743, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
+  m_sharedMaterial: {fileID: -3380485448264874774, guid: 7c7eb4dd38773054c8bd71242c7b9ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -658,7 +658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   costText: {fileID: 8271255700082070572}
   kanjiText: {fileID: 2967633298547061347}
-  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 0}
+  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 1}
   highlightCostBold: 0.2
 --- !u!114 &8195112710207023301
 MonoBehaviour:

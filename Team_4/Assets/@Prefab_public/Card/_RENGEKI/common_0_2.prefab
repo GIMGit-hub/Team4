@@ -658,7 +658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   costText: {fileID: 8271255700082070572}
   kanjiText: {fileID: 2967633298547061347}
-  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 0}
+  highlightCostColor: {r: 0.34628367, g: 1, b: 0, a: 1}
   highlightCostBold: 0.2
 --- !u!114 &8195112710207023301
 MonoBehaviour:
